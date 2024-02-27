@@ -305,7 +305,13 @@ class CryptoService : public ExtensionService
 public:
 	using Uptr = std::unique_ptr<CryptoService>;
 	
+	virtual std::size_t GetBlockSize () const noexcept=0;
 	
+	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const
+noexcept=0;
+	
+	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false)
+const noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/decryptor_private_ctx.h"
