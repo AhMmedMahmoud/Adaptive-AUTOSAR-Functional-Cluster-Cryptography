@@ -95,7 +95,11 @@ namespace ara::crypto::cryp
 class CryptoObject 
 {
 public:
-	struct COIdentifier {...};
+	struct COIdentifier 
+	{
+	   CryptoObjectType mCOType;
+	   CryptoObjectUid mCouid;
+	};
 	using Uptrc = std::unique_ptr<const CryptoObject>;
 	using Uptr = std::unique_ptr<CryptoObject>
 	
@@ -649,6 +653,9 @@ class PrivateKey : public RestrictedUseObject
 public:
 	using Uptrc = std::unique_ptr<const PrivateKey>;
 	
+	static const CryptoObjectType kObjectType = CryptoObjectType::kPrivate
+Key;
+	
 	virtual ara::core::Result<PublicKey::Uptrc> GetPublicKey () const
 noexcept=0;
 
@@ -660,6 +667,9 @@ class PublicKey : public RestrictedUseObject
 {
 public:
 	using Uptrc = std::unique_ptr<const PublicKey>;
+
+	static const CryptoObjectType kObjectType = CryptoObjectType::kPublic
+	Key;
 	
 	virtual bool CheckKey (bool strongCheck=true) const noexcept=0;
 
@@ -712,6 +722,10 @@ public:
 	using Uptrc = std::unique_ptr<const SecretSeed>;
 	using Uptr = std::unique_ptr<SecretSeed>;
 	
+	static const CryptoObjectType kObjectType = CryptoObjectType::kSecret
+Seed;
+
+
 	virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion
 xorDelta=ReadOnlyMemRegion()) const noexcept=0;
 
@@ -780,6 +794,9 @@ class Signature : public CryptoObject
 public:
 	using Uptrc = std::unique_ptr<const Signature>;
 	
+	static const CryptoObjectType kObjectType = CryptoObjectType::k
+Signature;
+
 	virtual CryptoPrimitiveId::AlgId GetHashAlgId () const noexcept=0;
 	
 	virtual std::size_t GetRequiredHashSize () const noexcept=0;
@@ -913,6 +930,8 @@ class SymmetricKey : public RestrictedUseObject
 public:
 	using Uptrc = std::unique_ptr<const SymmetricKey>;
 	
+	static const CryptoObjectType kObjectType = CryptoObjectType::k
+SymmetricKey;
 	
 };
 ---------------------------------------------------
@@ -988,14 +1007,279 @@ OnlyMemRegion()) const noexcept=0;
 &hashFn, ReadOnlyMemRegion signature, ReadOnlyMemRegion context=Read
 OnlyMemRegion()) const noexcept=0;
 };
+---------------------------------------------------
+#include "ara/crypto/common/crypto_object_uid.h"
+namespace ara::crypto
+struct CryptoObjectUid
+{
+	Uuid mGeneratorUid;
+}
+struct CryptoObjectUid {...};
+---------------------------------------------------
+#include "ara/crypto/keys/keyslot.h"
+namespace ara::crypto::keys
+class KeySlot
+{
+public:
+	virtual ara::core::Result<void> Clear () noexcept=0;
+	
+	virtual ~KeySlot () noexcept=default;
+	
+	virtual ara::core::Result<KeySlotContentProps> GetContentProps ()
+const noexcept=0;
+
+	virtual ara::core::Result<cryp::CryptoProvider::Uptr> MyProvider ()
+const noexcept=0;
+
+	virtual ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps ()
+const noexcept=0;
+
+	virtual bool IsEmpty () const noexcept=0;
+	
+	virtual ara::core::Result<IOInterface::Uptr> Open (bool subscribeFor
+Updates=false, bool writeable=false) const noexcept=0;
+
+	virtual ara::core::Result<void> SaveCopy (const IOInterface
+&container) noexcept=0;
+
+	KeySlot& operator= (const KeySlot &other)=default;
+	
+	KeySlot& operator= (KeySlot &&other)=default;
+	
+	using Uptr = std::unique_ptr<KeySlot>;
+};
+---------------------------------------------------
+#include "ara/crypto/keys/key_storage_provider.h"
+namespace ara::crypto::keys
+class KeyStorageProvider
+{
+public:
+	using Uptr = std::unique_ptr<KeyStorageProvider>;
+
+	virtual ara::core::Result<TransactionId> BeginTransaction (const
+TransactionScope &targetSlots) noexcept=0;
+
+	virtual ara::core::Result<void> CommitTransaction (TransactionId id)
+noexcept=0;
+
+	virtual ~KeyStorageProvider () noexcept=default;
+	
+	virtual UpdatesObserver::Uptr GetRegisteredObserver () const
+noexcept=0;
+
+	virtual ara::core::Result<KeySlot::Uptr> LoadKeySlot (
+ara::core::InstanceSpecifier &iSpecify) noexcept=0;
+
+	virtual UpdatesObserver::Uptr RegisterObserver (UpdatesObserver::Uptr
+observer=nullptr) noexcept=0;
+
+	virtual ara::core::Result<void> RollbackTransaction (TransactionId id)
+noexcept=0;
+
+	virtual ara::core::Result<void> UnsubscribeObserver (KeySlot &slot)
+noexcept=0;
+
+	KeyStorageProvider& operator= (const KeyStorageProvider
+&other)=default;
+
+	KeyStorageProvider& operator= (KeyStorageProvider &&other)=default;
+
+	
+};
+---------------------------------------------------
+#include "ara/crypto/keys/updates_observer.h"
+namespace ara::crypto::keys
+class UpdatesObserver 
+{
+public:
+	using Uptr = std::unique_ptr<UpdatesObserver>;
+
+	virtual ~UpdatesObserver () noexcept=default;
+	
+	virtual void OnUpdate (const TransactionScope &updatedSlots)
+noexcept=0;
+
+	UpdatesObserver& operator= (const UpdatesObserver &other)=default;
+	
+	UpdatesObserver& operator= (UpdatesObserver &&other)=default;
+};
+---------------------------------------------------
+#include "ara/crypto/keys/key_slot_content_props.h"
+namespace ara::crypto::keys
+
+constexpr bool operator== (const KeySlotContentProps &lhs, const Key
+SlotContentProps &rhs) noexcept;
+
+constexpr bool operator!= (const KeySlotContentProps &lhs, const Key
+SlotContentProps &rhs) noexcept;
+
+struct KeySlotContentProps
+{
+	using Uptr = std::unique_ptr<KeySlotContentProps>;
+
+	KeySlotContentProps ()=default;
+	
+	CryptoAlgId mAlgId;
+	
+	std::size_t mObjectSize;
+	
+	CryptoObjectType mObjectType;
+	
+	CryptoObjectUid mObjectUid;
+	
+	AllowedUsageFlags mContentAllowedUsage;
+}
+---------------------------------------------------
+#include "ara/crypto/keys/key_slot_prototype_props.h"
+namespace ara::crypto::keys
+
+constexpr bool operator== (const KeySlotPrototypeProps &lhs, const Key
+SlotPrototypeProps &rhs) noexcept;
+
+constexpr bool operator!= (const KeySlotPrototypeProps &lhs, const Key
+SlotPrototypeProps &rhs) noexcept;
+
+struct KeySlotPrototypeProps
+{
+	using Uptr = std::unique_ptr<KeySlotPrototypeProps>;
+	
+	KeySlotPrototypeProps ()=default;
+	
+	CryptoAlgId mAlgId;
+	
+	bool mAllocateSpareSlot;
+	
+	bool mAllowContentTypeChange;
+	
+	AllowedUsageFlags mContentAllowedUsage;
+	
+	bool mExportAllowed;
+	
+	std::int32_t mMaxUpdateAllowed;
+	
+	KeySlotType mSlotType;
+	
+	std::size_t mSlotCapacity;
+	
+	CryptoObjectType mObjectType;
+}
+---------------------------------------------------
+#include "ara/crypto/keys/elementary_types.h"
+namespace ara::crypto::keys
+using TransactionId = std::uint64_t;
+using TransactionScope = ara::core::Vector<KeySlot>;
+---------------------------------------------------
+#include "ara/crypto/common/base_id_types.h"
+namespace ara::crypto
+using AllowedUsageFlags = std::uint32_t;
+using ByteVector = ara::core::Vector<std::uint8_t, Alloc>;
+using CryptoAlgId = std::uint64_t;
+enum class CryptoObjectType : std::uint32_t 
+{
+	kUndefined= 0,
+	kSymmetricKey= 1,
+	kPrivateKey= 2,
+	kPublicKey= 3,
+	kSignature= 4,
+	kSecretSeed= 5
+};
+
+enum class ProviderType : std::uint32_t 
+{
+	kUndefinedProvider= 0,
+	kCryptoProvider= 1,
+	kKeyStorageProvider= 2,
+	kX509Provider= 3
+};
+
+enum class CryptoTransform : std::uint32_t 
+{
+	kEncrypt= 1,
+	kDecrypt= 2,
+	kMacVerify= 3,
+	kMacGenerate= 4,
+	kWrap= 5,
+	kUnwrap= 6,
+	kSigVerify= 7,
+	kSigGenerate= 8
+};
+
+enum class KeySlotType : std::uint32_t
+{
+	kMachine= 1,
+	kApplication= 2
+};
+---------------------------------------------------
+#include "ara/crypto/common/mem_region.h"
+namespace ara::crypto
+using ReadOnlyMemRegion = ara::core::Span<const std::uint8_t>;
+using ReadWriteMemRegion = ara::core::Span<std::uint8_t>;
+--------------------------------------------------
+#include "ara/crypto/common/crypto_error_domain.h
+namespace ara::crypto
+enum class CryptoErrc : ara::core::ErrorDomain::CodeType {...};
+----------------------------------------------------
+#include "ara/crypto/common/entry_point.h"
+namespace ara::crypto
+struct SecureCounter {...};
+----------------------------------------------------
+#include "ara/crypto/common/serializable.h"
+namespace ara::crypto
+class Serializable
+{
+public:
+	using FormatId = std::uint32_t;
+}
+----------------------------------------------------
+#include "ara/crypto/common/volatile_trusted_container.h"
+namespace ara::crypto
+class VolatileTrustedContainer
+{
+public:
+	using Uptr = std::unique_ptr<VolatileTrustedContainer>;
+}
+----------------------------------------------------
+#include "ara/crypto/common/uuid.h
+namespace ara::crypto
+struct Uuid {...};
+----------------------------------------------------
+#include "ara/crypto/common/io_interface.h"
+namespace ara::crypto
+class IOInterface
+{
+public:
+	using Uptr = std::unique_ptr<IOInterface>;
+	
+	using Uptrc = std::unique_ptr<const IOInterface>;
+}
+---------------------------------------------------
+#include "ara/crypto/common/crypto_error_domain.h"
+namespace ara::crypto
+class CryptoErrorDomain
+{
+public:
+	using Errc = CryptoErrc;
+	using Exception = CryptoException;
+}
+
+class CryptoException
+{
+public:
+	explicit CryptoException (ara::core::ErrorCode err) noexcept;
+}
+---------------------------------------------------
 
 
 
 
-page 239  (variables)
+
+--------------
+we ignore
+--------------
+8.3 C++ language binding X509 Certificate Management Provider
 
 
 
 
 
-page 201    [SWS_CRYPT_19906]        ?????
+8.5 API Reference      page 316
