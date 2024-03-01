@@ -6,50 +6,37 @@ public:
 	using Uptr = std::unique_ptr<AuthCipherCtx>;
 
 	
-	virtual ara::core::Result<bool> Check (const Signature &expected)
-const noexcept=0;
-
+	virtual ara::core::Result<bool> Check (const Signature &expected) const noexcept=0;
 
 	virtual DigestService::Uptr GetDigestService () const noexcept=0;
 	
-	
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > GetDigest (std::size_t offset=0)
-const noexcept;
-
-	virtual ara::core::Result<CryptoTransform> GetTransformation () const
-noexcept=0;
-
+	virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
 
 	virtual std::uint64_t GetMaxAssociatedDataSize () const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-ConfidentialData (ReadOnlyMemRegion in, ara::core::Optional< ReadOnly
-MemRegion > expectedTag) noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessConfidentialData ( ReadOnlyMemRegion in,
+																							 ara::core::Optional< ReadOnlyMemRegion > expectedTag
+																						   ) noexcept=0;
 
-	virtual ara::core::Result<void> ProcessConfidentialData (ReadWriteMem
-Region inOut, ara::core::Optional< ReadOnlyMemRegion > expectedTag)
-noexcept=0;
+	virtual ara::core::Result<void> ProcessConfidentialData ( ReadWriteMemRegion inOut, 
+															  ara::core::Optional< ReadOnlyMemRegion > expectedTag
+															) noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const SymmetricKey &key,
-CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
+	virtual ara::core::Result<void> SetKey ( const SymmetricKey &key,
+											 CryptoTransform transform=CryptoTransform::kEncrypt
+										   ) noexcept=0;
 
-	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnly
-MemRegion()) noexcept=0;
+	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnlyMemRegion()) noexcept=0;
 
-	virtual ara::core::Result<void> Start (const SecretSeed &iv)
-noexcept=0;
+	virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept=0;
 
-	virtual ara::core::Result<void> UpdateAssociatedData (const Restricted
-UseObject &in) noexcept=0;
+	virtual ara::core::Result<void> UpdateAssociatedData (const RestrictedUseObject &in) noexcept=0;
 
-	virtual ara::core::Result<void> UpdateAssociatedData (ReadOnlyMem
-Region in) noexcept=0;
+	virtual ara::core::Result<void> UpdateAssociatedData (ReadOnlyMemRegion in) noexcept=0;
 
-	virtual ara::core::Result<void> UpdateAssociatedData (std::uint8_t in)
-noexcept=0;
+	virtual ara::core::Result<void> UpdateAssociatedData (std::uint8_t in) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/block_service.h"
@@ -59,8 +46,7 @@ class BlockService : public ExtensionService
 public:
 	using Uptr = std::unique_ptr<BlockService>;
 	
-	virtual std::size_t GetActualIvBitLength (ara::core::Optional< Crypto
-ObjectUid > ivUid) const noexcept=0;
+	virtual std::size_t GetActualIvBitLength (ara::core::Optional< CryptoObjectUid > ivUid) const noexcept=0;
 
 	virtual std::size_t GetBlockSize () const noexcept=0;
 	
@@ -78,8 +64,7 @@ public:
 	
 	virtual ~CryptoContext () noexcept=default;
 	
-	virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const
-noexcept=0;
+	virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
 
 	virtual bool IsInitialized () const noexcept=0;
 	
@@ -103,14 +88,11 @@ public:
 	using Uptrc = std::unique_ptr<const CryptoObject>;
 	using Uptr = std::unique_ptr<CryptoObject>
 	
-	virtual ~CryptoObject () noexcept=default;
 	
 	template <class ConcreteObject>
-static ara::core::Result<typename ConcreteObject::Uptrc> Downcast (
-CryptoObject::Uptrc &&object) noexcept;
+	static ara::core::Result<typename ConcreteObject::Uptrc> Downcast (CryptoObject::Uptrc &&object) noexcept;
 
-	virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const
-noexcept=0;
+	virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
 
 	virtual COIdentifier GetObjectId () const noexcept=0;
 	
@@ -122,12 +104,13 @@ noexcept=0;
 	
 	virtual bool IsSession () const noexcept=0;
 	
-	virtual ara::core::Result<void> Save (IOInterface &container) const
-noexcept=0;
+	virtual ara::core::Result<void> Save (IOInterface &container) const noexcept=0;
 
 	CryptoObject& operator= (const CryptoObject &other)=default;
 
 	CryptoObject& operator= (CryptoObject &&other)=default;
+	
+	virtual ~CryptoObject () noexcept=default;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/cryobj/crypto_primitive_id.h
@@ -143,8 +126,7 @@ public:
 	
 	virtual AlgId GetPrimitiveId () const noexcept=0;
 	
-	virtual const ara::core::StringView GetPrimitiveName () const
-noexcept=0;
+	virtual const ara::core::StringView GetPrimitiveName () const noexcept=0;
 
 	CryptoPrimitiveId& operator= (const CryptoPrimitiveId &other)=default;
 
@@ -169,46 +151,34 @@ noexcept=0;
 	virtual AlgId ConvertToAlgId (ara::core::StringView primitiveName)
 const noexcept=0;
 
-	virtual ara::core::Result<ara::core::String> ConvertToAlgName (AlgId
-algId) const noexcept=0;
+	virtual ara::core::Result<ara::core::String> ConvertToAlgName (AlgId algId) const noexcept=0;
 
-	virtual ara::core::Result<AuthCipherCtx::Uptr> CreateAuthCipherCtx (
-AlgId algId) noexcept=0;
+	virtual ara::core::Result<AuthCipherCtx::Uptr> CreateAuthCipherCtx ( AlgId algId) noexcept=0;
 	
-	virtual ara::core::Result<DecryptorPrivateCtx::Uptr> CreateDecryptor
-PrivateCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<DecryptorPrivateCtx::Uptr> CreateDecryptorPrivateCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<EncryptorPublicCtx::Uptr> CreateEncryptor
-PublicCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<EncryptorPublicCtx::Uptr> CreateEncryptorPublicCtx (AlgId algId) noexcept=0;
 
 
-	virtual ara::core::Result<Signature::Uptrc> CreateHashDigest (AlgId
-hashAlgId, ReadOnlyMemRegion value) noexcept=0;
+	virtual ara::core::Result<Signature::Uptrc> CreateHashDigest (AlgId hashAlgId, ReadOnlyMemRegion value) noexcept=0;
 
-	virtual ara::core::Result<HashFunctionCtx::Uptr> CreateHashFunctionCtx
-(AlgId algId) noexcept=0;
+	virtual ara::core::Result<HashFunctionCtx::Uptr> CreateHashFunctionCtx(AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<KeyAgreementPrivateCtx::Uptr> CreateKey
-AgreementPrivateCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<KeyAgreementPrivateCtx::Uptr> CreateKeyAgreementPrivateCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<KeyDecapsulatorPrivateCtx::Uptr> CreateKey
-DecapsulatorPrivateCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<KeyDecapsulatorPrivateCtx::Uptr> CreateKeyDecapsulatorPrivateCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<KeyDerivationFunctionCtx::Uptr> CreateKey
-DerivationFunctionCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<KeyDerivationFunctionCtx::Uptr> CreateKeyDerivationFunctionCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<KeyEncapsulatorPublicCtx::Uptr> CreateKey
-EncapsulatorPublicCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<KeyEncapsulatorPublicCtx::Uptr> CreateKeyEncapsulatorPublicCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<MessageAuthnCodeCtx::Uptr> CreateMessageAuth
-CodeCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<MessageAuthnCodeCtx::Uptr> CreateMessageAuthCodeCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<MsgRecoveryPublicCtx::Uptr> CreateMsg
-RecoveryPublicCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<MsgRecoveryPublicCtx::Uptr> CreateMsgRecoveryPublicCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<RandomGeneratorCtx::Uptr> CreateRandom
-GeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true)
-noexcept=0;
+	virtual ara::core::Result<RandomGeneratorCtx::Uptr> CreateRandomGeneratorCtx ( AlgId algId=kAlgIdDefault,
+																				   bool initialize=true
+																				 )noexcept=0;
 
 	virtual ara::core::Result<SigEncodePrivateCtx::Uptr> CreateSigEncode
 PrivateCtx (AlgId algId) noexcept=0;
@@ -217,85 +187,84 @@ PrivateCtx (AlgId algId) noexcept=0;
 signAlgId, ReadOnlyMemRegion value, const RestrictedUseObject &key,
 AlgId hashAlgId=kAlgIdNone) noexcept=0;
 
-	virtual ara::core::Result<SignerPrivateCtx::Uptr> CreateSignerPrivate
-Ctx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<SignerPrivateCtx::Uptr> CreateSignerPrivateCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<StreamCipherCtx::Uptr> CreateStreamCipherCtx
-(AlgId algId) noexcept=0;
+	virtual ara::core::Result<StreamCipherCtx::Uptr> CreateStreamCipherCtx(AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<SymmetricBlockCipherCtx::Uptr> Create
-SymmetricBlockCipherCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<SymmetricBlockCipherCtx::Uptr> CreateSymmetricBlockCipherCtx (AlgId algId) noexcept=0;
 
-	virtual ara::core::Result<SymmetricKeyWrapperCtx::Uptr> Create
-SymmetricKeyWrapperCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<SymmetricKeyWrapperCtx::Uptr> CreateSymmetricKeyWrapperCtx (AlgId algId) noexcept=0;
 	
-	virtual ara::core::Result<VerifierPublicCtx::Uptr> CreateVerifier
-PublicCtx (AlgId algId) noexcept=0;
+	virtual ara::core::Result<VerifierPublicCtx::Uptr> CreateVerifierPublicCtx (AlgId algId) noexcept=0;
 
 	virtual ~CryptoProvider () noexcept=default;
 	
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Export
-PublicObject (const IOInterface &container, Serializable::FormatId
-formatId=Serializable::kFormatDefault) noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ExportPublicObject ( const IOInterface &container,
+																						Serializable::FormatIdformatId=Serializable::kFormatDefault
+																					  ) noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Export
-SecuredObject (const CryptoObject &object, SymmetricKeyWrapperCtx
-&transportContext) noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ExportSecuredObject ( const CryptoObject &object, 
+																						 SymmetricKeyWrapperCtx &transportContext
+																					   ) noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Export
-SecuredObject (const IOInterface &container, SymmetricKeyWrapperCtx
-&transportContext) noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ExportSecuredObject ( const IOInterface &container,
+																						 SymmetricKeyWrapperCtx &transportContext
+																					   ) noexcept=0;
 
-	virtual ara::core::Result<PrivateKey::Uptrc> GeneratePrivateKey (AlgId
-algId, AllowedUsageFlags allowedUsage, bool isSession=false, bool is
-Exportable=false) noexcept=0;
+	virtual ara::core::Result<PrivateKey::Uptrc> GeneratePrivateKey ( AlgId algId, 
+																	  AllowedUsageFlags allowedUsage, 
+																	  bool isSession=false, 
+																	  bool isExportable=false
+																	) noexcept=0;
 
-	virtual ara::core::Result<SecretSeed::Uptrc> GenerateSeed (AlgId alg
-Id, SecretSeed::Usage allowedUsage, bool isSession=true, bool is
-Exportable=false) noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptrc> GenerateSeed ( AlgId algId,
+																SecretSeed::Usage allowedUsage,
+																bool isSession=true,
+																bool isExportable=false
+															  ) noexcept=0;
 	
-	virtual ara::core::Result<SymmetricKey::Uptrc> GenerateSymmetricKey (
-AlgId algId, AllowedUsageFlags allowedUsage, bool isSession=true, bool
-isExportable=false) noexcept=0;
+	virtual ara::core::Result<SymmetricKey::Uptrc> GenerateSymmetricKey ( AlgId algId, 
+																		  AllowedUsageFlags allowedUsage,
+																		  bool isSession=true,
+																		  bool isExportable=false
+																		) noexcept=0;
 
-	virtual ara::core::Result<std::size_t> GetPayloadStorageSize (Crypto
-ObjectType cryptoObjectType, AlgId algId) const noexcept=0;
+	virtual ara::core::Result<std::size_t> GetPayloadStorageSize ( CryptoObjectType cryptoObjectType,
+																   AlgId algId
+																 ) const noexcept=0;
 
-	virtual ara::core::Result<std::size_t> GetSerializedSize (CryptoObject
-Type cryptoObjectType, AlgId algId, Serializable::FormatId format
-Id=Serializable::kFormatDefault) const noexcept=0;
+	virtual ara::core::Result<std::size_t> GetSerializedSize ( CryptoObjectType cryptoObjectType,
+															   AlgId algId,
+															   Serializable::FormatId formatId=Serializable::kFormatDefault
+															 ) const noexcept=0;
 
-	virtual ara::core::Result<void> ImportPublicObject (IOInterface
-&container, ReadOnlyMemRegion serialized, CryptoObjectType expected
-Object=CryptoObjectType::kUndefined) noexcept=0;
+	virtual ara::core::Result<void> ImportPublicObject ( IOInterface &container,
+														 ReadOnlyMemRegion serialized,
+														 CryptoObjectType expectedObject=CryptoObjectType::kUndefined
+													   ) noexcept=0;
 
-	virtual ara::core::Result<void> ImportSecuredObject (IOInterface
-&container, ReadOnlyMemRegion serialized, SymmetricKeyWrapperCtx
-&transportContext, bool isExportable=false, CryptoObjectType expected
-Object=CryptoObjectType::kUndefined) noexcept=0;
+	virtual ara::core::Result<void> ImportSecuredObject ( IOInterface &container,
+														  ReadOnlyMemRegion serialized,
+														  SymmetricKeyWrapperCtx &transportContext,
+														  bool isExportable=false,
+														  CryptoObjectType expectedObject=CryptoObjectType::kUndefined
+														) noexcept=0;
 
-	virtual ara::core::Result<CryptoObject::Uptrc> LoadObject (const
-IOInterface &container) noexcept=0;
+	virtual ara::core::Result<CryptoObject::Uptrc> LoadObject (const IOInterface &container) noexcept=0;
 
-	virtual ara::core::Result<PrivateKey::Uptrc> LoadPrivateKey (const
-IOInterface &container) noexcept=0;
+	virtual ara::core::Result<PrivateKey::Uptrc> LoadPrivateKey (const IOInterface &container) noexcept=0;
 
-	virtual ara::core::Result<PublicKey::Uptrc> LoadPublicKey (const
-IOInterface &container) noexcept=0;
+	virtual ara::core::Result<PublicKey::Uptrc> LoadPublicKey (const IOInterface &container) noexcept=0;
 
-	virtual ara::core::Result<SecretSeed::Uptrc> LoadSecretSeed (const
-IOInterface &container) noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptrc> LoadSecretSeed (const IOInterface &container) noexcept=0;
 
-	virtual ara::core::Result<SymmetricKey::Uptrc> LoadSymmetricKey (const
-IOInterface &container) noexcept=0;
+	virtual ara::core::Result<SymmetricKey::Uptrc> LoadSymmetricKey (const IOInterface &container) noexcept=0;
 
 	virtual std::size_t GetBlockSize () const noexcept=0;
 	
-	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const
-noexcept=0;
+	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const noexcept=0;
 
-	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false)
-const noexcept=0;
+	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false) const noexcept=0;
 
 	CryptoProvider& operator= (const CryptoProvider &other)=default;
 	
@@ -311,11 +280,9 @@ public:
 	
 	virtual std::size_t GetBlockSize () const noexcept=0;
 	
-	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const
-noexcept=0;
+	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const noexcept=0;
 	
-	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false)
-const noexcept=0;
+	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false) const noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/decryptor_private_ctx.h"
@@ -327,18 +294,13 @@ public:
 	
 	virtual CryptoService::Uptr GetCryptoService () const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-Block (ReadOnlyMemRegion in, bool suppressPadding=false) const
-noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > ProcessBlock (ReadOnlyMemRegion
-in, bool suppressPadding=false) const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in, 
+	                                                                              bool suppressPadding=false
+																				) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PrivateKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PrivateKey &key) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/digest_service.h"
@@ -348,8 +310,9 @@ class DigestService : public BlockService
 public:
 	using Uptr = std::unique_ptr<DigestService>;
 	
-	virtual ara::core::Result<bool> Compare (ReadOnlyMemRegion expected,
-std::size_t offset=0) const noexcept=0;
+	virtual ara::core::Result<bool> Compare ( ReadOnlyMemRegion expected, 
+											  std::size_t offset=0
+											) const noexcept=0;
 
 	virtual std::size_t GetDigestSize () const noexcept=0;
 	
@@ -367,18 +330,13 @@ public:
 	
 	virtual CryptoService::Uptr GetCryptoService () const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-Block (ReadOnlyMemRegion in, bool suppressPadding=false) const
-noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > ProcessBlock (ReadOnlyMemRegion
-in, bool suppressPadding=false) const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
+																				  bool suppressPadding=false
+																				) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PublicKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PublicKey &key) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/extension_service.h"
@@ -400,8 +358,7 @@ public:
 
 	virtual std::size_t GetMinKeyBitLength () const noexcept=0;
 
-	virtual bool IsKeyBitLengthSupported (std::size_t keyBitLength) const
-noexcept=0;
+	virtual bool IsKeyBitLengthSupported (std::size_t keyBitLength) const noexcept=0;
 
 	virtual bool IsKeyAvailable () const noexcept=0;
 	
@@ -417,31 +374,21 @@ class HashFunctionCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<HashFunctionCtx>;
 	
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish
-() noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish () noexcept=0;
 
 	virtual DigestService::Uptr GetDigestService () const noexcept=0;
 	
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Get
-Digest (std::size_t offset=0) const noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > GetDigest (std::size_t offset=0)
-const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest (std::size_t offset=0) const noexcept=0;
 
 	virtual ara::core::Result<void> Start () noexcept=0;
 	
-	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv)
-noexcept=0;
+	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv) noexcept=0;
 
-	virtual ara::core::Result<void> Start (const SecretSeed &iv)
-noexcept=0;
+	virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept=0;
 
-	virtual ara::core::Result<void> Update (const RestrictedUseObject &in)
-noexcept=0;
+	virtual ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept=0;
 
-	virtual ara::core::Result<void> Update (ReadOnlyMemRegion in)
-noexcept=0;
+	virtual ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept=0;
 
 	virtual ara::core::Result<void> Update (std::uint8_t in) noexcept=0;
 };
@@ -453,23 +400,23 @@ class KeyAgreementPrivateCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<KeyAgreementPrivateCtx>;
 	
-	virtual ara::core::Result<SymmetricKey::Uptrc> AgreeKey (const Public
-Key &otherSideKey, CryptoAlgId targetAlgId, AllowedUsageFlags allowed
-Usage, ara::core::Optional< const KeyDerivationFunctionCtx::Uptr >
-kdf, ara::core::Optional< ReadOnlyMemRegion > salt,
-ara::core::Optional< ReadOnlyMemRegion > ctxLabel) const noexcept=0;
+	virtual ara::core::Result<SymmetricKey::Uptrc> AgreeKey ( const PublicKey &otherSideKey,
+															  CryptoAlgId targetAlgId,
+															  AllowedUsageFlags allowedUsage,
+															  ara::core::Optional< const KeyDerivationFunctionCtx::Uptr > kdf,
+															  ara::core::Optional< ReadOnlyMemRegion > salt,
+															  ara::core::Optional< ReadOnlyMemRegion > ctxLabel
+															) const noexcept=0;
 
-	virtual ara::core::Result<SecretSeed::Uptrc> AgreeSeed (const Public
-Key &otherSideKey, ara::core::Optional< AllowedUsageFlags > allowed
-Usage) const noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptrc> AgreeSeed ( const PublicKey &otherSideKey,
+															 ara::core::Optional< AllowedUsageFlags > allowedUsage
+														   ) const noexcept=0;
 
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PrivateKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PrivateKey &key) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/key_decapsulator_private_ctx.h"
@@ -479,26 +426,28 @@ class KeyDecapsulatorPrivateCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<KeyDecapsulatorPrivateCtx>;
 	
-	virtual ara::core::Result<SymmetricKey::Uptrc> DecapsulateKey (Read
-OnlyMemRegion input, CryptoAlgId keyingDataAlgId, KeyDerivation
-FunctionCtx &kdf, CryptoAlgId kekAlgId, ara::core::Optional< Allowed
-UsageFlags > allowedUsage) const noexcept=0;
+	virtual ara::core::Result<SymmetricKey::Uptrc> DecapsulateKey ( ReadOnlyMemRegion input,
+																	CryptoAlgId keyingDataAlgId,
+																	KeyDerivationFunctionCtx &kdf,
+																	CryptoAlgId kekAlgId,
+																	ara::core::Optional< AllowedUsageFlags > allowedUsage
+																  ) const noexcept=0;
 
-	virtual ara::core::Result<SecretSeed::Uptrc> DecapsulateSeed (ReadOnly
-MemRegion input, ara::core::Optional< AllowedUsageFlags > allowed
-Usage) const noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptrc> DecapsulateSeed ( ReadOnly
+																   MemRegion input,
+																   ara::core::Optional< AllowedUsageFlags > allowed
+																   Usage
+																  ) const noexcept=0;
 
 	virtual std::size_t GetEncapsulatedSize () const noexcept=0;
 	
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
 	virtual std::size_t GetKekEntropy () const noexcept=0;
 	
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PrivateKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PrivateKey &key) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/key_derivation_function_ctx.h"
@@ -508,25 +457,23 @@ class KeyDerivationFunctionCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
 	
-	virtual ara::core::Result<void> AddSalt (ReadOnlyMemRegion salt)
-noexcept=0;
+	virtual ara::core::Result<void> AddSalt (ReadOnlyMemRegion salt) noexcept=0;
 
-	virtual ara::core::Result<void> AddSecretSalt (const SecretSeed &salt)
-noexcept=0;
+	virtual ara::core::Result<void> AddSecretSalt (const SecretSeed &salt) noexcept=0;
 
-	virtual std::uint32_t ConfigIterations (std::uint32_t iterations=0)
-noexcept=0;
+	virtual std::uint32_t ConfigIterations (std::uint32_t iterations=0) noexcept=0;
 
-	virtual ara::core::Result<SymmetricKey::Uptrc> DeriveKey (bool is
-Session=true, bool isExportable=false) const noexcept=0;
+	virtual ara::core::Result<SymmetricKey::Uptrc> DeriveKey ( bool isSession=true,
+															   bool isExportable=false
+															 ) const noexcept=0;
 
-	virtual ara::core::Result<SecretSeed::Uptrc> DeriveSeed (bool is
-Session=true, bool isExportable=false) const noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptrc> DeriveSeed ( bool isSession=true, 
+															  bool isExportable=false
+															) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
 	virtual std::size_t GetKeyIdSize () const noexcept=0;
 
@@ -536,13 +483,14 @@ noexcept=0;
 
 	virtual std::size_t GetTargetKeyBitLength () const noexcept=0;
 
-	virtual ara::core::Result<void> Init (ReadOnlyMemRegion targetKeyId,
-AlgId targetAlgId=kAlgIdAny, AllowedUsageFlags allowedUsage=kAllowKdf
-MaterialAnyUsage, ReadOnlyMemRegion ctxLabel=ReadOnlyMemRegion())
-noexcept=0;
+	virtual ara::core::Result<void> Init ( ReadOnlyMemRegion targetKeyId,
+										   AlgId targetAlgId=kAlgIdAny,
+										   AllowedUsageFlags allowedUsage=kAllowKdf
+										   MaterialAnyUsage,
+										   ReadOnlyMemRegion ctxLabel=ReadOnlyMemRegion()
+										 ) noexcept=0;
 	
-	virtual ara::core::Result<void> SetSourceKeyMaterial (const Restricted
-UseObject &sourceKM) noexcept=0;
+	virtual ara::core::Result<void> SetSourceKeyMaterial (const RestrictedUseObject &sourceKM) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/key_encapsulator_public_ctx.h
@@ -554,23 +502,19 @@ public:
 	
 	virtual std::size_t GetEncapsulatedSize () const noexcept=0;
 	
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
 	virtual std::size_t GetKekEntropy () const noexcept=0;
 	
-	virtual ara::core::Result<void> AddKeyingData (const RestrictedUse
-Object &keyingData) noexcept=0;
+	virtual ara::core::Result<void> AddKeyingData (const RestrictedUseObject &keyingData) noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> >
-Encapsulate (KeyDerivationFunctionCtx &kdf, CryptoAlgId kekAlgId)
-const noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Encapsulate ( KeyDerivationFunctionCtx &kdf,
+																				 CryptoAlgId kekAlgId
+																			   ) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PublicKey &key)
-noexcept=0;
-
+	virtual ara::core::Result<void> SetKey (const PublicKey &key) noexcept=0;
 }
 ---------------------------------------------------
 #include "ara/crypto/cryp/message_authn_code_ctx.h"
@@ -580,37 +524,26 @@ class MessageAuthnCodeCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;
 	
-	virtual ara::core::Result<bool> Check (const Signature &expected)
-const noexcept=0;
+	virtual ara::core::Result<bool> Check (const Signature &expected) const noexcept=0;
 
-	virtual ara::core::Result<Signature::Uptrc> Finish (bool makeSignature
-Object=false) noexcept=0;
+	virtual ara::core::Result<Signature::Uptrc> Finish (bool makeSignature Object=false) noexcept=0;
 
 	virtual DigestService::Uptr GetDigestService () const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Get
-Digest (std::size_t offset=0) const noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > GetDigest (std::size_t offset=0)
-const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest (std::size_t offset=0) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const SymmetricKey &key,
-CryptoTransform transform=CryptoTransform::kMacGenerate) noexcept=0;
+	virtual ara::core::Result<void> SetKey ( const SymmetricKey &key, 
+	                                         CryptoTransform transform=CryptoTransform::kMacGenerate) noexcept=0;
 
-	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnly
-MemRegion()) noexcept=0;
+	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnlyMemRegion()) noexcept=0;
 
-	virtual ara::core::Result<void> Start (const SecretSeed &iv)
-noexcept=0;
+	virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept=0;
 
-	virtual ara::core::Result<void> Update (const RestrictedUseObject &in)
-noexcept=0;
+	virtual ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept=0;
 
-	virtual ara::core::Result<void> Update (ReadOnlyMemRegion in)
-noexcept=0;
+	virtual ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept=0;
 
 	virtual ara::core::Result<void> Update (std::uint8_t in) noexcept=0;
 };
@@ -622,27 +555,17 @@ class MsgRecoveryPublicCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<MsgRecoveryPublicCtx>;
 	
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
-	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const
-noexcept=0;
+	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const noexcept=0;
 	
-	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false)
-const noexcept=0;
+	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false) const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Decode
-AndVerify (ReadOnlyMemRegion in) const noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > DecodeAndVerify (ReadOnlyMem
-Region in) const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > DecodeAndVerify (ReadOnlyMemRegion in) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 
-	virtual ara::core::Result<void> SetKey (const PublicKey &key)
-noexcept=0;
-
+	virtual ara::core::Result<void> SetKey (const PublicKey &key) noexcept=0;
 };
 
 ---------------------------------------------------
@@ -653,12 +576,9 @@ class PrivateKey : public RestrictedUseObject
 public:
 	using Uptrc = std::unique_ptr<const PrivateKey>;
 	
-	static const CryptoObjectType kObjectType = CryptoObjectType::kPrivate
-Key;
+	static const CryptoObjectType kObjectType = CryptoObjectType::kPrivateKey;
 	
-	virtual ara::core::Result<PublicKey::Uptrc> GetPublicKey () const
-noexcept=0;
-
+	virtual ara::core::Result<PublicKey::Uptrc> GetPublicKey () const noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/cryobj/public_key.h"
@@ -668,17 +588,11 @@ class PublicKey : public RestrictedUseObject
 public:
 	using Uptrc = std::unique_ptr<const PublicKey>;
 
-	static const CryptoObjectType kObjectType = CryptoObjectType::kPublic
-	Key;
+	static const CryptoObjectType kObjectType = CryptoObjectType::kPublicKey;
 	
-	virtual bool CheckKey (bool strongCheck=true) const noexcept=0;
+	virtual bool CheckKey(bool strongCheck=true) const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Hash
-PublicKey (HashFunctionCtx &hashFunc) const noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > HashPublicKey (HashFunctionCtx
-&hashFunc) const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/random_generator_ctx.h"
@@ -690,11 +604,9 @@ public:
 	
 	virtual bool AddEntropy (ReadOnlyMemRegion entropy) noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> >
-Generate (std::uint32_t count) noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Generate (std::uint32_t count) noexcept=0;
 
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
 	virtual bool Seed (ReadOnlyMemRegion seed) noexcept=0;
 	
@@ -722,15 +634,12 @@ public:
 	using Uptrc = std::unique_ptr<const SecretSeed>;
 	using Uptr = std::unique_ptr<SecretSeed>;
 	
-	static const CryptoObjectType kObjectType = CryptoObjectType::kSecret
-Seed;
+	static const CryptoObjectType kObjectType = CryptoObjectType::kSecretSeed;
 
 
-	virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion
-xorDelta=ReadOnlyMemRegion()) const noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegionxorDelta=ReadOnlyMemRegion()) const noexcept=0;
 
-	virtual ara::core::Result<void> JumpFrom (const SecretSeed &from,
-std::int64_t steps) noexcept=0;
+	virtual ara::core::Result<void> JumpFrom (const SecretSeed &from, std::int64_t steps) noexcept=0;
 
 	virtual SecretSeed& Jump (std::int64_t steps) noexcept=0;
 	
@@ -749,26 +658,17 @@ class SigEncodePrivateCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<SigEncodePrivateCtx>;
 	
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
-	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const
-noexcept=0;
+	virtual std::size_t GetMaxInputSize (bool suppressPadding=false) const noexcept=0;
 
-	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false)
-const noexcept=0;
+	virtual std::size_t GetMaxOutputSize (bool suppressPadding=false) const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > SignAnd
-Encode (ReadOnlyMemRegion in) const noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > SignAndEncode (ReadOnlyMemRegion
-in) const noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > SignAndEncode (ReadOnlyMemRegion in) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PrivateKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PrivateKey &key) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/signature_service.h"
@@ -778,8 +678,7 @@ class SignatureService : public ExtensionService
 public:
 	using Uptr = std::unique_ptr<SignatureService>;
 	
-	virtual CryptoPrimitiveId::AlgId GetRequiredHashAlgId () const
-noexcept=0;
+	virtual CryptoPrimitiveId::AlgId GetRequiredHashAlgId () const noexcept=0;
 
 	virtual std::size_t GetRequiredHashSize () const noexcept=0;
 
@@ -794,8 +693,7 @@ class Signature : public CryptoObject
 public:
 	using Uptrc = std::unique_ptr<const Signature>;
 	
-	static const CryptoObjectType kObjectType = CryptoObjectType::k
-Signature;
+	static const CryptoObjectType kObjectType = CryptoObjectType::kSignature;
 
 	virtual CryptoPrimitiveId::AlgId GetHashAlgId () const noexcept=0;
 	
@@ -810,29 +708,24 @@ class SignerPrivateCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<SignerPrivateCtx>;
 	
-	virtual SignatureService::Uptr GetSignatureService () const
-noexcept=0;
+	virtual SignatureService::Uptr GetSignatureService () const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PrivateKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PrivateKey &key) noexcept=0;
 	
-	virtual ara::core::Result<Signature::Uptrc> SignPreHashed (const Hash
-FunctionCtx &hashFn, ReadOnlyMemRegion context=ReadOnlyMemRegion())
-const noexcept=0;
+	virtual ara::core::Result<Signature::Uptrc> SignPreHashed ( const HashFunctionCtx &hashFn,
+																ReadOnlyMemRegion context=ReadOnlyMemRegion()
+															  ) const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Sign
-(ReadOnlyMemRegion value, ReadOnlyMemRegion context=ReadOnlyMem
-Region()) const noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Sign( ReadOnlyMemRegion value,
+																		 ReadOnlyMemRegion context=ReadOnlyMemRegion()
+																	   ) const noexcept=0;
 
-	virtual ara::core::Result<Signature::Uptrc> SignPreHashed (AlgId hash
-AlgId, ReadOnlyMemRegion hashValue, ReadOnlyMemRegion context=ReadOnly
-MemRegion()) const noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > Sign (ReadOnlyMemRegion value,
-ReadOnlyMemRegion context=ReadOnlyMemRegion()) const noexcept;
+	virtual ara::core::Result<Signature::Uptrc> SignPreHashed ( AlgId hashAlgId,
+																ReadOnlyMemRegion hashValue,
+																ReadOnlyMemRegion context=ReadOnlyMemRegion()
+															  ) const noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/stream_cipher_ctx.h
@@ -844,54 +737,35 @@ public:
 	
 	virtual std::size_t CountBytesInCache () const noexcept=0;
 	
-	std::size_t EstimateMaxInputSize (std::size_t outputCapacity) const
-noexcept;
+	std::size_t EstimateMaxInputSize (std::size_t outputCapacity) const noexcept;
 
-	std::size_t EstimateRequiredCapacity (std::size_t inputSize, bool is
-Final=false) const noexcept;
+	std::size_t EstimateRequiredCapacity (std::size_t inputSize, bool isFinal=false) const noexcept;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish
-Bytes (ReadOnlyMemRegion in) noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > FinishBytes (ReadOnlyMemRegion
-in) noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > FinishBytes (ReadOnlyMemRegion in) noexcept=0;
 
 	virtual BlockService::Uptr GetBlockService () const noexcept=0;
 
 	virtual bool IsBytewiseMode () const noexcept=0;
 	
-	virtual ara::core::Result<CryptoTransform> GetTransformation () const
-noexcept=0;
+	virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
 	
 	virtual bool IsSeekableMode () const noexcept=0;
 	
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-Blocks (ReadOnlyMemRegion in) noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlocks (ReadOnlyMemRegion in) noexcept=0;
 
-	virtual ara::core::Result<void> ProcessBlocks (ReadWriteMemRegion in
-Out) noexcept=0;
+	virtual ara::core::Result<void> ProcessBlocks (ReadWriteMemRegion inOut) noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-Bytes (ReadOnlyMemRegion in) noexcept=0;
-
-	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > ProcessBytes (ReadOnlyMemRegion
-in) noexcept;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBytes (ReadOnlyMemRegion in) noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> Seek (std::int64_t offset, bool from
-Begin=true) noexcept=0;
+	virtual ara::core::Result<void> Seek (std::int64_t offset, bool fromBegin=true) noexcept=0;
 
-	virtual ara::core::Result<void> SetKey (const SymmetricKey &key,
-CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
+	virtual ara::core::Result<void> SetKey (const SymmetricKey &key, CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
 
-	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnly
-MemRegion()) noexcept=0;
+	virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnlyMemRegion()) noexcept=0;
 
-	virtual ara::core::Result<void> Start (const SecretSeed &iv)
-noexcept=0;
+	virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/symmetric_block_cipher_ctx.h
@@ -903,24 +777,24 @@ public:
 	
 	virtual CryptoService::Uptr GetCryptoService () const noexcept=0;
 	
-	virtual ara::core::Result<CryptoTransform> GetTransformation () const
-noexcept=0;
+	virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-Block (ReadOnlyMemRegion in, bool suppressPadding=false) const
-noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
+																				  bool suppressPadding=false
+																				) const noexcept=0;
 
 	template <typename Alloc = <implementation-defined>>
-ara::core::Result<ByteVector<Alloc> > ProcessBlock (ReadOnlyMemRegion
-in, bool suppressPadding=false) const noexcept;
+	ara::core::Result<ByteVector<Alloc> > ProcessBlock ( ReadOnlyMemRegion in,
+													 bool suppressPadding=false
+												   ) const noexcept;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-Blocks (ReadOnlyMemRegion in) const noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlocks (ReadOnlyMemRegion in) const noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const SymmetricKey &key,
-CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
+	virtual ara::core::Result<void> SetKey ( const SymmetricKey &key,
+                           	                 CryptoTransform transform=CryptoTransform::kEncrypt
+										   ) noexcept=0;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/cryobj/symmetric_key.h"
@@ -930,8 +804,7 @@ class SymmetricKey : public RestrictedUseObject
 public:
 	using Uptrc = std::unique_ptr<const SymmetricKey>;
 	
-	static const CryptoObjectType kObjectType = CryptoObjectType::k
-SymmetricKey;
+	static const CryptoObjectType kObjectType = CryptoObjectType::kSymmetricKey;
 	
 };
 ---------------------------------------------------
@@ -946,8 +819,7 @@ public:
 	virtual std::size_t CalculateWrappedKeySize (std::size_t keyLength)
 const noexcept=0;
 	
-	virtual ExtensionService::Uptr GetExtensionService () const
-noexcept=0;
+	virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
 	virtual std::size_t GetMaxTargetKeyLength () const noexcept=0;
 	
@@ -955,24 +827,27 @@ noexcept=0;
 
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const SymmetricKey &key,
-CryptoTransform transform) noexcept=0;
+	virtual ara::core::Result<void> SetKey ( const SymmetricKey &key,
+											 CryptoTransform transform
+										   ) noexcept=0;
 
 	template <typename ExpectedKey>
-ara::core::Result<typename ExpectedKey::Uptrc> UnwrapConcreteKey (Read
-OnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage)
-noexcept;
+	ara::core::Result<typename ExpectedKey::Uptrc> UnwrapConcreteKey ( ReadOnlyMemRegion wrappedKey,
+																	   AlgId algId,
+																       AllowedUsageFlags allowedUsage
+																     ) noexcept;
 
-	virtual ara::core::Result<RestrictedUseObject::Uptrc> UnwrapKey (Read
-OnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage)
-const noexcept=0;
+	virtual ara::core::Result<RestrictedUseObject::Uptrc> UnwrapKey ( ReadOnlyMemRegion wrappedKey,
+																	  AlgId algId, 
+																	  AllowedUsageFlags allowedUsage
+																	) const noexcept=0;
 
-	virtual ara::core::Result<SecretSeed::Uptrc> UnwrapSeed (ReadOnlyMem
-Region wrappedSeed, AlgId targetAlgId, SecretSeed::Usage allowedUsage)
-const noexcept=0;
+	virtual ara::core::Result<SecretSeed::Uptrc> UnwrapSeed ( ReadOnlyMemRegion wrappedSeed, 
+															  AlgId targetAlgId, 
+															  SecretSeed::Usage allowedUsage
+															) const noexcept=0;
 
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > WrapKey
-Material (const RestrictedUseObject &key) const noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > WrapKeyMaterial (const RestrictedUseObject &key) const noexcept=0;
 
 };
 ---------------------------------------------------
@@ -983,25 +858,27 @@ class VerifierPublicCtx : public CryptoContext
 public:
 	using Uptr = std::unique_ptr<VerifierPublicCtx>;
 	
-	virtual SignatureService::Uptr GetSignatureService () const
-noexcept=0;
+	virtual SignatureService::Uptr GetSignatureService () const noexcept=0;
 	
 	virtual ara::core::Result<void> Reset () noexcept=0;
 	
-	virtual ara::core::Result<void> SetKey (const PublicKey &key)
-noexcept=0;
+	virtual ara::core::Result<void> SetKey (const PublicKey &key) noexcept=0;
 
-	virtual ara::core::Result<bool> VerifyPrehashed (CryptoAlgId hashAlg
-Id, ReadOnlyMemRegion hashValue, const Signature &signature, ReadOnly
-MemRegion context=ReadOnlyMemRegion()) const noexcept=0;
+	virtual ara::core::Result<bool> VerifyPrehashed ( CryptoAlgId hashAlgId, 
+													  ReadOnlyMemRegion hashValue, 
+													  const Signature &signature, 
+													  ReadOnlyMemRegion context=ReadOnlyMemRegion()
+													) const noexcept=0;
 
-	virtual ara::core::Result<bool> Verify (ReadOnlyMemRegion value, Read
-OnlyMemRegion signature, ReadOnlyMemRegion context=ReadOnlyMem
-Region()) const noexcept=0;
+	virtual ara::core::Result<bool> Verify ( ReadOnlyMemRegion value,
+											 ReadOnlyMemRegion signature, 
+											 ReadOnlyMemRegion context=ReadOnlyMemRegion()
+										   ) const noexcept=0;
 
-	virtual ara::core::Result<bool> VerifyPrehashed (const HashFunctionCtx
-&hashFn, const Signature &signature, ReadOnlyMemRegion context=Read
-OnlyMemRegion()) const noexcept=0;
+	virtual ara::core::Result<bool> VerifyPrehashed ( const HashFunctionCtx &hashFn, 
+													  const Signature &signature, 
+													  ReadOnlyMemRegion context=ReadOnlyMemRegion()
+													) const noexcept=0;
 
 	virtual ara::core::Result<bool> VerifyPrehashed (const HashFunctionCtx
 &hashFn, ReadOnlyMemRegion signature, ReadOnlyMemRegion context=Read
@@ -1025,22 +902,17 @@ public:
 	
 	virtual ~KeySlot () noexcept=default;
 	
-	virtual ara::core::Result<KeySlotContentProps> GetContentProps ()
-const noexcept=0;
+	virtual ara::core::Result<KeySlotContentProps> GetContentProps () const noexcept=0;
 
-	virtual ara::core::Result<cryp::CryptoProvider::Uptr> MyProvider ()
-const noexcept=0;
+	virtual ara::core::Result<cryp::CryptoProvider::Uptr> MyProvider () const noexcept=0;
 
-	virtual ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps ()
-const noexcept=0;
+	virtual ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps () const noexcept=0;
 
 	virtual bool IsEmpty () const noexcept=0;
 	
-	virtual ara::core::Result<IOInterface::Uptr> Open (bool subscribeFor
-Updates=false, bool writeable=false) const noexcept=0;
+	virtual ara::core::Result<IOInterface::Uptr> Open (bool subscribeForUpdates=false, bool writeable=false) const noexcept=0;
 
-	virtual ara::core::Result<void> SaveCopy (const IOInterface
-&container) noexcept=0;
+	virtual ara::core::Result<void> SaveCopy (const IOInterface &container) noexcept=0;
 
 	KeySlot& operator= (const KeySlot &other)=default;
 	
@@ -1056,35 +928,25 @@ class KeyStorageProvider
 public:
 	using Uptr = std::unique_ptr<KeyStorageProvider>;
 
-	virtual ara::core::Result<TransactionId> BeginTransaction (const
-TransactionScope &targetSlots) noexcept=0;
+	virtual ara::core::Result<TransactionId> BeginTransaction (const TransactionScope &targetSlots) noexcept=0;
 
-	virtual ara::core::Result<void> CommitTransaction (TransactionId id)
-noexcept=0;
+	virtual ara::core::Result<void> CommitTransaction (TransactionId id) noexcept=0;
 
 	virtual ~KeyStorageProvider () noexcept=default;
 	
-	virtual UpdatesObserver::Uptr GetRegisteredObserver () const
-noexcept=0;
+	virtual UpdatesObserver::Uptr GetRegisteredObserver () const noexcept=0;
 
-	virtual ara::core::Result<KeySlot::Uptr> LoadKeySlot (
-ara::core::InstanceSpecifier &iSpecify) noexcept=0;
+	virtual ara::core::Result<KeySlot::Uptr> LoadKeySlot (ara::core::InstanceSpecifier &iSpecify) noexcept=0;
 
-	virtual UpdatesObserver::Uptr RegisterObserver (UpdatesObserver::Uptr
-observer=nullptr) noexcept=0;
+	virtual UpdatesObserver::Uptr RegisterObserver (UpdatesObserver::Uptr observer=nullptr) noexcept=0;
 
-	virtual ara::core::Result<void> RollbackTransaction (TransactionId id)
-noexcept=0;
+	virtual ara::core::Result<void> RollbackTransaction (TransactionId id) noexcept=0;
 
-	virtual ara::core::Result<void> UnsubscribeObserver (KeySlot &slot)
-noexcept=0;
+	virtual ara::core::Result<void> UnsubscribeObserver (KeySlot &slot) noexcept=0;
 
-	KeyStorageProvider& operator= (const KeyStorageProvider
-&other)=default;
+	KeyStorageProvider& operator= (const KeyStorageProvider &other)=default;
 
-	KeyStorageProvider& operator= (KeyStorageProvider &&other)=default;
-
-	
+	KeyStorageProvider& operator= (KeyStorageProvider &&other)=default;	
 };
 ---------------------------------------------------
 #include "ara/crypto/keys/updates_observer.h"
@@ -1096,8 +958,7 @@ public:
 
 	virtual ~UpdatesObserver () noexcept=default;
 	
-	virtual void OnUpdate (const TransactionScope &updatedSlots)
-noexcept=0;
+	virtual void OnUpdate (const TransactionScope &updatedSlots) noexcept=0;
 
 	UpdatesObserver& operator= (const UpdatesObserver &other)=default;
 	
@@ -1107,11 +968,9 @@ noexcept=0;
 #include "ara/crypto/keys/key_slot_content_props.h"
 namespace ara::crypto::keys
 
-constexpr bool operator== (const KeySlotContentProps &lhs, const Key
-SlotContentProps &rhs) noexcept;
+constexpr bool operator== (const KeySlotContentProps &lhs, const KeySlotContentProps &rhs) noexcept;
 
-constexpr bool operator!= (const KeySlotContentProps &lhs, const Key
-SlotContentProps &rhs) noexcept;
+constexpr bool operator!= (const KeySlotContentProps &lhs, const KeySlotContentProps &rhs) noexcept;
 
 struct KeySlotContentProps
 {
@@ -1133,11 +992,9 @@ struct KeySlotContentProps
 #include "ara/crypto/keys/key_slot_prototype_props.h"
 namespace ara::crypto::keys
 
-constexpr bool operator== (const KeySlotPrototypeProps &lhs, const Key
-SlotPrototypeProps &rhs) noexcept;
+constexpr bool operator== (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept;
 
-constexpr bool operator!= (const KeySlotPrototypeProps &lhs, const Key
-SlotPrototypeProps &rhs) noexcept;
+constexpr bool operator!= (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept;
 
 struct KeySlotPrototypeProps
 {
