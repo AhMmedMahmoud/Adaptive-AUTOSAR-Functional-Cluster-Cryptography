@@ -73,9 +73,9 @@ int main(int argc, char** argv)
                 );
 
 
-    /************************************************************
-    *  print plaintext, key, IV, ciphertext and recovered text  *
-    ************************************************************/     
+    /***************************************************
+    *  print plaintext, ciphertext and recovered text  *
+    ***************************************************/     
     // Create a HexEncoder object to output to console
     HexEncoder encoder(new FileSink(std::cout)); 
 
