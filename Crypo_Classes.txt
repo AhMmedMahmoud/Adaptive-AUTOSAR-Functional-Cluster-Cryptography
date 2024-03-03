@@ -92,7 +92,7 @@ constexpr bool operator< (const Uuid &lhs, const Uuid &rhs) noexcept;
 
 constexpr bool operator> (const Uuid &lhs, const Uuid &rhs) noexcept;
 
-constexpr bool operator!= (const Uuid &lhs, const Uuid &rhs) noexcept;
+constexpr bool operator!= (const Uuid &lhs, const Uuid &rhs) noexcept; 
 
 constexpr bool operator<= (const Uuid &lhs, const Uuid &rhs) noexcept;
 
@@ -114,37 +114,28 @@ struct CryptoObjectUid
 	std::uint64_t mVersionStamp = 0u;
 	
 	
-	constexpr bool HasEarlierVersionThan (const CryptoObjectUid &another
-Id) const noexcept;
+	constexpr bool HasEarlierVersionThan (const CryptoObjectUid &anotherId) const noexcept;
 
-	constexpr bool HasLaterVersionThan (const CryptoObjectUid &anotherId)
-const noexcept;
+	constexpr bool HasLaterVersionThan (const CryptoObjectUid &anotherId) const noexcept;
 
-	constexpr bool HasSameSourceAs (const CryptoObjectUid &anotherId)
-const noexcept;
+	constexpr bool HasSameSourceAs (const CryptoObjectUid &anotherId) const noexcept;
 
 	bool IsNil () const noexcept;
 	
 	bool SourceIsNil () const noexcept;
 }
 
-constexpr bool operator== (const CryptoObjectUid &lhs, const Crypto
-ObjectUid &rhs) noexcept;
+constexpr bool operator== (const CryptoObjectUid &lhs, const CryptoObjectUid &rhs) noexcept;
 
-constexpr bool operator< (const CryptoObjectUid &lhs, const Crypto
-ObjectUid &rhs) noexcept;
+constexpr bool operator< (const CryptoObjectUid &lhs, const CryptoObjectUid &rhs) noexcept;
 
-constexpr bool operator> (const CryptoObjectUid &lhs, const Crypto
-ObjectUid &rhs) noexcept;
+constexpr bool operator> (const CryptoObjectUid &lhs, const CryptoObjectUid &rhs) noexcept;
 
-constexpr bool operator!= (const CryptoObjectUid &lhs, const Crypto
-ObjectUid &rhs) noexcept;
+constexpr bool operator!= (const CryptoObjectUid &lhs, const CryptoObjectUid &rhs) noexcept;
 
-constexpr bool operator<= (const CryptoObjectUid &lhs, const Crypto
-ObjectUid &rhs) noexcept;
+constexpr bool operator<= (const CryptoObjectUid &lhs, const CryptoObjectUid &rhs) noexcept;
 
-constexpr bool operator>= (const CryptoObjectUid &lhs, const Crypto
-ObjectUid &rhs) noexcept;
+constexpr bool operator>= (const CryptoObjectUid &lhs, const CryptoObjectUid &rhs) noexcept;
 ----------------------------------------------------
 #include "ara/crypto/cryp/cryobj/crypto_primitive_id.h
 namespace ara::crypto::cryp
@@ -335,6 +326,16 @@ public:
 	virtual Usage GetAllowedUsage () const noexcept=0;
 };
 ---------------------------------------------------
+#include "ara/crypto/cryp/cryobj/symmetric_key.h"
+namespace ara::crypto::cryp
+class SymmetricKey : public RestrictedUseObject
+{
+public:
+	using Uptrc = std::unique_ptr<const SymmetricKey>;
+	
+	static const CryptoObjectType kObjectType = CryptoObjectType::kSymmetricKey;
+};
+---------------------------------------------------
 #include "ara/crypto/cryp/cryobj/private_key.h"
 namespace ara::crypto::cryp
 class PrivateKey : public RestrictedUseObject
@@ -383,17 +384,6 @@ public:
 	virtual SecretSeed& operatorˆ= (const SecretSeed &source) noexcept=0;
 
 	virtual SecretSeed& operatorˆ= (ReadOnlyMemRegion source) noexcept=0;
-
-};
----------------------------------------------------
-#include "ara/crypto/cryp/cryobj/symmetric_key.h"
-namespace ara::crypto::cryp
-class SymmetricKey : public RestrictedUseObject
-{
-public:
-	using Uptrc = std::unique_ptr<const SymmetricKey>;
-	
-	static const CryptoObjectType kObjectType = CryptoObjectType::kSymmetricKey;
 };
 ---------------------------------------------------
 #include "ara/crypto/cryp/crypto_context.h"
@@ -1249,30 +1239,11 @@ public:
 	
 	virtual ~Serializable () noexcept=default;
 	
-	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Export
-Publicly (FormatId formatId=kFormatDefault) const noexcept=0;
+	virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ExportPublicly (FormatId formatId=kFormatDefault) const noexcept=0;
 
 	Serializable& operator= (const Serializable &other)=default;
 	
 	Serializable& operator= (Serializable &&other)=default;
-}
-----------------------------------------------------
-#include "ara/crypto/common/volatile_trusted_container.h"
-namespace ara::crypto
-class VolatileTrustedContainer
-{
-public:
-	using Uptr = std::unique_ptr<VolatileTrustedContainer>;
-	
-	virtual ~VolatileTrustedContainer () noexcept=default;
-	
-	virtual IOInterface& GetIOInterface () const noexcept=0;
-	
-	VolatileTrustedContainer& operator= (const VolatileTrustedContainer
-&other)=default;
-
-	VolatileTrustedContainer& operator= (VolatileTrustedContainer
-&&other)=default;
 }
 ----------------------------------------------------
 #include "ara/crypto/common/io_interface.h"
@@ -1281,8 +1252,8 @@ class IOInterface
 {
 public:
 	using Uptr = std::unique_ptr<IOInterface>;
-	
 	using Uptrc = std::unique_ptr<const IOInterface>;
+	
 	
 	virtual AllowedUsageFlags GetAllowedUsage () const noexcept=0;
 	
@@ -1308,11 +1279,31 @@ public:
 	
 	virtual bool IsWritable () const noexcept=0;
 	
+	
+	
 	IOInterface& operator= (const IOInterface &other)=default;
 	
 	IOInterface& operator= (IOInterface &&other)=default;
 	
 	virtual ~IOInterface () noexcept=default;
+};
+----------------------------------------------------
+#include "ara/crypto/common/volatile_trusted_container.h"
+namespace ara::crypto
+class VolatileTrustedContainer
+{
+public:
+	using Uptr = std::unique_ptr<VolatileTrustedContainer>;
+	
+	virtual IOInterface& GetIOInterface () const noexcept=0;
+	
+	
+	
+	VolatileTrustedContainer& operator= (const VolatileTrustedContainer &other)=default;
+
+	VolatileTrustedContainer& operator= (VolatileTrustedContainer &&other)=default;
+	
+	virtual ~VolatileTrustedContainer () noexcept=default;
 }
 ---------------------------------------------------
 #include "ara/crypto/common/crypto_error_domain.h"
