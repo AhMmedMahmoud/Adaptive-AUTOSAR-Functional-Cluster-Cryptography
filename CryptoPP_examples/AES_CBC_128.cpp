@@ -50,11 +50,15 @@ int main(int argc, char* argv[])
 
 
     /**************************************************
-    *               key and IV generation             *
+    *               random number generator           *
     **************************************************/
     // Initialize a random number generator
     AutoSeededRandomPool prng;
 
+
+    /**************************************************
+    *               key and IV generation             *
+    **************************************************/
     // Generate a random key for AES encryption
     SecByteBlock key(AES::DEFAULT_KEYLENGTH);
     prng.GenerateBlock(key, key.size());
@@ -137,6 +141,7 @@ int main(int argc, char* argv[])
     encoder.MessageEnd();
     std::cout << std::endl;
     
+    // Print the recovered text
     std::cout << "recovered text: " << recovered << std::endl;
 
     return 0;
