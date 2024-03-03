@@ -110,9 +110,9 @@ int main(int argc, char* argv[])
     }
 
 
-    /*************************************************
-    *  print plaintext, key, IV, ciphertext and recover text    *
-    *************************************************/ 
+    /************************************************************
+    *  print plaintext, key, IV, ciphertext and recovered text  *
+    ************************************************************/ 
     // Print the plaintext string
     std::cout << "plain text: " << plain << std::endl;
     
