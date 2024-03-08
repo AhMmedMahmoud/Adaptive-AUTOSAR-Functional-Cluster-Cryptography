@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
+set(CMAKE_CXX_STANDARD 20)
 project(Demo)
 
 # Include the directory containing FindCrypto++.cmake
@@ -29,3 +30,9 @@ target_link_libraries(keysGeneration ${Crypto++_LIBRARIES})
 add_executable(rsa CryptoPP_examples/RAS_2048.cpp)
 target_include_directories(rsa PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(rsa ${Crypto++_LIBRARIES})
+
+
+# Add your executable and link with Crypto++ library
+add_executable(mmm CryptoPP_examples/SemiAutosar_SHA_256.cpp)
+target_include_directories(mmm PUBLIC ${Crypto++_INCLUDE_DIRS})
+target_link_libraries(mmm ${Crypto++_LIBRARIES})
