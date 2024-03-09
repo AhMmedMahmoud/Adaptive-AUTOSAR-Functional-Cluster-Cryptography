@@ -15,7 +15,6 @@ add_library(
    ara/core/error_code.cpp
    ara/core/error_code.h
    ara/core/error_domain.h
-   ara/core/instance_id.cpp
    ara/core/instance_id.h
    ara/core/instance_specifier.h
    ara/core/instance_specifier.cpp
