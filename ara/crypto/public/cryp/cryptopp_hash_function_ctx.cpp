@@ -1,13 +1,20 @@
 #include "cryptopp_hash_function_ctx.h"
-
+#include "../../private/common/crypto_error_domain.h"
 namespace ara
 {
     namespace crypto
     {
         namespace cryp
         {         
+            CryptoPP_HashFunctionCtx::CryptoPP_HashFunctionCtx(): HashFunctionCtx(),
+                                                                  seq{calling::START_IS_NOT_CALLED}
+            {
+                
+            }
+
             ara::core::Result<void> CryptoPP_HashFunctionCtx::Start () noexcept
             {
+                seq = calling::START_IS_CALLED;
                 hash.Restart();
                 return ara::core::Result<void>::FromValue();
             }
@@ -24,6 +31,13 @@ namespace ara
 
             ara::core::Result<void> CryptoPP_HashFunctionCtx::Update (ReadOnlyMemRegion in) noexcept
             {
+                
+                if(seq == calling::START_IS_NOT_CALLED)
+                {
+                    ara::core::ErrorCode x =  ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted,5); 
+                    return ara::core::Result<void>::FromError(x);
+                }
+                
                 hash.Update(in.data(), in.size());
                 return ara::core::Result<void>::FromValue();
             }
@@ -40,6 +54,11 @@ namespace ara
             
             ara::core::Result<ara::core::Vector<ara::core::Byte>> CryptoPP_HashFunctionCtx::Finish() noexcept
             {
+                
+                //if(seq == calling::START_IS_NOT_CALLED)
+                    //return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(CryptoErrorDomain::Errc::kProcessingNotStarted);
+                //return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(CryptoErrc::kErrorClass);
+
                 digest.resize(hash.DigestSize());
                 hash.Final(digest);
 

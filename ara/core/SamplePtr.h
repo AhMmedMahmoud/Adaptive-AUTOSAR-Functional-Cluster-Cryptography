@@ -1,3 +1,6 @@
+#ifndef SAMPLE_PTR_H
+#define SAMPLE_PTR_H
+
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -76,3 +79,5 @@ namespace ara {
 
     } // namespace core
 } // namespace ara
+
+#endif

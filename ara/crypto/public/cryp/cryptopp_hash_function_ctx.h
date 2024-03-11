@@ -22,13 +22,25 @@ namespace ara
     {
         namespace cryp
         {
+            enum class calling
+            {
+                START_IS_NOT_CALLED,
+                START_IS_CALLED,
+                UPDATE_IS_CALLED,
+                FINISH_IS_CALLED
+            };
+
             class CryptoPP_HashFunctionCtx: public HashFunctionCtx 
             {
             private:
                 CryptoPP::SHA256 hash;
                 CryptoPP::SecByteBlock digest;
+                
+                calling seq;
 
-            public:    
+            public:  
+                CryptoPP_HashFunctionCtx();
+
                 //virtual DigestService::Uptr GetDigestService () const noexcept;
                 
                 

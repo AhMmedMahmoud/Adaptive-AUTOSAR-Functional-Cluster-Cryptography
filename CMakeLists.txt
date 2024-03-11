@@ -12,9 +12,9 @@ add_library(
    Crypto
 
    ## core ##
-   ara/core/error_code.cpp
    ara/core/error_code.h
    ara/core/error_domain.h
+   ara/core/exception.h
    ara/core/instance_id.h
    ara/core/instance_specifier.h
    ara/core/instance_specifier.cpp
@@ -26,15 +26,19 @@ add_library(
    ara/core/utility.h
    ara/core/vector.h
 
+   ## private ##
    ara/crypto/private/common/base_id_types.h
    ara/crypto/private/common/mem_region.h
+   ara/crypto/private/common/crypto_error_domain.h
    ara/crypto/private/cryp/cryobj/crypto_primitive_id.h
    ara/crypto/private/cryp/crypto_context.h
    ara/crypto/private/cryp/hash_function_ctx.h
 
+   ## public ##
    ara/crypto/public/cryp/cryptopp_crypto_context.h
    ara/crypto/public/cryp/cryobj/cryptopp_crypto_primitive_id.h
    ara/crypto/public/cryp/cryptopp_crypto_context.h
+   ara/crypto/public/cryp/cryptopp_hash_function_ctx.h
    ara/crypto/public/cryp/cryptopp_hash_function_ctx.cpp
 )
 

@@ -510,6 +510,15 @@ namespace ara
             return _result;
         }
 
+
+
+
+
+
+
+
+
+
         /// @brief A wrapper around the callee's possible error
         /// @tparam E Callee's possible error type
         template <typename E>

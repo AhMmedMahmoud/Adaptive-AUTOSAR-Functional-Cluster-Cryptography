@@ -2,7 +2,8 @@
 #define ERROR_CODE_H
 
 #include <string>
-#include "./error_domain.h"
+#include "error_domain.h"
+#include <stdexcept>
 
 namespace ara
 {
@@ -12,22 +13,23 @@ namespace ara
         class ErrorCode final
         {
         private:
-            ErrorDomain::CodeType mValue;
-            const ErrorDomain& mDomain;
+            ErrorDomain::CodeType mValue;    // uint32_t mValue
+            const ErrorDomain& mDomain;      // uint64_t mDomain
 
         public:
+            /************ constructor *******************/
             /// @brief Constructor
             /// @param value Error code value
             /// @param domain Error code domain
-            constexpr ErrorCode(
-                ErrorDomain::CodeType value,
-                const ErrorDomain &domain) noexcept : mValue{value}, mDomain{domain}
+            constexpr ErrorCode( ErrorDomain::CodeType value,
+                                 const ErrorDomain &domain
+                               ) noexcept : mValue{value}, mDomain{domain}
             {
+            
             }
 
-            ErrorCode() = delete;
-            ~ErrorCode() noexcept = default;
-
+           
+            /*************** getters ***************/
             /// @brief Get error code value
             /// @returns Raw error code value
             constexpr ErrorDomain::CodeType Value() const noexcept
@@ -42,13 +44,7 @@ namespace ara
                 return mDomain;
             }
 
-            /// @brief Get error message
-            /// @returns Error code corresponding message in the defined domain
-            std::string Message() const noexcept;
-
-            /// @brief Throw the error as an exception
-            void ThrowAsException() const;
-
+            /********* equal and not equal operators **********/
             constexpr bool operator==(const ErrorCode &other) const noexcept
             {
                 return mDomain == other.mDomain && mValue == other.mValue;
@@ -58,6 +54,31 @@ namespace ara
             {
                 return mDomain != other.mDomain || mValue != other.mValue;
             }
+
+
+            /// @brief Get error message
+            /// @returns Error code corresponding message in the defined domain
+            std::string Message() const noexcept
+            {
+                std::string _result(mDomain.Message(mValue));
+                return _result;
+            }
+
+
+            /// @brief Throw the error as an exception
+            void ThrowAsException() const
+            {
+                std::runtime_error _exception{Message()};
+                throw _exception;
+            }
+
+
+            /********* disable empty constructor *********/
+            ErrorCode() = delete;
+            
+            
+            /****** tell compiler to generate default empty constructor *****/
+            ~ErrorCode() noexcept = default;
         };
     }
 }

@@ -19,23 +19,25 @@ namespace ara
             /// @brief Alias type of the error code
             using CodeType = uint32_t;
 
+            using SupportDataType = int;  // not autosar
+
+            static const IdType COMMUNICATION_DOMAIN = 1;
+            static const IdType CRYPTO_DOMAIN = 2;
+            
+
         private:
+            /********** attributes ***************/
             IdType mId;
 
         public:
-            /// @brief Constructor
-            /// @param id Error domain ID
+            /************* constructor ******************/
             explicit constexpr ErrorDomain(IdType id) noexcept : mId{id}
             {
+
             }
 
-            ~ErrorDomain() noexcept = default;
-
-            ErrorDomain(const ErrorDomain &) = delete;
-            ErrorDomain(ErrorDomain &&) = delete;
-            ErrorDomain &operator=(const ErrorDomain &) = delete;
-            ErrorDomain &operator=(ErrorDomain &&) = delete;
-
+            
+            /********* equal and not equal operators **********/
             constexpr bool operator==(const ErrorDomain &other) const noexcept
             {
                 return mId == other.mId;
@@ -46,6 +48,8 @@ namespace ara
                 return mId != other.mId;
             }
 
+
+            /**************** getter *************/
             /// @brief Get the domain ID
             /// @returns Error domain ID
             constexpr IdType Id() const noexcept
@@ -53,6 +57,8 @@ namespace ara
                 return mId;
             }
 
+
+            /************ pure virtual functions ************/
             /// @brief Get the domain's name
             /// @returns Error domain name
             virtual const char *Name() const noexcept = 0;
@@ -60,7 +66,27 @@ namespace ara
             /// @brief Get error message of a specific error code
             /// @param errorCode Error code of interest
             /// @returns Error code message in this domain
+            // Return a textual representation of the given error code.
             virtual const char *Message(CodeType errorCode) const noexcept = 0;
+
+            //virtual void ThrowAsException (const ErrorCode &errorCode) const noexcept(false)=0;
+            //virtual void ThrowAsException (const ErrorCode &errorCode) const = 0;//noexcept=0;
+
+
+            /**************** deconstructor *******************/
+            ~ErrorDomain() noexcept = default;
+
+
+            /**************************************
+            disable copy constructor
+                    move constructor
+                    copy assigment operator
+                    move assigment operator
+            **************************************/
+            ErrorDomain(const ErrorDomain &) = delete;
+            ErrorDomain(ErrorDomain &&) = delete;
+            ErrorDomain &operator=(const ErrorDomain &) = delete;
+            ErrorDomain &operator=(ErrorDomain &&) = delete;
         };
     }
 }
