@@ -4,6 +4,7 @@
 #include <string>
 #include "error_domain.h"
 #include <stdexcept>
+#include <iostream>
 
 namespace ara
 {
@@ -60,8 +61,9 @@ namespace ara
             /// @returns Error code corresponding message in the defined domain
             std::string Message() const noexcept
             {
+                //std::cout << "ssssss\n";
                 std::string _result(mDomain.Message(mValue));
-                return _result;
+                return _result;    
             }
 
 

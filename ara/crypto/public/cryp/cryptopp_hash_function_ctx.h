@@ -33,36 +33,37 @@ namespace ara
             class CryptoPP_HashFunctionCtx: public HashFunctionCtx 
             {
             private:
+                /***************************** attributes *******************/
                 CryptoPP::SHA256 hash;
-                CryptoPP::SecByteBlock digest;
-                
+                CryptoPP::SecByteBlock digest;   
                 calling seq;
 
+
+                /*********** not fundemental and overrided functions **************/
+                //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept;
+                
+                // ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept;
+
+
             public:  
+                /********************** constructor **************************/
                 CryptoPP_HashFunctionCtx();
 
-                //virtual DigestService::Uptr GetDigestService () const noexcept;
                 
-                
+                /*********** fundemental and overrided functions **************/
                 virtual ara::core::Result<void> Start () noexcept override;
-                
-                
+
                 virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv) noexcept override;
 
-                //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept;
-
+                ara::core::Result<void> Update (std::uint8_t in) noexcept override;
 
                 ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept override;
 
-                // ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept;
-
-                ara::core::Result<void> Update (std::uint8_t in) noexcept override;
-                
-                
                 ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish() noexcept override;
                 
-                
                 ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest(std::size_t offset=0) noexcept override;
+            
+                //virtual DigestService::Uptr GetDigestService () const noexcept;
             };
         }
     }
