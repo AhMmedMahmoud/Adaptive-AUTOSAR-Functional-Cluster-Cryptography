@@ -30,6 +30,8 @@ add_library(
    ara/crypto/private/common/base_id_types.h
    ara/crypto/private/common/mem_region.h
    ara/crypto/private/common/crypto_error_domain.h
+   ara/crypto/private/common/uuid.h
+   ara/crypto/private/common/crypto_object_uid.h
    ara/crypto/private/cryp/cryobj/crypto_primitive_id.h
    ara/crypto/private/cryp/crypto_context.h
    ara/crypto/private/cryp/hash_function_ctx.h
@@ -42,48 +44,49 @@ add_library(
    ara/crypto/public/cryp/cryptopp_hash_function_ctx.cpp
 )
 
-# Add your executable and link with Crypto++ library
+###################################################
+#              executables on CryptoPP            #
+###################################################
+
+# aes_cbc example using CryptoPP
 add_executable(aes CryptoPP_examples/AES_CBC_128.cpp)
 target_include_directories(aes PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(aes ${Crypto++_LIBRARIES})
 
-
-# Add your executable and link with Crypto++ library
+# sha256 example using CryptoPP
 add_executable(sha256 CryptoPP_examples/SHA_256.cpp)
 target_include_directories(sha256 PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(sha256 ${Crypto++_LIBRARIES})
 
 
-# Add your executable and link with Crypto++ library
+## key generation example  using CryptoPP
 add_executable(keysGeneration CryptoPP_examples/PUK_PRK_generation.cpp)
 target_include_directories(keysGeneration PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(keysGeneration ${Crypto++_LIBRARIES})
 
-# Add your executable and link with Crypto++ library
+## rsa example  using CryptoPP
 add_executable(rsa CryptoPP_examples/RAS_2048.cpp)
 target_include_directories(rsa PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(rsa ${Crypto++_LIBRARIES})
 
 
-# Add your executable and link with Crypto++ library
-add_executable(mmm CryptoPP_examples/SemiAutosar_SHA_256.cpp)
-target_include_directories(mmm PUBLIC ${Crypto++_INCLUDE_DIRS})
-target_link_libraries(mmm ${Crypto++_LIBRARIES})
+###################################################
+#            executables for trying              #
+###################################################
+
+add_executable(ex_span samples/example_span.cpp)
+
+add_executable(ex_result samples/example_result.cpp)
+target_link_libraries(ex_result Crypto)
+
+add_executable(ex_uuid samples/example_uuid.cpp)
+target_link_libraries(ex_uuid Crypto)
 
 
-########################################
-#         executables on core          #
-########################################
+###################################################
+#                  executables on crypto          #
+###################################################
 
-add_executable(sss example_span.cpp)
-
-add_executable(rrr example_result.cpp)
-target_link_libraries(mmm Crypto)
-
-########################################
-#         executables on crypto        #
-########################################
-
-add_executable(hhh hashctx.cpp)
-target_link_libraries(hhh Crypto)
-target_link_libraries(hhh ${Crypto++_LIBRARIES})
+add_executable(ex_hash samples/hashctx.cpp)
+target_link_libraries(ex_hash ${Crypto++_LIBRARIES})
+target_link_libraries(ex_hash Crypto)
