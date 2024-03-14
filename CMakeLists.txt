@@ -26,22 +26,36 @@ add_library(
    ara/core/utility.h
    ara/core/vector.h
 
-   ## private ##
+   ####### private ########
+   ## common
    ara/crypto/private/common/base_id_types.h
    ara/crypto/private/common/mem_region.h
    ara/crypto/private/common/crypto_error_domain.h
    ara/crypto/private/common/uuid.h
    ara/crypto/private/common/crypto_object_uid.h
+
+   ## cryp/cryobj
    ara/crypto/private/cryp/cryobj/crypto_primitive_id.h
+   ara/crypto/private/cryp/cryobj/crypto_object.h
+   ara/crypto/private/cryp/cryobj/restricted_use_object.h
+   ara/crypto/private/cryp/cryobj/symmetric_key.h
+
+   ## cryp
    ara/crypto/private/cryp/crypto_context.h
    ara/crypto/private/cryp/hash_function_ctx.h
+   ara/crypto/private/cryp/symmetric_block_cipher_ctx.h
+   
+   
 
-   ## public ##
-   ara/crypto/public/cryp/cryptopp_crypto_context.h
+
+   ######### public ##########
    ara/crypto/public/cryp/cryobj/cryptopp_crypto_primitive_id.h
-   ara/crypto/public/cryp/cryptopp_crypto_context.h
+   ara/crypto/public/cryp/cryobj/cryptopp_aes_symmetric_key.h
+
    ara/crypto/public/cryp/cryptopp_hash_function_ctx.h
    ara/crypto/public/cryp/cryptopp_hash_function_ctx.cpp
+
+   ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.h
 )
 
 ###################################################
@@ -90,3 +104,7 @@ target_link_libraries(ex_uuid Crypto)
 add_executable(ex_hash samples/hashctx.cpp)
 target_link_libraries(ex_hash ${Crypto++_LIBRARIES})
 target_link_libraries(ex_hash Crypto)
+
+add_executable(ex_aes samples/example_summetric_block_cipher.cpp)
+target_link_libraries(ex_aes ${Crypto++_LIBRARIES})
+target_link_libraries(ex_aes Crypto)

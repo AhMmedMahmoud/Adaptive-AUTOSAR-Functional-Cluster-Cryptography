@@ -1,5 +1,5 @@
 #ifndef CRYPTOPRIMITIVEID_H
-#define CRYPTOPRIMITIVEID
+#define CRYPTOPRIMITIVEID_H
 
 #include <iostream>
 #include <memory>

@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
     **************************************************/
     std::string cipher;
     try
-    {
+    { 
         // Create an AES CBC encryption object and set the key and IV
         CBC_Mode<AES>::Encryption e;
         e.SetKeyWithIV(key, key.size(), iv);

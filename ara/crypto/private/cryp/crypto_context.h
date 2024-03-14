@@ -17,9 +17,9 @@ namespace ara
                 
                 //virtual CryptoProvider& MyProvider () const noexcept=0;
 
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
+                //virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
 
-                virtual bool IsInitialized () const noexcept=0;
+                //virtual bool IsInitialized () const noexcept=0;
 
 
 
