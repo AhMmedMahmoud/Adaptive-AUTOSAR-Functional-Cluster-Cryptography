@@ -7,25 +7,21 @@ int main()
 {
     SymmetricKey::Uptrc myKey = CryptoPP_AES_SymmetricKey::createInstance();
     
-
-
     CryptoPP_AES_SymmetricBlockCipherCtx myContext;
     
-    std::cout << "hhhhhhhhhh\n";
     myContext.SetKey(*myKey);
-    std::cout << "ssssssssss\n";
     
     std::string str = "ahmed mahmoud";
     ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
 
-    
-    ara::core::Result<ara::core::Vector<ara::core::Byte>> res_finish = myContext.ProcessBlock(instr);
-    if(res_finish.HasValue())
+    ara::core::Result<ara::core::Vector<ara::core::Byte>> _result = myContext.ProcessBlock(instr);
+    if(_result.HasValue())
     {
-        std::cout << "--- sucess ---\n";
+        //std::cout << "--- sucess ---\n";
         // Convert digest to hexadecimal string
         std::stringstream ss;
-        for (const auto& byte : res_finish.Value()) {
+        std::cout << "output: ";
+        for (const auto& byte : _result.Value()) {
             ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
         }
         // Print the hexadecimal digest
@@ -34,9 +30,8 @@ int main()
     else
     {
         std::cout << "--- error ---\n";
-        ara::core::ErrorCode error = res_finish.Error();
+        ara::core::ErrorCode error = _result.Error();
         std::cout << error.Message() << std::endl;
-        error.Message();
     }
     
 }

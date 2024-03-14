@@ -1,12 +1,12 @@
 #include<iostream>
-#include "../ara/crypto/public/cryp/cryptopp_hash_function_ctx.h"
+#include "../ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.h"
 #include "../ara/crypto/private/common/mem_region.h"
 
 using namespace ara::crypto::cryp;
 
 int main()
 {
-    CryptoPP_HashFunctionCtx h;
+    CryptoPP_SHA_256_HashFunctionCtx h;
     
     h.Start();
 
@@ -45,7 +45,6 @@ int main()
         std::cout << "--- error ---\n";
         ara::core::ErrorCode error = res_finish.Error();
         std::cout << error.Message() << std::endl;
-        error.Message();
     }
     
 

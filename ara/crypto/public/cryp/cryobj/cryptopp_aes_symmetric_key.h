@@ -62,7 +62,7 @@ namespace ara
                     std::string stringValue = "abcdabcdabcdabcd";
                     std::copy(stringValue.begin(), stringValue.end(), ptr->mValue.begin());
 
-                    /**********/
+                    /*
                     std::cout << "/nmValue contents:" << std::endl;
                     for (size_t i = 0; i < ptr->mValue.size(); ++i) {
                         std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(ptr->mValue[i]) << " ";
@@ -71,7 +71,7 @@ namespace ara
                         }
                     }
                     std::cout << std::dec << std::endl;                    
-                    /*********/
+                    */
 
                     
                     return std::move(ptr);                    

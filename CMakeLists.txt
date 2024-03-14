@@ -45,15 +45,12 @@ add_library(
    ara/crypto/private/cryp/hash_function_ctx.h
    ara/crypto/private/cryp/symmetric_block_cipher_ctx.h
    
-   
-
-
    ######### public ##########
    ara/crypto/public/cryp/cryobj/cryptopp_crypto_primitive_id.h
    ara/crypto/public/cryp/cryobj/cryptopp_aes_symmetric_key.h
 
-   ara/crypto/public/cryp/cryptopp_hash_function_ctx.h
-   ara/crypto/public/cryp/cryptopp_hash_function_ctx.cpp
+   ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.h
+   ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.cpp
 
    ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.h
 )
