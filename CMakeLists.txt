@@ -98,7 +98,7 @@ target_link_libraries(ex_uuid Crypto)
 #                  executables on crypto          #
 ###################################################
 
-add_executable(ex_hash samples/hashctx.cpp)
+add_executable(ex_hash samples/example_hashctx.cpp)
 target_link_libraries(ex_hash ${Crypto++_LIBRARIES})
 target_link_libraries(ex_hash Crypto)
 
