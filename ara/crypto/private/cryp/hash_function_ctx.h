@@ -6,6 +6,7 @@
 #include "../../../core/vector.h"
 #include "../../../core/utility.h"
 #include "../common/mem_region.h"
+#include "crypto_context.h"
 
 namespace ara
 {
@@ -13,7 +14,7 @@ namespace ara
     {
         namespace cryp
         {
-            class HashFunctionCtx 
+            class HashFunctionCtx : public CryptoContext
             {
             
             public:

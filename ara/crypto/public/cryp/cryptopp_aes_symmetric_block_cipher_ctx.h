@@ -23,7 +23,7 @@ namespace ara
         namespace cryp
         {
             /*
-                this helper class doesnot mention in autosar 
+                this helper class doesnot be mentioned in autosar 
             */
             enum class setKeyState
             {
@@ -36,7 +36,7 @@ namespace ara
             public :
                 /******************* constants **********************/
                 static const std::string mAlgName;
-                const CryptoPrimitiveId::AlgId mAlgId = 1;
+                const CryptoPrimitiveId::AlgId mAlgId = 2;
 
 
             private:
@@ -50,15 +50,17 @@ namespace ara
                 using Uptr = std::unique_ptr<CryptoPP_AES_SymmetricBlockCipherCtx>;
 
                 /***************** constructor **********************/
+                
                 CryptoPP_AES_SymmetricBlockCipherCtx();
 
+
                 
-                /******************* override virtual functions of parent ***********/
+                /****** override pure virtual functions related to CryptoContext *****/
+
                 /*
                     Return CryptoPrimitivId instance containing instance identification
                 */
                 virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
-
 
                 /*
                     Check if the crypto context is already initialized and ready to use. 
@@ -66,6 +68,9 @@ namespace ara
                 */
                 virtual bool IsInitialized () const noexcept override;
       
+
+
+                /***** override pure virtual functions inherited related SymmetricBlockCipherCtx *****/
 
                 /*
                     takes key and type of processing we want (type of operation ex:Encryption or decryption)
@@ -80,11 +85,15 @@ namespace ara
                 */                
                 virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
                                                                                             bool suppressPadding=false
-                                                                                            ) const noexcept;
+                                                                                            ) const noexcept override;
 
-
-
-                //virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
+                /*
+                    Get the kind of transformation configured for this context: kEncrypt or kDecrypt
+                    returns CryptoErrorDomain::kUninitialized Context,if SetKey() has not been called yet
+                */
+                virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept override;
+                
+                
                 
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlocks (ReadOnlyMemRegion in) const noexcept=0;
 

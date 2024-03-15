@@ -6,15 +6,32 @@ namespace ara
     {
         namespace cryp
         {         
+            const std::string CryptoPP_SHA_256_HashFunctionCtx::mAlgName("sha_256");
+
             /********************** constructor **************************/
             CryptoPP_SHA_256_HashFunctionCtx::CryptoPP_SHA_256_HashFunctionCtx(): HashFunctionCtx(),
-                                                                  seq{calling::START_IS_NOT_CALLED}
+                                                                                  mPId(mAlgId,mAlgName),
+                                                                                  seq{calling::START_IS_NOT_CALLED}
             {
                 
             }
 
+
+            /****** override pure virtual functions related to CryptoContext *****/
+
+            CryptoPrimitiveId::Uptr CryptoPP_SHA_256_HashFunctionCtx::GetCryptoPrimitiveId () const noexcept
+            {
+                return std::make_unique<CryptoPP_CryptoPrimitiveId>(mPId);
+            }
             
-            /*********** fundemental and overrided functions **************/
+            bool CryptoPP_SHA_256_HashFunctionCtx::IsInitialized () const noexcept
+            {
+                return true;
+            }
+
+            
+            /***** override pure virtual functions inherited related HashFunctionCtx *****/
+            
             ara::core::Result<void> CryptoPP_SHA_256_HashFunctionCtx::Start (ReadOnlyMemRegion iv) noexcept
             {
                 ara::core::ErrorCode x =  ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnsupported,5); 

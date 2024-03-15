@@ -18,7 +18,8 @@ namespace ara
             public:
                 using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
                 
-
+                
+                /********************** pure virtual functions *****************/
                 /*
                     takes key and type of processing we want (type of operation ex:Encryption or decryption)
                 */
@@ -27,7 +28,7 @@ namespace ara
                                                     ) noexcept=0;
                 
                 
-                //virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
+                virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
                 
                 
                 /* 
