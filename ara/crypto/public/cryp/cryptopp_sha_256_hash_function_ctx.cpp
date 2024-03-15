@@ -5,7 +5,9 @@ namespace ara
     namespace crypto
     {
         namespace cryp
-        {         
+        {    
+            extern CryptoErrorDomain _obj;
+
             const std::string CryptoPP_SHA_256_HashFunctionCtx::mAlgName("sha_256");
 
             /********************** constructor **************************/

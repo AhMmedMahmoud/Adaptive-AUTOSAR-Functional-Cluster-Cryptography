@@ -79,11 +79,6 @@ namespace ara
             
             const char* Message (ara::core::ErrorDomain::CodeType errorCode) const noexcept override
             {
-                /*
-                std::cout << "inside Message of crypto_erro_domain\n";
-                return "jjjjjjj";
-                */
-                
                 CryptoErrc cryptoErrorCode = static_cast<CryptoErrc>(errorCode);
                 switch (cryptoErrorCode) {
                     case CryptoErrc::kResourceFault:
@@ -204,7 +199,7 @@ namespace ara
         Makes Error Code instances from the Crypto Error Domain. The returned ErrorCode instance
         always references to CryptoErrorDomain
         */
-        CryptoErrorDomain _obj;
+        static CryptoErrorDomain _obj;
         constexpr ara::core::ErrorCode MakeErrorCode( CryptoErrorDomain::Errc code,
                                                         ara::core::ErrorDomain::SupportDataType data
                                                     ) noexcept

@@ -17,6 +17,8 @@ namespace ara
     {
         namespace cryp
         {
+            extern CryptoErrorDomain _obj;
+
             const std::string CryptoPP_AES_SymmetricBlockCipherCtx::mAlgName("aes_ecb");
 
             /***************** constructor **********************/

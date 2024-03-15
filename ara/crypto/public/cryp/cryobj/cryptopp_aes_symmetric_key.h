@@ -1,5 +1,5 @@
-#ifndef CRYPTOPP_SUMMETRIC_KEY_H
-#define CRYPTOPP_SUMMETRIC_KEY_H
+#ifndef CRYPTOPP_AES_SUMMETRIC_KEY_H
+#define CRYPTOPP_AES_SUMMETRIC_KEY_H
 
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/filters.h>
@@ -45,6 +45,12 @@ namespace ara
                 CryptoPP_AES_SymmetricKey(const CryptoPP_AES_SymmetricKey& other) : mValue(other.mValue.size()) {
                     mValue.Assign(other.mValue, other.mValue.size());
                 }
+
+
+                CryptoPP_AES_SymmetricKey(const SymmetricKey& obj)
+                { 
+                   mValue = ((CryptoPP_AES_SymmetricKey)obj).mValue;
+                }
                 /********/
 
 
@@ -77,8 +83,20 @@ namespace ara
                     return std::move(ptr);                    
                 }
 
+                /*************************************************************
+                 * not autosar but until key storage provider is implemented
+                **************************************************************/
+                CryptoPP::SecByteBlock getKey()
+                {
+                    return mValue;
+                }
+
+                
+
+                
 
                 /************* override parent functions ************/
+
                 virtual Usage GetAllowedUsage () const noexcept override
                 {
                     return 5;
@@ -120,17 +138,6 @@ namespace ara
                     
                 }
                 */
-
-                CryptoPP_AES_SymmetricKey(const SymmetricKey& obj)
-                { 
-                   mValue = ((CryptoPP_AES_SymmetricKey)obj).mValue;
-                }
-
-                CryptoPP::SecByteBlock getKey()
-                {
-                    return mValue;
-                }
-
             };
         }
     }
