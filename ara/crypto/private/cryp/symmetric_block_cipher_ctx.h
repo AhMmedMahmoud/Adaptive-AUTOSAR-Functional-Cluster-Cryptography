@@ -18,7 +18,7 @@ namespace ara
             public:
                 using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
                 
-                
+
                 /*
                     takes key and type of processing we want (type of operation ex:Encryption or decryption)
                 */

@@ -53,6 +53,7 @@ add_library(
    ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.cpp
 
    ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.h
+   ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.cpp
 )
 
 ###################################################

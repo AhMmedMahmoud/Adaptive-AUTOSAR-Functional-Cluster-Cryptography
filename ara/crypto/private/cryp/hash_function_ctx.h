@@ -15,30 +15,28 @@ namespace ara
         {
             class HashFunctionCtx 
             {
+            
             public:
                 using Uptr = std::unique_ptr<HashFunctionCtx>;
                 
+
+                /**************** pure virtual fuctions *****************/
                 //virtual DigestService::Uptr GetDigestService () const noexcept=0;
-                
-                
+                 
                 virtual ara::core::Result<void> Start () noexcept=0;
-                
-                
+                      
                 virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv) noexcept=0;
 
                 //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept=0;
-
 
                 virtual ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept=0;
 
                 //virtual ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept=0;
 
                 virtual ara::core::Result<void> Update (std::uint8_t in) noexcept=0;
-                
-                
+                      
                 virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish () noexcept=0;
-                
-                
+                            
                 virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest (std::size_t offset=0) noexcept=0;
             };
         }

@@ -9,6 +9,11 @@ int main()
     
     CryptoPP_AES_SymmetricBlockCipherCtx myContext;
     
+    CryptoPrimitiveId::Uptr myContextPrimitiveId = myContext.GetCryptoPrimitiveId();
+    std::cout << myContextPrimitiveId->GetPrimitiveId() << std::endl;
+    std::cout << myContextPrimitiveId->GetPrimitiveName() << std::endl;
+    
+
     myContext.SetKey(*myKey);
     
     std::string str = "ahmed mahmoud";
