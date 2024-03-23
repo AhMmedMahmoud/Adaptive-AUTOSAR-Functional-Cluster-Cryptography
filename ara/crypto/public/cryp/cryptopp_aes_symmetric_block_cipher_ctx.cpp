@@ -19,7 +19,7 @@ namespace ara
             CryptoPP_AES_SymmetricBlockCipherCtx::CryptoPP_AES_SymmetricBlockCipherCtx(): mKey(nullptr),
                                                     mTransform(CryptoTransform::kEncrypt),
                                                     mPId(mAlgId,mAlgName),
-                                                    mSetKeyState(setKeyState::NOT_CALLED)
+                                                    mSetKeyState(helper::setKeyState::NOT_CALLED)
             {}
 
 
@@ -41,7 +41,7 @@ namespace ara
             */
             bool CryptoPP_AES_SymmetricBlockCipherCtx::IsInitialized () const noexcept
             {
-                return (mSetKeyState == setKeyState::CALLED && mKey != nullptr);
+                return (mSetKeyState == helper::setKeyState::CALLED && mKey != nullptr);
             }
             
 
@@ -67,7 +67,7 @@ namespace ara
                     mKey = new CryptoPP_AES_SymmetricKey(aesKey);
                     
                     mTransform = transform;
-                    mSetKeyState = setKeyState::CALLED;
+                    mSetKeyState = helper::setKeyState::CALLED;
                     if(transform == CryptoTransform::kEncrypt)
                         encryptor.SetKey(mKey->getKey(), mKey->getKey().size());
                     else
@@ -92,7 +92,7 @@ namespace ara
                                                                                         bool suppressPadding
                                                                                         ) const noexcept
             {
-                if(mSetKeyState == setKeyState::NOT_CALLED) // return error
+                if(mSetKeyState == helper::setKeyState::NOT_CALLED) // return error
                 {   
                     return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
                 }
@@ -128,7 +128,7 @@ namespace ara
             */
             ara::core::Result<CryptoTransform> CryptoPP_AES_SymmetricBlockCipherCtx::GetTransformation () const noexcept
             {
-                if(mSetKeyState == setKeyState::CALLED)
+                if(mSetKeyState == helper::setKeyState::CALLED)
                     return ara::core::Result<CryptoTransform>(mTransform);
                 else // return error
                 {

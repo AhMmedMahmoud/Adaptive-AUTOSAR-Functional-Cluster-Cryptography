@@ -12,7 +12,7 @@
 #include "cryptopp/hex.h"
 #include <iostream>
 #include <string>
-
+#include "../../helper/state.h"
 
 
 std::string bytes_to_hex(const uint8_t* data, size_t size);
@@ -23,15 +23,6 @@ namespace ara
     {
         namespace cryp
         {
-            /*
-                this helper class doesnot be mentioned in autosar 
-            */
-            enum class setKeyState
-            {
-                CALLED,
-                NOT_CALLED
-            };
-
             class CryptoPP_AES_SymmetricBlockCipherCtx : public SymmetricBlockCipherCtx 
             {
             public :
@@ -45,7 +36,7 @@ namespace ara
                 CryptoPP_AES_SymmetricKey *mKey;
                 CryptoTransform  mTransform;
                 CryptoPP_CryptoPrimitiveId mPId;
-                setKeyState mSetKeyState;
+                helper::setKeyState mSetKeyState;
 
                 
                 CryptoPP::SecByteBlock recoveredtext();
