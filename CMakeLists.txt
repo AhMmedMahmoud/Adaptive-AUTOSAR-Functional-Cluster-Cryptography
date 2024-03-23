@@ -44,6 +44,7 @@ add_library(
    ara/crypto/private/cryp/cryobj/public_key.h
    ara/crypto/private/cryp/cryobj/restricted_use_object.h
    ara/crypto/private/cryp/cryobj/symmetric_key.h
+   ara/crypto/private/cryp/cryobj/signature.h
   
 
    ## cryp
@@ -52,6 +53,7 @@ add_library(
    ara/crypto/private/cryp/encryptor_public_ctx.h
    ara/crypto/private/cryp/hash_function_ctx.h
    ara/crypto/private/cryp/symmetric_block_cipher_ctx.h
+   ara/crypto/private/cryp/message_authn_code_ctx.h
    
 
    
@@ -60,6 +62,7 @@ add_library(
    ara/crypto/public/cryp/cryobj/cryptopp_aes_symmetric_key.h
    ara/crypto/public/cryp/cryobj/cryptopp_rsa_public_key.h
    ara/crypto/public/cryp/cryobj/cryptopp_rsa_private_key.h
+   ara/crypto/public/cryp/cryobj/cryptopp_hmac_sha_256_signature.h
    ara/crypto/public/cryp/cryobj/loadKey.h
 
 
@@ -74,6 +77,9 @@ add_library(
 
    ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.h
    ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.cpp
+
+   ara/crypto/public/cryp/cryptopp_hmac_sha_256_message_authn_code_ctx.h
+   ara/crypto/public/cryp/cryptopp_hmac_sha_256_message_authn_code_ctx.cpp
 )
 
 ###################################################
@@ -84,6 +90,12 @@ add_library(
 add_executable(aes CryptoPP_examples/AES_CBC_128.cpp)
 target_include_directories(aes PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(aes ${Crypto++_LIBRARIES})
+
+# aes_cbc example using CryptoPP
+add_executable(aes_ecb CryptoPP_examples/AES_ECB_128.cpp)
+target_include_directories(aes_ecb PUBLIC ${Crypto++_INCLUDE_DIRS})
+target_link_libraries(aes_ecb ${Crypto++_LIBRARIES})
+
 
 # sha256 example using CryptoPP
 add_executable(sha256 CryptoPP_examples/SHA_256.cpp)
@@ -100,6 +112,11 @@ target_link_libraries(keysGeneration ${Crypto++_LIBRARIES})
 add_executable(rsa CryptoPP_examples/RAS_2048.cpp)
 target_include_directories(rsa PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(rsa ${Crypto++_LIBRARIES})
+
+
+add_executable(mac CryptoPP_examples/hmac_sha256.cpp)
+target_include_directories(mac PUBLIC ${Crypto++_INCLUDE_DIRS})
+target_link_libraries(mac ${Crypto++_LIBRARIES})
 
 
 ###################################################
@@ -119,15 +136,20 @@ target_link_libraries(ex_uuid Crypto)
 #                  executables on crypto          #
 ###################################################
 
-add_executable(ex_hash samples/example_hashctx.cpp)
+add_executable(ex_hash contexts_samples/example_hashctx.cpp)
 target_link_libraries(ex_hash ${Crypto++_LIBRARIES})
 target_link_libraries(ex_hash Crypto)
 
-add_executable(ex_aes samples/example_summetric_block_cipher.cpp)
+add_executable(ex_aes contexts_samples/example_aes.cpp)
 target_link_libraries(ex_aes ${Crypto++_LIBRARIES})
 target_link_libraries(ex_aes Crypto)
 
 
-add_executable(ex_rsa samples/example_rsa_contexts.cpp)
+add_executable(ex_rsa contexts_samples/example_rsa_contexts.cpp)
 target_link_libraries(ex_rsa ${Crypto++_LIBRARIES})
 target_link_libraries(ex_rsa Crypto)
+
+add_executable(ex_hmac contexts_samples/example_hmac_Ctx.cpp)
+target_link_libraries(ex_hmac ${Crypto++_LIBRARIES})
+target_link_libraries(ex_hmac Crypto)
+

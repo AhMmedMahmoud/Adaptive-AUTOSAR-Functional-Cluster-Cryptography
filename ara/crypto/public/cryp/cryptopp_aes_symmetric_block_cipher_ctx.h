@@ -47,6 +47,10 @@ namespace ara
                 CryptoPP_CryptoPrimitiveId mPId;
                 setKeyState mSetKeyState;
 
+                
+                CryptoPP::SecByteBlock recoveredtext();
+
+                
             public:
                 using Uptr = std::unique_ptr<CryptoPP_AES_SymmetricBlockCipherCtx>;
 

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include "../../helper/state.h"
 
 
 namespace ara
@@ -20,30 +21,20 @@ namespace ara
     {
         namespace cryp
         {
-            /*
-                this helper class doesnot be mentioned in autosar 
-            */
-            enum class calling
-            {
-                START_IS_NOT_CALLED,
-                START_IS_CALLED,
-                UPDATE_IS_CALLED,
-                FINISH_IS_CALLED
-            };
-
             class CryptoPP_SHA_256_HashFunctionCtx: public HashFunctionCtx 
             {
             public :
                 /******************* constants **********************/
                 static const std::string mAlgName;
-                const CryptoPrimitiveId::AlgId mAlgId = 1;
+                static const CryptoPrimitiveId::AlgId mAlgId{1};
+
             
             private:
                 /***************************** attributes *******************/
                 CryptoPP::SHA256 hash;
                 CryptoPP::SecByteBlock digest;   
                 CryptoPP_CryptoPrimitiveId mPId;
-                calling seq;
+                helper::calling seq;
 
             public:  
                 /********************** constructor **************************/
@@ -64,6 +55,8 @@ namespace ara
 
                 virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv) noexcept override;
 
+                //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept;
+
                 ara::core::Result<void> Update (std::uint8_t in) noexcept override;
 
                 ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept override;
@@ -74,8 +67,6 @@ namespace ara
             
                 //virtual DigestService::Uptr GetDigestService () const noexcept;
 
-                //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept;
-                
                 // ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept;
             };
         }

@@ -61,12 +61,8 @@ namespace ara
                 {
                     std::unique_ptr<CryptoPP_AES_SymmetricKey> ptr = std::make_unique<CryptoPP_AES_SymmetricKey>();
                     
-                    /*
-                    CryptoPP::AutoSeededRandomPool prng;
-                    prng.GenerateBlock(ptr->mValue, ptr->mValue.size());
-                    */
-                    std::string stringValue = "abcdabcdabcdabcd";
-                    std::copy(stringValue.begin(), stringValue.end(), ptr->mValue.begin());
+                    std::string key = "0123456789abcdef";
+                    ptr->mValue.Assign((const CryptoPP::byte*)key.data(), CryptoPP::AES::DEFAULT_KEYLENGTH);
 
                     /*
                     std::cout << "/nmValue contents:" << std::endl;
@@ -77,11 +73,11 @@ namespace ara
                         }
                     }
                     std::cout << std::dec << std::endl;                    
-                    */
-
-                    
+                    */                             
                     return std::move(ptr);                    
                 }
+
+
 
                 /*************************************************************
                  * not autosar but until key storage provider is implemented
@@ -91,9 +87,7 @@ namespace ara
                     return mValue;
                 }
 
-                
-
-                
+                                
 
                 /************* override parent functions ************/
 

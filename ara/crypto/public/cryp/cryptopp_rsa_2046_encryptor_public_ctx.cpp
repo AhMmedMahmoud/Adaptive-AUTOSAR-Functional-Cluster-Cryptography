@@ -8,8 +8,6 @@ namespace ara
     {
         namespace cryp
         {
-            extern CryptoErrorDomain _obj;
-
             const std::string CryptoPP_RSA_EncryptorPublicCtx::mAlgName("rsa_2046");
 
             /***************** constructor **********************/
@@ -48,10 +46,9 @@ namespace ara
                                                                                   bool suppressPadding
                                                                                 ) const noexcept
             {
-                if(mSetKeyState == helper::setKeyState::NOT_CALLED)
+                if(mSetKeyState == helper::setKeyState::NOT_CALLED) // return error
                 {   
-                    ara::core::ErrorCode x =  ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5); 
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(x);
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
                 }
 
                 try 
@@ -73,7 +70,8 @@ namespace ara
                     ara::core::Vector<ara::core::Byte> encryptedData(cipher.begin(), cipher.end());
                     return ara::core::Result<ara::core::Vector<ara::core::Byte>>(encryptedData);
                 } 
-                catch (const CryptoPP::Exception& e) {
+                catch (const CryptoPP::Exception& e) 
+                {
                     std::cerr << "Crypto++ exception: " << e.what() << std::endl;
                     return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
                 }
@@ -90,10 +88,10 @@ namespace ara
                     
                     return ara::core::Result<void>::FromValue();
                 }
-                catch (const std::bad_cast& e) {
-                    std::cerr << "Failed to cast PublicKey to CryptoPP_RSA_PublicKey: " << e.what() << std::endl;
-                    ara::core::ErrorCode x =  ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject,5); 
-                    return ara::core::Result<void>::FromError(x);
+                catch (const std::bad_cast& e) // return error
+                {
+                    // Failed to cast PublicKey to CryptoPP_RSA_PublicKey
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject,5));
                 }
             }
             
