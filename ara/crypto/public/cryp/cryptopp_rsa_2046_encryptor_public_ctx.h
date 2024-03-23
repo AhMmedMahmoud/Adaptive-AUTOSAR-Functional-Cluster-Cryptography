@@ -12,16 +12,6 @@ namespace ara
     {
         namespace cryp
         {
-            /*
-                this helper class doesnot be mentioned in autosar 
-            */
-            /*
-            enum class setKeyState
-            {
-                CALLED,
-                NOT_CALLED
-            };
-            */
             class CryptoPP_RSA_EncryptorPublicCtx : public EncryptorPublicCtx 
             {
             public :
