@@ -201,7 +201,7 @@ namespace ara
         */
         static CryptoErrorDomain _obj;
         constexpr ara::core::ErrorCode MakeErrorCode( CryptoErrorDomain::Errc code,
-                                                        ara::core::ErrorDomain::SupportDataType data = 0
+                                                        ara::core::ErrorDomain::SupportDataType data
                                                     ) noexcept
         {
             /* 

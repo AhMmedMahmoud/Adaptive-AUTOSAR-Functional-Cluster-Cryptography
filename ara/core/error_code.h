@@ -61,7 +61,6 @@ namespace ara
             /// @returns Error code corresponding message in the defined domain
             std::string Message() const noexcept
             {
-                //std::cout << "ssssss\n";
                 std::string _result(mDomain.Message(mValue));
                 return _result;    
             }

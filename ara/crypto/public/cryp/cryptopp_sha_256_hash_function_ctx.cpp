@@ -1,5 +1,6 @@
 #include "cryptopp_sha_256_hash_function_ctx.h"
 #include "../../private/common/crypto_error_domain.h"
+
 namespace ara
 {
     namespace crypto

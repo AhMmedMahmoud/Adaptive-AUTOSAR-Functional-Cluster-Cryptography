@@ -39,8 +39,8 @@ namespace ara
             }
 
             
-            
-            /***** override pure virtual functions inherited related SymmetricBlockCipherCtx *****/
+
+            /***** override pure virtual functions inherited related EncryptorPublicCtx *****/
 
             ara::core::Result<ara::core::Vector<ara::core::Byte> > CryptoPP_RSA_EncryptorPublicCtx::ProcessBlock ( ReadOnlyMemRegion in,
                                                                                   bool suppressPadding

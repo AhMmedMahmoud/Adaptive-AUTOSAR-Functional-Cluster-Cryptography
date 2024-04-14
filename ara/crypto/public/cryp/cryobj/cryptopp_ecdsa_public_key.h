@@ -1,5 +1,5 @@
-#ifndef CRYPTOPP_RSA_PUBLIC_KEY_H
-#define CRYPTOPP_RSA_PUBLIC_KEY_H
+#ifndef CRYPTOPP_ECDSA_PUBLIC_KEY_H
+#define CRYPTOPP_ECDSA_PUBLIC_KEY_H
 
 #include "../../../private/cryp/cryobj/public_key.h"
 #include <cryptopp/rsa.h>
@@ -10,23 +10,28 @@
 #include <string>
 #include "loadKey.h"
 
+#include <cryptopp/eccrypto.h>
+#include <cryptopp/oids.h>
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/sha.h>
+
 namespace ara
 {
     namespace crypto
     {
         namespace cryp
         {
-            class CryptoPP_RSA_PublicKey : public PublicKey
+            class CryptoPP_ECDSA_PublicKey : public PublicKey
             {
             private:
-                CryptoPP::RSA::PublicKey mValue;
+                CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey mValue;
 
             public:
                 /************ constructor **************/
-                CryptoPP_RSA_PublicKey() {}
+                CryptoPP_ECDSA_PublicKey() {}
 
                 // Copy constructor
-                CryptoPP_RSA_PublicKey(const CryptoPP_RSA_PublicKey& other) {
+                CryptoPP_ECDSA_PublicKey(const CryptoPP_ECDSA_PublicKey& other) {
                     mValue = other.mValue;
                 }
 
@@ -36,9 +41,9 @@ namespace ara
                 **************************************************************/
                 static std::unique_ptr<PublicKey> createInstance() 
                 {
-                    std::unique_ptr<CryptoPP_RSA_PublicKey> ptr = std::make_unique<CryptoPP_RSA_PublicKey>();
+                    std::unique_ptr<CryptoPP_ECDSA_PublicKey> ptr = std::make_unique<CryptoPP_ECDSA_PublicKey>();
                   
-                    ptr->mValue = loadKey<CryptoPP::RSA::PublicKey>("rsa_public.key");
+                    ptr->mValue = loadKey<CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey>("ecdsa_public.key");
                     
                     return std::move(ptr);  
                 }
@@ -46,7 +51,7 @@ namespace ara
                 /*************************************************************
                  * not autosar but until key storage provider is implemented
                 **************************************************************/
-                CryptoPP::RSA::PublicKey getKey()
+                CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey getKey()
                 {
                     return mValue;
                 }

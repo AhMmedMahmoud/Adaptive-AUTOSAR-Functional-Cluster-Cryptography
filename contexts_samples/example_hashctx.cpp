@@ -1,8 +1,10 @@
 #include<iostream>
 #include "../ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.h"
 #include "../ara/crypto/private/common/mem_region.h"
+#include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
+using namespace ara::crypto::helper;
 
 int main()
 {
@@ -45,13 +47,11 @@ int main()
     if(res_finish.HasValue())
     {
         std::cout << "--- sucess ---\n";
-        // Convert digest to hexadecimal string
-        std::stringstream ss;
-        for (const auto& byte : res_finish.Value()) {
-            ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
-        }
-        // Print the hexadecimal digest
-        std::cout << ss.str() << std::endl;
+        
+        // get hash value
+        auto hashValue =  res_finish.Value();
+
+        printHex(hashValue);
     }
     else
     {

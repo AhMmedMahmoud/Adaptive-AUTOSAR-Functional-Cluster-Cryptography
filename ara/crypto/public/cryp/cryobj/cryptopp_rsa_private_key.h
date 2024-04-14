@@ -38,7 +38,7 @@ namespace ara
                 {
                     std::unique_ptr<CryptoPP_RSA_PrivateKey> ptr = std::make_unique<CryptoPP_RSA_PrivateKey>();
                   
-                    ptr->mValue = loadKey<CryptoPP::RSA::PrivateKey>("private.key");
+                    ptr->mValue = loadKey<CryptoPP::RSA::PrivateKey>("rsa_private.key");
                     
                     return std::move(ptr);  
                 }

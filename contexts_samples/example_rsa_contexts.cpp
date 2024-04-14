@@ -1,16 +1,11 @@
-#include <iostream>
-#include <iomanip> // Include the header file for setfill
-#include <sstream>
-#include <string>
-
 #include "../ara/crypto/public/cryp/cryobj/cryptopp_rsa_public_key.h"
 #include "../ara/crypto/public/cryp/cryptopp_rsa_2046_encryptor_public_ctx.h"
-
 #include "../ara/crypto/public/cryp/cryobj/cryptopp_rsa_private_key.h"
 #include "../ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.h"
-
+#include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
+using namespace ara::crypto::helper;
 int main()
 {
     /************************************************************
@@ -34,14 +29,7 @@ int main()
         // get encrypted data
         auto encryptedDataVector = _result.Value();
         
-        // Convert digest to hexadecimal string
-        std::stringstream ss;
-        std::cout << "encryted text: ";
-        for (const auto& byte : encryptedDataVector) {
-            ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
-        }
-        // Print the hexadecimal digest
-        std::cout << ss.str() << std::endl;
+        printHex(encryptedDataVector);  // vector
     }
     else
     {
@@ -72,8 +60,7 @@ int main()
         // get decrypted data
         auto decryptedDataVector = _result_decryptorPrivateCtx.Value();
 
-        std::string decryptedDataString(decryptedDataVector.begin(), decryptedDataVector.end());
-        std::cout << "recovered text: " << decryptedDataString << std::endl;
+        printVector("recovered text: ", decryptedDataVector);
     }
     else
     {
@@ -82,6 +69,5 @@ int main()
         std::cout << error.Message() << std::endl;
     }
         
-
     return 0;
 }

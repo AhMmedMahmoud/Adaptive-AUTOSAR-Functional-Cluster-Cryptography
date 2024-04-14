@@ -50,7 +50,8 @@ namespace ara
 
 
 
-                /***** override pure virtual functions inherited related SymmetricBlockCipherCtx *****/
+
+                /***** override pure virtual functions inherited related EncryptorPublicCtx *****/
 
                 virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
                                                                                             bool suppressPadding=false

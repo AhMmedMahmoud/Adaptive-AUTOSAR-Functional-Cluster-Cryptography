@@ -1,9 +1,10 @@
 #include <iostream>
 #include "../ara/crypto/public/cryp/cryobj/cryptopp_aes_symmetric_key.h"
 #include "../ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.h"
+#include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
-
+using namespace ara::crypto::helper;
 
 int main()
 {
@@ -14,7 +15,6 @@ int main()
     myContext.SetKey(*myKey);
     
     std::string str = "mr ahmed mahmoud";
-    
     ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
     
 /*
@@ -35,17 +35,10 @@ int main()
         // get encrypted data
         auto encryptedDataVector = _result.Value();
 
-        // Convert digest to hexadecimal string
-        std::stringstream ss;
-        for (const auto& byte : encryptedDataVector) {
-            ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
-        }
-
-        // Print the hexadecimal
-        std::cout << "output: ";
-        std::cout << ss.str() << std::endl;
-
+        printHex(encryptedDataVector);
+        
         myContext.SetKey(*myKey,ara::crypto::CryptoTransform::kDecrypt);
+        
         auto _result2 = myContext.ProcessBlock(encryptedDataVector);
         if(_result2.HasValue())
         {
@@ -54,17 +47,9 @@ int main()
             // get decrypted data
             auto decryptedDataVector = _result2.Value();
 
-            // Convert digest to hexadecimal string
-            std::stringstream sss;
-            std::cout << "output: ";
-            for (const auto& byte : decryptedDataVector) {
-                sss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
-            }
-            // Print the hexadecimal digest
-            std::cout << sss.str() << std::endl;
-            
-            std::string decryptedDataString(decryptedDataVector.begin(), decryptedDataVector.end());
-            std::cout << decryptedDataString << std::endl;
+            printVector("recovered text: ", decryptedDataVector);
+
+            printHex(decryptedDataVector);
         }
         else
         {

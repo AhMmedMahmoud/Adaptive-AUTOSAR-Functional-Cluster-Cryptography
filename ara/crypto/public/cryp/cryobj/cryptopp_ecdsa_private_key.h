@@ -1,8 +1,7 @@
-#ifndef CRYPTOPP_RSA_PUBLIC_KEY_H
-#define CRYPTOPP_RSA_PUBLIC_KEY_H
+#ifndef CRYPTOPP_ECDSA_PRIVATE_KEY_H
+#define CRYPTOPP_ECDSA_PRIVATE_KEY_H
 
-#include "../../../private/cryp/cryobj/public_key.h"
-#include <cryptopp/rsa.h>
+#include "../../../private/cryp/cryobj/private_key.h"
 #include <cryptopp/osrng.h>
 #include <cryptopp/files.h>
 #include "cryptopp/hex.h"
@@ -10,23 +9,30 @@
 #include <string>
 #include "loadKey.h"
 
+
+#include <cryptopp/eccrypto.h>
+#include <cryptopp/oids.h>
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/sha.h>
+
+
 namespace ara
 {
     namespace crypto
     {
         namespace cryp
         {
-            class CryptoPP_RSA_PublicKey : public PublicKey
+            class CryptoPP_ECDSA_PrivateKey : public PrivateKey
             {
             private:
-                CryptoPP::RSA::PublicKey mValue;
+                CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey mValue;
 
             public:
                 /************ constructor **************/
-                CryptoPP_RSA_PublicKey() {}
+                CryptoPP_ECDSA_PrivateKey() {}
 
                 // Copy constructor
-                CryptoPP_RSA_PublicKey(const CryptoPP_RSA_PublicKey& other) {
+                CryptoPP_ECDSA_PrivateKey(const CryptoPP_ECDSA_PrivateKey& other) {
                     mValue = other.mValue;
                 }
 
@@ -34,19 +40,19 @@ namespace ara
                 /*************************************************************
                  * not autosar but until key storage provider is implemented
                 **************************************************************/
-                static std::unique_ptr<PublicKey> createInstance() 
+                static std::unique_ptr<PrivateKey> createInstance() 
                 {
-                    std::unique_ptr<CryptoPP_RSA_PublicKey> ptr = std::make_unique<CryptoPP_RSA_PublicKey>();
+                    std::unique_ptr<CryptoPP_ECDSA_PrivateKey> ptr = std::make_unique<CryptoPP_ECDSA_PrivateKey>();
                   
-                    ptr->mValue = loadKey<CryptoPP::RSA::PublicKey>("rsa_public.key");
+                    ptr->mValue = loadKey<CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey>("ecdsa_private.key");
                     
                     return std::move(ptr);  
                 }
 
                 /*************************************************************
-                 * not autosar but until key storage provider is implemented
+                * not autosar but until key storage provider is implemented
                 **************************************************************/
-                CryptoPP::RSA::PublicKey getKey()
+                CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey getKey()
                 {
                     return mValue;
                 }
@@ -54,20 +60,13 @@ namespace ara
 
                 
    
-                /*            
-                virtual bool CheckKey(bool strongCheck=true) const noexcept override
+                /*
+                virtual ara::core::Result<PublicKey::Uptrc> GetPublicKey () const noexcept override
                 {
 
                 }
 
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
-                {
-
-                }
                 */
-
-
-
 
 
                 /************* override parent functions ************/
