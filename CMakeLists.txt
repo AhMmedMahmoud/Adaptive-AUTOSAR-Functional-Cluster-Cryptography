@@ -22,6 +22,7 @@ add_library(
    ara/core/result.h
    ara/core/SamplePtr.h
    ara/core/Span.h
+   #ara/core/string.h
    ara/core/StringView.h
    ara/core/utility.h
    ara/core/vector.h
@@ -37,6 +38,7 @@ add_library(
    ara/crypto/private/common/crypto_object_uid.h
    ara/crypto/private/common/uuid.h
    ara/crypto/private/common/mem_region.h
+   ara/crypto/private/common/entry_point.h
 
    ## cryp/cryobj
    ara/crypto/private/cryp/cryobj/crypto_object.h
@@ -49,6 +51,7 @@ add_library(
   
    ## cryp
    ara/crypto/private/cryp/crypto_context.h
+   ara/crypto/private/cryp/crypto_provider.h
    ara/crypto/private/cryp/hash_function_ctx.h
    ara/crypto/private/cryp/message_authn_code_ctx.h
    ara/crypto/private/cryp/symmetric_block_cipher_ctx.h
@@ -68,27 +71,23 @@ add_library(
    ara/crypto/public/cryp/cryobj/cryptopp_hmac_sha_256_signature.h
    ara/crypto/public/cryp/cryobj/loadKey.h
 
-
    ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.h
    ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.cpp
-
    ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.h
    ara/crypto/public/cryp/cryptopp_aes_symmetric_block_cipher_ctx.cpp
-
    ara/crypto/public/cryp/cryptopp_rsa_2046_encryptor_public_ctx.h
    ara/crypto/public/cryp/cryptopp_rsa_2046_encryptor_public_ctx.cpp
-
    ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.h
    ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.cpp
-
    ara/crypto/public/cryp/cryptopp_hmac_sha_256_message_authn_code_ctx.h
    ara/crypto/public/cryp/cryptopp_hmac_sha_256_message_authn_code_ctx.cpp  
-
    ara/crypto/public/cryp/cryptopp_ecdsa_sig_encode_private_ctx.h
    ara/crypto/public/cryp/cryptopp_ecdsa_sig_encode_private_ctx.cpp
-
    ara/crypto/public/cryp/cryptopp_ecdsa_msg_recovery_public_ctx.h
    ara/crypto/public/cryp/cryptopp_ecdsa_msg_recovery_public_ctx.cpp
+
+   ara/crypto/public/cryp/cryptopp_crypto_provider.h
+   ara/crypto/public/cryp/cryptopp_crypto_provider.cpp
 )
 
 ###################################################
@@ -173,3 +172,11 @@ target_link_libraries(ex_ecdsa ${Crypto++_LIBRARIES})
 target_link_libraries(ex_ecdsa Crypto)
 
 
+
+add_executable(demo_hash Demos/demo_hash.cpp)
+target_link_libraries(demo_hash Crypto)
+target_link_libraries(demo_hash ${Crypto++_LIBRARIES})
+
+add_executable(demo_ecdsa Demos/demo_ecdsa.cpp)
+target_link_libraries(demo_ecdsa Crypto)
+target_link_libraries(demo_ecdsa ${Crypto++_LIBRARIES})

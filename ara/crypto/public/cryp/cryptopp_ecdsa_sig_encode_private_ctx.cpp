@@ -1,16 +1,6 @@
 #include "cryptopp_ecdsa_sig_encode_private_ctx.h"
 #include "../../private/common/crypto_error_domain.h"
 
-/*
-#include <cryptopp/osrng.h>
-#include <cryptopp/eccrypto.h>
-#include <cryptopp/oids.h>
-#include <cryptopp/cryptlib.h>
-#include <cryptopp/sha.h>
-#include <cryptopp/hex.h>
-#include "cryptopp/files.h"
-*/
-
 namespace ara
 {
     namespace crypto

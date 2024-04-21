@@ -57,13 +57,13 @@ namespace ara
 
                 //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept;
 
-                ara::core::Result<void> Update (std::uint8_t in) noexcept override;
+                virtual ara::core::Result<void> Update (std::uint8_t in) noexcept override;
 
-                ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept override;
+                virtual ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept override;
 
-                ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish() noexcept override;
+                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Finish() noexcept override;
                 
-                ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest(std::size_t offset=0) noexcept override;
+                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest(std::size_t offset=0) noexcept override;
             
                 //virtual DigestService::Uptr GetDigestService () const noexcept;
 

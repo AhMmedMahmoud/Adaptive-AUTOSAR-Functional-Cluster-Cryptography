@@ -16,6 +16,7 @@ namespace ara
             std::string mMetaModelIdentifier;
             std::string mIpAddress; // New member for IP address
             uint16_t mPort;         // New member for port
+            
         public:
             /// @brief Constructor
             /// @param metaModelIdentifier Shortname-path
