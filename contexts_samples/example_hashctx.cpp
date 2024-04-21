@@ -62,10 +62,3 @@ int main()
     
     return 0;
 }
-
-
-/*
-    InstanceSpecifier specifier("SHA_256");
-    auto x = LoadCryptoProvider(specifier);
-    std::cout << x << std::endl;
-    */
