@@ -29,7 +29,7 @@ int main()
     /****************************************
     *          create sha-256 context       *
     ****************************************/
-    auto res_create = myProvider->CreateHashFunctionCtx(1);
+    auto res_create = myProvider->CreateHashFunctionCtx(SHA_256_ALG_ID);
     if(!res_create.HasValue())
     {
         std::cout << "--- error ---\n";

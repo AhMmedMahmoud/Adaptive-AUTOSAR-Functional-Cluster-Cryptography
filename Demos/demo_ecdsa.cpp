@@ -25,18 +25,42 @@ int main()
     }
 
 
+    /**************************************************************
+    *    using loaded crypto provider to generate private key     *
+    **************************************************************/
+    auto res_genPrKey = myProvider->GeneratePrivateKey(ECDSA_SHA_256_ALG_ID,kAllowSignature);
+    if(!res_genPrKey.HasValue())
+    {
+        std::cout << "failed to generate private key\n";
+        return 0;
+    }
+    auto myPrivateKey = std::move(res_genPrKey).Value();
+
+
+    /**************************************************************
+    *    getting public key from private key object               *
+    **************************************************************/
+    auto res_getPkKey = myPrivateKey->GetPublicKey();
+    if(!res_getPkKey.HasValue())
+    {
+        std::cout << "failed to get public key\n";
+        return 0;
+    }
+    auto myPublicKey = std::move(res_getPkKey).Value();
+
+
     /****************************************
     *          load keys (not autosar)      *
     ****************************************/
-    PrivateKey::Uptrc myPrivateKey = CryptoPP_ECDSA_PrivateKey::createInstance();
-    PublicKey::Uptrc myPublicKey = CryptoPP_ECDSA_PublicKey::createInstance();
+    //PrivateKey::Uptrc myPrivateKey = CryptoPP_ECDSA_PrivateKey::createInstance();
+    //PublicKey::Uptrc myPublicKey = CryptoPP_ECDSA_PublicKey::createInstance();
 
 
     /****************************************
     *          create ecdsa contexts        *
     ****************************************/
-    auto res_createSigEncodePrivateCtx = myProvider->CreateSigEncodePrivateCtx(1);
-    auto res_createMsgRecoveryPublicCtx = myProvider->CreateMsgRecoveryPublicCtx(1);
+    auto res_createSigEncodePrivateCtx = myProvider->CreateSigEncodePrivateCtx(ECDSA_SHA_256_ALG_ID);
+    auto res_createMsgRecoveryPublicCtx = myProvider->CreateMsgRecoveryPublicCtx(ECDSA_SHA_256_ALG_ID);
 
     if(!res_createSigEncodePrivateCtx.HasValue() && !res_createMsgRecoveryPublicCtx.HasValue())
     {

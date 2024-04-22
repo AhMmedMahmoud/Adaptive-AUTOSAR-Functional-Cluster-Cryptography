@@ -180,3 +180,7 @@ target_link_libraries(demo_hash ${Crypto++_LIBRARIES})
 add_executable(demo_ecdsa Demos/demo_ecdsa.cpp)
 target_link_libraries(demo_ecdsa Crypto)
 target_link_libraries(demo_ecdsa ${Crypto++_LIBRARIES})
+
+add_executable(demo_rsa Demos/demo_rsa.cpp)
+target_link_libraries(demo_rsa Crypto)
+target_link_libraries(demo_rsa ${Crypto++_LIBRARIES})
