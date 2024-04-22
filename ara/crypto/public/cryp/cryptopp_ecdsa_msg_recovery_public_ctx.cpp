@@ -59,7 +59,7 @@ namespace ara
                 }
                 try 
                 {
-                    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(mKey->getKey());
+                    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(mKey->getValue());
 
                     ara::core::Vector<ara::core::Byte> message(in.begin(), in.begin() + in.size() - 64);
                     ara::core::Vector<ara::core::Byte> signature(in.begin() + in.size() - 64, in.end());

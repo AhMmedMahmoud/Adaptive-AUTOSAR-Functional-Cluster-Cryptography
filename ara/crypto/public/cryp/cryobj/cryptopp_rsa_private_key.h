@@ -2,6 +2,8 @@
 #define CRYPTOPP_RSA_PRIVATE_KEY_H
 
 #include "../../../private/cryp/cryobj/private_key.h"
+#include "cryptopp_rsa_public_key.h"
+
 #include <cryptopp/rsa.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/files.h>
@@ -19,17 +21,17 @@ namespace ara
             class CryptoPP_RSA_PrivateKey : public PrivateKey
             {
             private:
+                /************ attributes ***************/
                 CryptoPP::RSA::PrivateKey mValue;
 
             public:
                 /************ constructor **************/
                 CryptoPP_RSA_PrivateKey() {}
 
-                // Copy constructor
+                /************ Copy constructor *********/
                 CryptoPP_RSA_PrivateKey(const CryptoPP_RSA_PrivateKey& other) {
                     mValue = other.mValue;
                 }
-
 
                 /*************************************************************
                  * not autosar but until key storage provider is implemented
@@ -43,67 +45,51 @@ namespace ara
                     return std::move(ptr);  
                 }
 
-                /*************************************************************
-                * not autosar but until key storage provider is implemented
-                **************************************************************/
-                CryptoPP::RSA::PrivateKey getKey()
+                /************ getter and setter ***********/
+                CryptoPP::RSA::PrivateKey getValue()
                 {
                     return mValue;
                 }
 
-
-                
+                void setValue(CryptoPP::RSA::PrivateKey mValue)
+                {
+                    this->mValue = mValue;
+                }
    
-                /*
+                /************* override parent functions ************/
                 virtual ara::core::Result<PublicKey::Uptrc> GetPublicKey () const noexcept override
                 {
+                    CryptoPP::RSA::PublicKey publicKey(mValue);
 
+                    std::unique_ptr<CryptoPP_RSA_PublicKey> ptr = std::make_unique<CryptoPP_RSA_PublicKey>();
+                  
+                    ptr->setValue(publicKey);
+
+                    return ara::core::Result<PublicKey::Uptrc>(std::move(ptr));
                 }
 
-                */
-
-
-                /************* override parent functions ************/
                 virtual Usage GetAllowedUsage () const noexcept override
                 {
-                    return 5;
+                    return kAllowDataDecryption;
                 }
+
+
 
                 /*
                 virtual COIdentifier GetObjectId () const noexcept override
-                {
-                    
-                }
 
                 virtual COIdentifier HasDependence () const noexcept override
-                {
-                    
-                }
-           
+
                 virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual std::size_t GetPayloadSize () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual bool IsExportable () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual bool IsSession () const noexcept override
-                {
-                    
-                }
                 
                 virtual ara::core::Result<void> Save (IOInterface &container) const noexcept override
-                {
-                    
-                }
+                
                 */
             };
         }

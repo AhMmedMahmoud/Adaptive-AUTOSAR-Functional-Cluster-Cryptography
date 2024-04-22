@@ -58,7 +58,7 @@ namespace ara
                 }
                 try 
                 {
-                    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(mKey->getKey());
+                    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(mKey->getValue());
 
                     std::string plain(in.begin(), in.end());
                     std::cout << "Input Data: " << plain << std::endl;

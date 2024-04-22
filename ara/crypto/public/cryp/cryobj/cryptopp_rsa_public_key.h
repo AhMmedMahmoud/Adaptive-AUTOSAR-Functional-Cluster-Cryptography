@@ -19,17 +19,17 @@ namespace ara
             class CryptoPP_RSA_PublicKey : public PublicKey
             {
             private:
+                /************ attributes ***************/
                 CryptoPP::RSA::PublicKey mValue;
 
             public:
                 /************ constructor **************/
                 CryptoPP_RSA_PublicKey() {}
 
-                // Copy constructor
+                /************ Copy constructor *********/
                 CryptoPP_RSA_PublicKey(const CryptoPP_RSA_PublicKey& other) {
                     mValue = other.mValue;
                 }
-
 
                 /*************************************************************
                  * not autosar but until key storage provider is implemented
@@ -43,74 +43,41 @@ namespace ara
                     return std::move(ptr);  
                 }
 
-                /*************************************************************
-                 * not autosar but until key storage provider is implemented
-                **************************************************************/
-                CryptoPP::RSA::PublicKey getKey()
+                /************ getter and setter ***********/
+                CryptoPP::RSA::PublicKey getValue()
                 {
                     return mValue;
                 }
 
-
-                
+                void setValue(CryptoPP::RSA::PublicKey mValue)
+                {
+                    this->mValue = mValue;
+                }
    
-                /*            
-                virtual bool CheckKey(bool strongCheck=true) const noexcept override
-                {
-
-                }
-
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
-                {
-
-                }
-                */
-
-
-
-
-
                 /************* override parent functions ************/
                 virtual Usage GetAllowedUsage () const noexcept override
                 {
-                    return 5;
+                    return kAllowDataEncryption;
                 }
 
-                /*
+                /*            
+                virtual bool CheckKey(bool strongCheck=true) const noexcept override
+
+                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
+
                 virtual COIdentifier GetObjectId () const noexcept override
-                {
-                    
-                }
 
                 virtual COIdentifier HasDependence () const noexcept override
-                {
-                    
-                }
-           
+
                 virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual std::size_t GetPayloadSize () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual bool IsExportable () const noexcept override
-                {
-                    
-                }
-                
+      
                 virtual bool IsSession () const noexcept override
-                {
-                    
-                }
                 
                 virtual ara::core::Result<void> Save (IOInterface &container) const noexcept override
-                {
-                    
-                }
                 */
             };
         }

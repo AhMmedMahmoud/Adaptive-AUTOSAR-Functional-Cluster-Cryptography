@@ -5,6 +5,7 @@
 #include "../../common/crypto_object_uid.h"
 #include "../../../../core/result.h"
 #include "crypto_primitive_id.h"
+#include "../../common/crypto_error_domain.h"
 
 #include <memory>
 
@@ -36,9 +37,9 @@ namespace ara
 
                 
                 /*
-                Downcast and move unique smart pointer from the generic CryptoObject interface 
-                to concrete derived object.
-                */
+                //Downcast and move unique smart pointer from the generic CryptoObject interface 
+                // to concrete derived object.
+                
                 /*
                 template <class ConcreteObject>
                 static ara::core::Result<typename ConcreteObject::Uptrc> Downcast (CryptoObject::Uptrc &&object) noexcept
@@ -46,15 +47,11 @@ namespace ara
                     auto derivedObject = dynamic_cast<typename ConcreteObject::Uptrc>(std::move(object));
                     if (derivedObject) 
                     {
-                        Result<typename ConcreteObject::Uptrc> result{std::move(derivedObject)};
-                        return result;
+                        return ara::core::Result<typename ConcreteObject::Uptrc>(std::move(derivedObject));
                     } 
                     else 
                     {
-                        //return Result<typename ConcreteObject::Uptrc>::FromError(ErrorCode{"Downcast failed"});
-
-                        ara::core::ErrorCode x =  ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kBadObjectType,5); 
-                        return ara::core::Result<typename ConcreteObject::Uptrc>::FromError(x);
+                        return ara::core::Result<typename ConcreteObject::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kBadObjectType,5));
                     }
                 }
                 */

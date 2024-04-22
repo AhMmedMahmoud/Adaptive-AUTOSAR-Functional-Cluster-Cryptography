@@ -53,7 +53,7 @@ namespace ara
                 {
                     const CryptoPP_AES_SymmetricKey& aesKey = dynamic_cast<const CryptoPP_AES_SymmetricKey&>(key);
                     mKey = new CryptoPP_AES_SymmetricKey(aesKey);
-                    hmac.SetKey(mKey->getKey(), mKey->getKey().size());
+                    hmac.SetKey(mKey->getValue(), mKey->getValue().size());
 
                     mTransform = transform;
                     mSetKeyState = helper::setKeyState::CALLED;

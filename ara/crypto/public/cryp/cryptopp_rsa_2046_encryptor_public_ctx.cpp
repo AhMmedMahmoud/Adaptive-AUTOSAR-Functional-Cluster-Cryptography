@@ -53,7 +53,7 @@ namespace ara
 
                 try 
                 {
-                    CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(mKey->getKey());
+                    CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(mKey->getValue());
 
                     std::string cipher;                
                     std::string plain(in.begin(), in.end());

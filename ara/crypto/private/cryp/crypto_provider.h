@@ -50,6 +50,19 @@ namespace ara
                 virtual ara::core::Result<SigEncodePrivateCtx::Uptr> CreateSigEncodePrivateCtx (AlgId algId) noexcept=0;
 
              
+                virtual ara::core::Result<PrivateKey::Uptrc> GeneratePrivateKey ( AlgId algId, 
+																	  AllowedUsageFlags allowedUsage, 
+																	  bool isSession=false, 
+																	  bool isExportable=false
+																	) noexcept=0;
+
+                /*
+                virtual ara::core::Result<SymmetricKey::Uptrc> GenerateSymmetricKey ( AlgId algId, 
+																		  AllowedUsageFlags allowedUsage,
+																		  bool isSession=true,
+																		  bool isExportable=false
+																		) noexcept=0;
+                */
 
                 CryptoProvider& operator= (const CryptoProvider &other)=default;
 	

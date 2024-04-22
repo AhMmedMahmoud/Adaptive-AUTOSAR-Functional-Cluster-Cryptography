@@ -24,17 +24,17 @@ namespace ara
             class CryptoPP_ECDSA_PublicKey : public PublicKey
             {
             private:
+                /************ attributes ***************/
                 CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey mValue;
 
             public:
                 /************ constructor **************/
                 CryptoPP_ECDSA_PublicKey() {}
 
-                // Copy constructor
+                /************ Copy constructor *********/
                 CryptoPP_ECDSA_PublicKey(const CryptoPP_ECDSA_PublicKey& other) {
                     mValue = other.mValue;
                 }
-
 
                 /*************************************************************
                  * not autosar but until key storage provider is implemented
@@ -48,74 +48,42 @@ namespace ara
                     return std::move(ptr);  
                 }
 
-                /*************************************************************
-                 * not autosar but until key storage provider is implemented
-                **************************************************************/
-                CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey getKey()
+                /************ getter and setter ***********/
+                CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey getValue()
                 {
                     return mValue;
                 }
 
-
-                
-   
-                /*            
-                virtual bool CheckKey(bool strongCheck=true) const noexcept override
+                void setValue(CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey mValue)
                 {
-
+                    this->mValue = mValue;
                 }
-
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
-                {
-
-                }
-                */
-
-
-
-
-
+          
                 /************* override parent functions ************/
                 virtual Usage GetAllowedUsage () const noexcept override
                 {
-                    return 5;
+                    return kAllowVerification;
                 }
 
-                /*
+                /*            
+                virtual bool CheckKey(bool strongCheck=true) const noexcept override
+
+                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
+
                 virtual COIdentifier GetObjectId () const noexcept override
-                {
-                    
-                }
 
                 virtual COIdentifier HasDependence () const noexcept override
-                {
-                    
-                }
            
                 virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
-                {
-                    
-                }
                 
                 virtual std::size_t GetPayloadSize () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual bool IsExportable () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual bool IsSession () const noexcept override
-                {
-                    
-                }
-                
+
                 virtual ara::core::Result<void> Save (IOInterface &container) const noexcept override
-                {
-                    
-                }
+
                 */
             };
         }

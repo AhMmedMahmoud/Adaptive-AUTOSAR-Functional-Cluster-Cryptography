@@ -69,9 +69,9 @@ namespace ara
                     mTransform = transform;
                     mSetKeyState = helper::setKeyState::CALLED;
                     if(transform == CryptoTransform::kEncrypt)
-                        encryptor.SetKey(mKey->getKey(), mKey->getKey().size());
+                        encryptor.SetKey(mKey->getValue(), mKey->getValue().size());
                     else
-                        decryptor.SetKey(mKey->getKey(), mKey->getKey().size());
+                        decryptor.SetKey(mKey->getValue(), mKey->getValue().size());
 
                     return ara::core::Result<void>::FromValue();
                 }
@@ -98,7 +98,7 @@ namespace ara
                 }
                 else if(mTransform == CryptoTransform::kEncrypt)
                 {
-                    CryptoPP::SecByteBlock ciphertext(mKey->getKey().size());
+                    CryptoPP::SecByteBlock ciphertext(mKey->getValue().size());
                     encryptor.ProcessData(ciphertext, in.data(), in.size());
                     ara::core::Vector<ara::core::Byte> result;
                     for (const auto& byte : ciphertext)
@@ -109,7 +109,7 @@ namespace ara
                 }
                 else
                 {
-                    CryptoPP::SecByteBlock ciphertext(mKey->getKey().size());
+                    CryptoPP::SecByteBlock ciphertext(mKey->getValue().size());
                     decryptor.ProcessData(ciphertext, in.data(), in.size());
                     ara::core::Vector<ara::core::Byte> result;
                     for (const auto& byte : ciphertext)
