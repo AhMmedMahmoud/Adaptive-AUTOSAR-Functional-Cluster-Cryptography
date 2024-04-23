@@ -55,29 +55,29 @@ namespace ara
                 }
    
                 /************* override parent functions ************/
-                virtual Usage GetAllowedUsage () const noexcept override
+                Usage GetAllowedUsage () const noexcept override
                 {
                     return kAllowDataEncryption;
                 }
 
                 /*            
-                virtual bool CheckKey(bool strongCheck=true) const noexcept override
+                bool CheckKey(bool strongCheck=true) const noexcept override
 
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
+                ara::core::Result<ara::core::Vector<ara::core::Byte> > HashPublicKey (HashFunctionCtx &hashFunc) const noexcept override
 
-                virtual COIdentifier GetObjectId () const noexcept override
+                COIdentifier GetObjectId () const noexcept override
 
-                virtual COIdentifier HasDependence () const noexcept override
+                COIdentifier HasDependence () const noexcept override
 
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
+                CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
 
-                virtual std::size_t GetPayloadSize () const noexcept override
+                std::size_t GetPayloadSize () const noexcept override
 
-                virtual bool IsExportable () const noexcept override
+                bool IsExportable () const noexcept override
       
-                virtual bool IsSession () const noexcept override
+                bool IsSession () const noexcept override
                 
-                virtual ara::core::Result<void> Save (IOInterface &container) const noexcept override
+                ara::core::Result<void> Save (IOInterface &container) const noexcept override
                 */
             };
         }

@@ -65,7 +65,7 @@ int main()
         // get recoveryMessage
         auto recoveryMessage = _result2.Value();
         
-        printVector("recovery message: ",recoveryMessage);
+        printVector(recoveryMessage, "recovery message: ");
         
         printHex(recoveryMessage);  // vector
     }

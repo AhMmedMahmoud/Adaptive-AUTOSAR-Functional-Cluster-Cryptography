@@ -27,39 +27,29 @@ namespace ara
                 helper::setKeyState mSetKeyState;
 
             public:
-                using Uptr = std::unique_ptr<CryptoPP_RSA_EncryptorPublicCtx>;
-
-                /***************** constructor **********************/
-                
+                /***************** constructor **********************/   
                 CryptoPP_RSA_EncryptorPublicCtx();
 
 
-
                 /****** override pure virtual functions related to CryptoContext *****/
-
-                /*
-                    Return CryptoPrimitivId instance containing instance identification
-                */
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
+                //  Return CryptoPrimitivId instance containing instance identification
+                CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
 
                 /*
                     Check if the crypto context is already initialized and ready to use. 
                     It checks all required values, including: key value, IV/seed, etc
                 */
-                virtual bool IsInitialized () const noexcept override;
-
-
+                bool IsInitialized () const noexcept override;
 
 
                 /***** override pure virtual functions inherited related EncryptorPublicCtx *****/
-
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
+                ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
                                                                                             bool suppressPadding=false
                                                                                             ) const noexcept override;
 
-                virtual ara::core::Result<void> SetKey (const PublicKey &key) noexcept override;
+                ara::core::Result<void> SetKey (const PublicKey &key) noexcept override;
                 
-                //virtual ara::core::Result<void> Reset () noexcept override;
+                // ara::core::Result<void> Reset () noexcept override;
             };
         }
     }

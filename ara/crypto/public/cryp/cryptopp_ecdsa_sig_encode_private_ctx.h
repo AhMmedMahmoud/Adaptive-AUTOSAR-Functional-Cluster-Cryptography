@@ -26,18 +26,11 @@ namespace ara
                 helper::setKeyState mSetKeyState;
 
             public:
-                using Uptr = std::unique_ptr<CryptoPP_ECDSA_SigEncodePrivateCtx>;
-
                 /***************** constructor **********************/
                 CryptoPP_ECDSA_SigEncodePrivateCtx();
 
-
-
                 /****** override pure virtual functions related to CryptoContext *****/
-                
-                /*
-                    Return CryptoPrimitivId instance containing instance identification
-                */
+                //  Return CryptoPrimitivId instance containing instance identification
                 CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
 
                 /*
@@ -47,12 +40,7 @@ namespace ara
                 bool IsInitialized () const noexcept override;
 
 
-                
-
                 /***** override pure virtual functions inherited related SigEncodePrivateCtx *****/
-
-                //virtual ExtensionService::Uptr GetExtensionService () const noexcept=0;
-
                 std::size_t GetMaxInputSize (bool suppressPadding=false) const noexcept override;
 
                 std::size_t GetMaxOutputSize (bool suppressPadding=false) const noexcept override;
@@ -60,6 +48,9 @@ namespace ara
                 ara::core::Result<void> SetKey (const PrivateKey &key) noexcept override;
 
                 ara::core::Result<ara::core::Vector<ara::core::Byte> > SignAndEncode (ReadOnlyMemRegion in) const noexcept override;
+
+
+                // ExtensionService::Uptr GetExtensionService () const noexcept=0;
 
                 //ara::core::Result<void> Reset () noexcept override;
             };

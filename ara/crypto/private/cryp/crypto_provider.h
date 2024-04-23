@@ -35,6 +35,10 @@ namespace ara
                 using Uptr = std::unique_ptr<CryptoProvider>;
 
                 
+                virtual AlgId ConvertToAlgId (ara::core::StringView primitiveName) const noexcept=0;
+
+	            virtual ara::core::Result<ara::core::String> ConvertToAlgName (AlgId algId) const noexcept=0;
+
                 virtual ara::core::Result<HashFunctionCtx::Uptr> CreateHashFunctionCtx(AlgId algId) noexcept=0;
 
                 virtual ara::core::Result<MessageAuthnCodeCtx::Uptr> CreateMessageAuthCodeCtx (AlgId algId) noexcept=0;
@@ -56,13 +60,13 @@ namespace ara
 																	  bool isExportable=false
 																	) noexcept=0;
 
-                /*
+                
                 virtual ara::core::Result<SymmetricKey::Uptrc> GenerateSymmetricKey ( AlgId algId, 
 																		  AllowedUsageFlags allowedUsage,
 																		  bool isSession=true,
 																		  bool isExportable=false
 																		) noexcept=0;
-                */
+                
 
                 CryptoProvider& operator= (const CryptoProvider &other)=default;
 	

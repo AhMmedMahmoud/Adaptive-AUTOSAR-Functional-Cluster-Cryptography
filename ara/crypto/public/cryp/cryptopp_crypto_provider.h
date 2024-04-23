@@ -9,7 +9,6 @@
 #include "cryptopp_rsa_2046_decryptor_private_ctx.h"
 #include "cryptopp_ecdsa_sig_encode_private_ctx.h"
 #include "cryptopp_ecdsa_msg_recovery_public_ctx.h"
-//#include "../../private/common/base_id_types.h"
 
 #define SHA_256_ALG_ID       1
 #define HMAC_SHA_256_ALG_ID  2
@@ -25,7 +24,11 @@ namespace ara
         {
             class CryptoPP_CryptoProvider : public CryptoProvider
             {
-            public:                             
+            public: 
+                AlgId ConvertToAlgId (ara::core::StringView primitiveName) const noexcept override;
+
+	            ara::core::Result<ara::core::String> ConvertToAlgName (AlgId algId) const noexcept override;
+                            
                 ara::core::Result<HashFunctionCtx::Uptr> CreateHashFunctionCtx(AlgId algId) noexcept override;
 
                 ara::core::Result<MessageAuthnCodeCtx::Uptr> CreateMessageAuthCodeCtx (AlgId algId) noexcept override;
@@ -45,6 +48,13 @@ namespace ara
                                                                           bool isSession=false, 
 																	      bool isExportable=false
 																	) noexcept override;
+                
+                ara::core::Result<SymmetricKey::Uptrc> GenerateSymmetricKey ( AlgId algId, 
+																		  AllowedUsageFlags allowedUsage,
+																		  bool isSession=true,
+																		  bool isExportable=false
+																		) noexcept override;
+                                                                
             };
         }
     }

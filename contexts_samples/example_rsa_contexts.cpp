@@ -60,7 +60,7 @@ int main()
         // get decrypted data
         auto decryptedDataVector = _result_decryptorPrivateCtx.Value();
 
-        printVector("recovered text: ", decryptedDataVector);
+        printVector(decryptedDataVector, "recovered text: ");
     }
     else
     {

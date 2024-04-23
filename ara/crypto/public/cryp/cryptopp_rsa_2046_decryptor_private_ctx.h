@@ -20,45 +20,37 @@ namespace ara
                 const CryptoPrimitiveId::AlgId mAlgId = 3;
 
             private:
-            
                 /*****************  attributes **********************/
                 CryptoPP_RSA_PrivateKey *mKey;
                 CryptoPP_CryptoPrimitiveId mPId;
                 helper::setKeyState mSetKeyState;
 
             public:
-                using Uptr = std::unique_ptr<CryptoPP_RSA_DecryptorPrivateCtx>;
-
                 /***************** constructor **********************/
-                
                 CryptoPP_RSA_DecryptorPrivateCtx();
 
 
-
                 /****** override pure virtual functions related to CryptoContext *****/
-                
                 /*
                     Return CryptoPrimitivId instance containing instance identification
                 */
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
+                CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
 
                 /*
                     Check if the crypto context is already initialized and ready to use. 
                     It checks all required values, including: key value, IV/seed, etc
                 */
-                virtual bool IsInitialized () const noexcept override;
-
+                bool IsInitialized () const noexcept override;
 
 
                 /***** override pure virtual functions inherited related DecryptorPrivateCtx *****/
-                
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
+                ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
                                                                                             bool suppressPadding=false
                                                                                             ) const noexcept override;
 
-                virtual ara::core::Result<void> SetKey (const PrivateKey &key) noexcept override;
+                ara::core::Result<void> SetKey (const PrivateKey &key) noexcept override;
                 
-                //virtual ara::core::Result<void> Reset () noexcept override;
+                // ara::core::Result<void> Reset () noexcept override;
             };
         }
     }

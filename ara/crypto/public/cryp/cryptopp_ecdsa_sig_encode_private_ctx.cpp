@@ -54,14 +54,14 @@ namespace ara
             {
                 if(mSetKeyState == helper::setKeyState::NOT_CALLED) // return error
                 {   
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
                 try 
                 {
                     CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(mKey->getValue());
 
                     std::string plain(in.begin(), in.end());
-                    std::cout << "Input Data: " << plain << std::endl;
+                    //std::cout << "Input Data: " << plain << std::endl;
 
                     // Initialize a random number generator
                     CryptoPP::AutoSeededRandomPool prng;
@@ -97,7 +97,7 @@ namespace ara
                 catch (const std::bad_cast& e) // return error
                 {
                     // Failed to cast PrivateKey to CryptoPP_ECDSA_PrivateKey
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject, NoSupplementaryDataForErrorDescription));
                 }
             }
 

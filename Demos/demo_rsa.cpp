@@ -1,15 +1,14 @@
-#include "../ara/crypto/public/cryp/cryobj/cryptopp_rsa_public_key.h"
-#include "../ara/crypto/public/cryp/cryptopp_rsa_2046_encryptor_public_ctx.h"
-#include "../ara/crypto/public/cryp/cryobj/cryptopp_rsa_private_key.h"
-#include "../ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.h"
-#include "../ara/crypto/helper/print.h"
 #include "../ara/crypto/private/common/entry_point.h"
-#include "../ara/core/instance_specifier.h"
+#include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
 using namespace ara::crypto::helper;
 using namespace ara::core;
 using namespace ara::crypto;
+
+#define example_string 1
+#define example_vector 2
+#define example example_vector
 
 int main()
 {
@@ -34,8 +33,7 @@ int main()
         return 0;
     }
     auto myPrivateKey = std::move(res_genPrKey).Value();
-
-
+    
     /**************************************************************
     *    getting public key from private key object               *
     **************************************************************/
@@ -46,15 +44,7 @@ int main()
         return 0;
     }
     auto myPublicKey = std::move(res_getPkKey).Value();
-
-
-    /****************************************
-    *          load keys (not autosar)      *
-    ****************************************/
-    //PublicKey::Uptrc myPublicKey = CryptoPP_RSA_PublicKey::createInstance();
-    //PrivateKey::Uptrc myPrivateKey = CryptoPP_RSA_PrivateKey::createInstance();
-
-
+    
     /****************************************
     *          create rsa contexts          *
     ****************************************/
@@ -70,14 +60,17 @@ int main()
     auto myEncryptorPublicCtx = std::move(res_reateEncryptorPublicCtx).Value();
     auto myDecryptorPrivateCtx = std::move(res_reateDecryptorPrivateCtx).Value();
 
-
     /**************************************
     *        using EncryptorPublicCtx     *  
     ***************************************/    
     myEncryptorPublicCtx->SetKey(*myPublicKey);
     
-    std::string str = "ahmed mahmoud";
+#if(example == example_string)
+    std::string str = "ahmed mahmoud";    
     ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
+#elif(example == example_vector)
+    std::vector<uint8_t> instr = {1,2,3,4,5,6,7,8};
+#endif
 
     auto _result = myEncryptorPublicCtx->ProcessBlock(instr);
     if(_result.HasValue())
@@ -87,7 +80,8 @@ int main()
         // get encrypted data
         auto encryptedDataVector = _result.Value();
         
-        printHex(encryptedDataVector);  // vector
+        printHex(instr, "Message: ");
+        printHex(encryptedDataVector, "Encrypted Message: "); 
     }
     else
     {
@@ -113,7 +107,10 @@ int main()
         // get decrypted data
         auto decryptedDataVector = _result_decryptorPrivateCtx.Value();
 
-        printVector("recovered text: ", decryptedDataVector);
+#if(example == example_string)       
+        printVector(decryptedDataVector, "Decrypted Message: ");
+#endif
+        printHex(decryptedDataVector, "Decrypted Message: "); 
     }
     else
     {

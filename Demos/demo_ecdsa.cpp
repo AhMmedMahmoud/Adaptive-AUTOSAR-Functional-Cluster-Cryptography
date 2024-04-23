@@ -1,15 +1,14 @@
-#include "../ara/crypto/public/cryp/cryobj/cryptopp_ecdsa_public_key.h"
-#include "../ara/crypto/public/cryp/cryptopp_ecdsa_sig_encode_private_ctx.h"
-#include "../ara/crypto/public/cryp/cryobj/cryptopp_ecdsa_public_key.h"
-#include "../ara/crypto/public/cryp/cryptopp_ecdsa_msg_recovery_public_ctx.h"
-#include "../ara/crypto/helper/print.h"
 #include "../ara/crypto/private/common/entry_point.h"
-#include "../ara/core/instance_specifier.h"
+#include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
 using namespace ara::crypto::helper;
 using namespace ara::core;
 using namespace ara::crypto;
+
+#define example_string 1
+#define example_vector 2
+#define example example_string
 
 int main()
 {
@@ -23,7 +22,6 @@ int main()
         std::cout << "failed to load crypto provider\n";
         return 0;
     }
-
 
     /**************************************************************
     *    using loaded crypto provider to generate private key     *
@@ -50,13 +48,6 @@ int main()
 
 
     /****************************************
-    *          load keys (not autosar)      *
-    ****************************************/
-    //PrivateKey::Uptrc myPrivateKey = CryptoPP_ECDSA_PrivateKey::createInstance();
-    //PublicKey::Uptrc myPublicKey = CryptoPP_ECDSA_PublicKey::createInstance();
-
-
-    /****************************************
     *          create ecdsa contexts        *
     ****************************************/
     auto res_createSigEncodePrivateCtx = myProvider->CreateSigEncodePrivateCtx(ECDSA_SHA_256_ALG_ID);
@@ -75,11 +66,14 @@ int main()
     /****************************************
     *        using SigEncodePrivateCtx      *
     ****************************************/
-
     mySigEncodePrivateCtx->SetKey(*myPrivateKey);
-    
+
+#if(example == example_string)
     std::string str = "ahmed mahmoud";    
     ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
+#elif(example == example_vector)
+    std::vector<uint8_t> instr = {1,2,3,4,5,6,7,8};
+#endif
 
     auto _result = mySigEncodePrivateCtx->SignAndEncode(instr);
     if(_result.HasValue())
@@ -89,8 +83,8 @@ int main()
         // get messagePlusSignature
         auto messagePlusSignature = _result.Value();
         
-        printHex(str);                   // string
-        printHex(messagePlusSignature);  // vector
+        printHex(instr, "Message: ");                 
+        printHex(messagePlusSignature, "SignedMessage: ");  
     }
     else
     {
@@ -105,8 +99,7 @@ int main()
 
     /****************************************
     *       using  MsgRecoveryPublicCtx     *
-    ****************************************/
-    
+    ****************************************/  
     myMsgRecoveryPublicCtx->SetKey(*myPublicKey);
     
     // get messagePlusSignature
@@ -121,19 +114,18 @@ int main()
         
         // get recoveryMessage
         auto recoveryMessage = _result2.Value();
-        
-        printVector("recovery message: ",recoveryMessage);
-        
-        printHex(recoveryMessage);  // vector
+
+#if(example == example_string)       
+        printVector(recoveryMessage, "Verified Message: ");
+#endif
+        printHex(recoveryMessage, "Verified Message: ");  // vector
     }
     else
     {
         std::cout << "--- error ---\n";
         ara::core::ErrorCode error = _result2.Error();
         std::cout << error.Message() << std::endl;
-        return 0;
     }
-
 
     return 0;
 }

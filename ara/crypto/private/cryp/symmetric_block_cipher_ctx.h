@@ -20,9 +20,7 @@ namespace ara
                 
                 
                 /********************** pure virtual functions *****************/
-                /*
-                    takes key and type of processing we want (type of operation ex:Encryption or decryption)
-                */
+                // takes key and type of processing we want (type of operation ex:Encryption or decryption)
                 virtual ara::core::Result<void> SetKey ( const SymmetricKey &key,
                                                         CryptoTransform transform=CryptoTransform::kEncrypt
                                                     ) noexcept=0;
@@ -31,9 +29,7 @@ namespace ara
                 virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
                 
                 
-                /* 
-                    takes the data that we want to process (preform an operation on it)
-                */
+                //  takes the data that we want to process (preform an operation on it)
                 virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlock ( ReadOnlyMemRegion in,
                                                                                             bool suppressPadding=false
                                                                                             ) const noexcept=0;

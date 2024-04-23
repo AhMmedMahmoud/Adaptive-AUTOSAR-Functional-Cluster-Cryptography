@@ -22,27 +22,24 @@ namespace ara
                 CryptoPP_HMAC_SHA256_Signature() {}
                 
                 /************* override pure virtual functions related to Signature *************/
-                virtual CryptoPrimitiveId::AlgId GetHashAlgId () const noexcept override
+                CryptoPrimitiveId::AlgId GetHashAlgId () const noexcept override
                 {
                     return mAlgId;
                 }
                 
-                /*
-                Get the hash size required by current signature algorithm in byte
-                */
-                virtual std::size_t GetRequiredHashSize () const noexcept override
+                // Get the hash size required by current signature algorithm in byte
+                std::size_t GetRequiredHashSize () const noexcept override
                 {
                     return mHashSize;
                 }
                 
-
-                // not autosar
-                void setValue(CryptoPP::SecByteBlock val){
-                    mValue = val;
-                }
-
+                /************ getter and setter ***********/
                 std::vector<std::uint8_t> getValue() const{
                     return std::vector<std::uint8_t>(mValue.begin(), mValue.end());
+                }
+
+                void setValue(CryptoPP::SecByteBlock val){
+                    mValue = val;
                 }
             };
         }

@@ -13,13 +13,10 @@ namespace ara
             CryptoPP_SHA_256_HashFunctionCtx::CryptoPP_SHA_256_HashFunctionCtx(): HashFunctionCtx(),
                                                                                   mPId(mAlgId,mAlgName),
                                                                                   seq{helper::calling::START_IS_NOT_CALLED}
-            {
-                
-            }
+            {}
 
 
             /****** override pure virtual functions related to CryptoContext *****/
-
             CryptoPrimitiveId::Uptr CryptoPP_SHA_256_HashFunctionCtx::GetCryptoPrimitiveId () const noexcept
             {
                 return std::make_unique<CryptoPP_CryptoPrimitiveId>(mPId);
@@ -36,7 +33,7 @@ namespace ara
             ara::core::Result<void> CryptoPP_SHA_256_HashFunctionCtx::Start (ReadOnlyMemRegion iv) noexcept
             {
                 // return error
-                return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnsupported,5));
+                return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnsupported, NoSupplementaryDataForErrorDescription));
             }
 
             ara::core::Result<void> CryptoPP_SHA_256_HashFunctionCtx::Start () noexcept
@@ -51,7 +48,7 @@ namespace ara
             {  
                 if(seq == helper::calling::START_IS_NOT_CALLED) // return error
                 {
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted, NoSupplementaryDataForErrorDescription));
                 }
 
                 seq = helper::calling::UPDATE_IS_CALLED;
@@ -64,7 +61,7 @@ namespace ara
             {
                 if(seq == helper::calling::START_IS_NOT_CALLED)
                 {
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted, NoSupplementaryDataForErrorDescription));
                 }
 
                 seq = helper::calling::UPDATE_IS_CALLED;
@@ -77,7 +74,7 @@ namespace ara
             {
                 if(seq == helper::calling::START_IS_NOT_CALLED) // return error
                 {
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted, NoSupplementaryDataForErrorDescription));
                 }
                 else if(seq == helper::calling::UPDATE_IS_CALLED)
                 {
@@ -106,7 +103,7 @@ namespace ara
                 }
                 else // return error
                 {
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidUsageOrder,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidUsageOrder, NoSupplementaryDataForErrorDescription));
                 }
             }
 
@@ -124,7 +121,7 @@ namespace ara
                 }
                 else // return error
                 {
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kProcessingNotStarted, NoSupplementaryDataForErrorDescription));
                 }
             }
             

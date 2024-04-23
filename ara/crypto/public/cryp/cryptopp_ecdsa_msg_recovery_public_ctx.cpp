@@ -55,7 +55,7 @@ namespace ara
             {
                 if(mSetKeyState == helper::setKeyState::NOT_CALLED) // return error
                 {   
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
                 try 
                 {
@@ -73,7 +73,7 @@ namespace ara
                     else
                     {
                         std::cout << "not verfied\n";
-                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kAuthTagNotValid,5));                    
+                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kAuthTagNotValid, NoSupplementaryDataForErrorDescription));                    
                     }
                 } 
                 catch (const CryptoPP::Exception& e) {
@@ -97,7 +97,7 @@ namespace ara
                 catch (const std::bad_cast& e) // return error
                 {
                     // Failed to cast PrivateKey to CryptoPP_ECDSA_PrivateKey
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject, NoSupplementaryDataForErrorDescription));
                 }
             }
 

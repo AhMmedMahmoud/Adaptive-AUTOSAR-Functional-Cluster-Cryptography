@@ -177,10 +177,14 @@ add_executable(demo_hash Demos/demo_hash.cpp)
 target_link_libraries(demo_hash Crypto)
 target_link_libraries(demo_hash ${Crypto++_LIBRARIES})
 
-add_executable(demo_ecdsa Demos/demo_ecdsa.cpp)
-target_link_libraries(demo_ecdsa Crypto)
-target_link_libraries(demo_ecdsa ${Crypto++_LIBRARIES})
+add_executable(demo_aes Demos/demo_aes.cpp)
+target_link_libraries(demo_aes Crypto)
+target_link_libraries(demo_aes ${Crypto++_LIBRARIES})
 
 add_executable(demo_rsa Demos/demo_rsa.cpp)
 target_link_libraries(demo_rsa Crypto)
 target_link_libraries(demo_rsa ${Crypto++_LIBRARIES})
+
+add_executable(demo_ecdsa Demos/demo_ecdsa.cpp)
+target_link_libraries(demo_ecdsa Crypto)
+target_link_libraries(demo_ecdsa ${Crypto++_LIBRARIES})

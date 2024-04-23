@@ -1,16 +1,10 @@
-#include<iostream>
-#include "../ara/crypto/public/cryp/cryptopp_crypto_provider.h"
-#include "../ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.h"
-#include "../ara/crypto/private/common/mem_region.h"
-#include "../ara/crypto/helper/print.h"
 #include "../ara/crypto/private/common/entry_point.h"
-#include "../ara/core/instance_specifier.h"
+#include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
 using namespace ara::crypto::helper;
 using namespace ara::core;
 using namespace ara::crypto;
-
 
 int main()
 {
@@ -24,7 +18,6 @@ int main()
         std::cout << "failed to load crypto provider\n";
         return 0;
     }
-
 
     /****************************************
     *          create sha-256 context       *

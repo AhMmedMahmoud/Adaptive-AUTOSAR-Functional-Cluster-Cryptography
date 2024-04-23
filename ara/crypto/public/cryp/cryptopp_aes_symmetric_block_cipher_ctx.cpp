@@ -14,8 +14,7 @@ namespace ara
             CryptoPP::ECB_Mode<CryptoPP::AES>::Decryption decryptor;
 
 
-            /***************** constructor **********************/
-            
+            /***************** constructor **********************/         
             CryptoPP_AES_SymmetricBlockCipherCtx::CryptoPP_AES_SymmetricBlockCipherCtx(): mKey(nullptr),
                                                     mTransform(CryptoTransform::kEncrypt),
                                                     mPId(mAlgId,mAlgName),
@@ -27,9 +26,8 @@ namespace ara
 
             /****** override pure virtual functions related to CryptoContext *****/
 
-            /*
-                Return CryptoPrimitivId instance containing instance identification
-            */
+            
+            // Return CryptoPrimitivId instance containing instance identification
             CryptoPrimitiveId::Uptr CryptoPP_AES_SymmetricBlockCipherCtx::GetCryptoPrimitiveId () const noexcept
             {                    
                 return std::make_unique<CryptoPP_CryptoPrimitiveId>(mPId);
@@ -58,7 +56,7 @@ namespace ara
                 if(transform != CryptoTransform::kEncrypt && 
                     transform != CryptoTransform::kDecrypt) // return error
                 {
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUsageViolation,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUsageViolation, NoSupplementaryDataForErrorDescription));
                 }
 
                 try
@@ -78,7 +76,7 @@ namespace ara
                 catch (const std::bad_cast& e) // return error
                 {
                     // Failed to cast SymmetricKey to CryptoPP_AES_SymmetricKey
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject, NoSupplementaryDataForErrorDescription));
                 }
             }
 
@@ -94,7 +92,7 @@ namespace ara
             {
                 if(mSetKeyState == helper::setKeyState::NOT_CALLED) // return error
                 {   
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
                 else if(mTransform == CryptoTransform::kEncrypt)
                 {
@@ -132,7 +130,7 @@ namespace ara
                     return ara::core::Result<CryptoTransform>(mTransform);
                 else // return error
                 {
-                    return ara::core::Result<CryptoTransform>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
+                    return ara::core::Result<CryptoTransform>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
             }
             

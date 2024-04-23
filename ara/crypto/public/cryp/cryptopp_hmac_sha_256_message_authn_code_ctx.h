@@ -42,42 +42,40 @@ namespace ara
 
 
             public:  
-                /********************** constructor **************************/
-                
+                /********************** constructor **************************/            
                 CryptoPP_HMAC_SHA_256_MessageAuthnCodeCtx();
 
 
                 /****** override pure virtual functions related to CryptoContext *****/
+                CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
 
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override;
-
-                virtual bool IsInitialized () const noexcept override;
+                bool IsInitialized () const noexcept override;
 
 
                 /***** override pure virtual functions inherited related HashFunctionCtx *****/
+                ara::core::Result<void> SetKey ( const SymmetricKey &key, 
+                                                 CryptoTransform transform=CryptoTransform::kMacGenerate) noexcept  override;
 
-                //virtual DigestService::Uptr GetDigestService () const noexcept override; 
+                ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnlyMemRegion()) noexcept  override;
 
-                virtual ara::core::Result<void> SetKey ( const SymmetricKey &key, 
-                                                        CryptoTransform transform=CryptoTransform::kMacGenerate) noexcept  override;
+                // ara::core::Result<void> Start (const SecretSeed &iv) noexcept  override;
 
-                virtual ara::core::Result<void> Start (ReadOnlyMemRegion iv=ReadOnlyMemRegion()) noexcept  override;
+                // ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept  override;
 
-                //virtual ara::core::Result<void> Start (const SecretSeed &iv) noexcept  override;
+                ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept  override;
 
-                //virtual ara::core::Result<void> Update (const RestrictedUseObject &in) noexcept  override;
-
-                virtual ara::core::Result<void> Update (ReadOnlyMemRegion in) noexcept  override;
-
-                virtual ara::core::Result<void> Update (std::uint8_t in) noexcept override;
+                ara::core::Result<void> Update (std::uint8_t in) noexcept override;
                 
-                virtual ara::core::Result<Signature::Uptrc> Finish (bool makeSignatureObject=false) noexcept  override;
+                ara::core::Result<Signature::Uptrc> Finish (bool makeSignatureObject=false) noexcept  override;
 
-                virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest (std::size_t offset=0) const noexcept  override;
+                ara::core::Result<ara::core::Vector<ara::core::Byte> > GetDigest (std::size_t offset=0) const noexcept  override;
 
-                virtual ara::core::Result<bool> Check (const Signature &expected) const noexcept  override;
+                ara::core::Result<bool> Check (const Signature &expected) const noexcept  override;
 
-                // virtual ara::core::Result<void> Reset () noexcept  override;
+
+                // DigestService::Uptr GetDigestService () const noexcept override; 
+
+                // ara::core::Result<void> Reset () noexcept  override;
             };
         }
     }

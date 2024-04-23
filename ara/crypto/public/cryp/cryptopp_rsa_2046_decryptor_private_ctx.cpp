@@ -10,8 +10,7 @@ namespace ara
         {   
             const std::string CryptoPP_RSA_DecryptorPrivateCtx::mAlgName("rsa_2046");
 
-            /***************** constructor **********************/
-            
+            /***************** constructor **********************/  
             CryptoPP_RSA_DecryptorPrivateCtx::CryptoPP_RSA_DecryptorPrivateCtx(): mKey(nullptr),
                                                                                   mPId(mAlgId,mAlgName),
                                                                                   mSetKeyState(helper::setKeyState::NOT_CALLED)
@@ -20,7 +19,6 @@ namespace ara
 
 
             /****** override pure virtual functions related to CryptoContext *****/
-
             /*
                 Return CryptoPrimitivId instance containing instance identification
             */   
@@ -50,7 +48,7 @@ namespace ara
             {
                 if(mSetKeyState == helper::setKeyState::NOT_CALLED) // return error
                 {   
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext,5));
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
 
                 try 
@@ -92,7 +90,7 @@ namespace ara
                 catch (const std::bad_cast& e) // return error
                 {
                     // Failed to cast PrivateKey to CryptoPP_RSA_PrivateKey
-                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject,5));
+                    return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleObject, NoSupplementaryDataForErrorDescription));
                 }
             }
             

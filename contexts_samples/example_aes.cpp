@@ -47,7 +47,7 @@ int main()
             // get decrypted data
             auto decryptedDataVector = _result2.Value();
 
-            printVector("recovered text: ", decryptedDataVector);
+            printVector(decryptedDataVector, "recovered text: ");
 
             printHex(decryptedDataVector);
         }
