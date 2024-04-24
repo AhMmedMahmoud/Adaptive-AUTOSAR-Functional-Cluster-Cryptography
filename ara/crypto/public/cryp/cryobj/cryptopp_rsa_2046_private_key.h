@@ -80,7 +80,6 @@ namespace ara
 
                 virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
 
-
                 virtual bool IsExportable () const noexcept override
 
                 virtual bool IsSession () const noexcept override
