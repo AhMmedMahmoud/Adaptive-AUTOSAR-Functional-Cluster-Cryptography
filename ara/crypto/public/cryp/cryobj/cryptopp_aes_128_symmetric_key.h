@@ -79,9 +79,7 @@ namespace ara
                 COIdentifier HasDependence () const noexcept override
 
                 CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept override
-              
-                std::size_t GetPayloadSize () const noexcept override
-                
+                              
                 bool IsExportable () const noexcept override
                 
                 bool IsSession () const noexcept override
