@@ -1,15 +1,10 @@
 #ifndef CRYPTO_OBJECT_H
 #define CRYPTO_OBJECT_H
 
-#include "../../common/base_id_types.h"
 #include "../../common/crypto_object_uid.h"
+#include "../../common/crypto_error_domain.h"
 #include "../../../../core/result.h"
 #include "crypto_primitive_id.h"
-#include "../../common/crypto_error_domain.h"
-
-#include <memory>
-
-
 
 namespace ara
 {
@@ -36,11 +31,12 @@ namespace ara
                 using Uptrc = std::unique_ptr<const CryptoObject>;
 
                 
+                virtual std::size_t GetPayloadSize () const noexcept=0;
+
                 /*
                 //Downcast and move unique smart pointer from the generic CryptoObject interface 
                 // to concrete derived object.
-                
-                /*
+ 
                 template <class ConcreteObject>
                 static ara::core::Result<typename ConcreteObject::Uptrc> Downcast (CryptoObject::Uptrc &&object) noexcept
                 {
@@ -54,18 +50,13 @@ namespace ara
                         return ara::core::Result<typename ConcreteObject::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kBadObjectType,5));
                     }
                 }
-                */
-
-                /*
-                
+        
                 virtual COIdentifier GetObjectId () const noexcept=0;
 
                 virtual COIdentifier HasDependence () const noexcept=0;
            
                 virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
-                
-                virtual std::size_t GetPayloadSize () const noexcept=0;
-                
+                              
                 virtual bool IsExportable () const noexcept=0;
                 
                 virtual bool IsSession () const noexcept=0;
@@ -79,8 +70,6 @@ namespace ara
 
                 CryptoObject& operator= (CryptoObject &&other)=default;
                 
-
-
                 /********** tell compiler to generate default deconstructor **********/
                 virtual ~CryptoObject () noexcept=default;
 

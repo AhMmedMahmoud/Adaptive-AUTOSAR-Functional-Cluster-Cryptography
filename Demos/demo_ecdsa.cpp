@@ -55,7 +55,7 @@ int main()
 
     if(!res_createSigEncodePrivateCtx.HasValue() && !res_createMsgRecoveryPublicCtx.HasValue())
     {
-        std::cout << "failed two create ecdsa contexts\n";
+        std::cout << "failed to create ecdsa contexts\n";
         return 0;
     }
     

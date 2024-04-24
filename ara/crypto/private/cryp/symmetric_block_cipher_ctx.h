@@ -1,11 +1,10 @@
 #ifndef SYMMETRIC_BLOCK_CIPHER_CTX_H
 #define SYMMETRIC_BLOCK_CIPHER_CTX_H
 
-#include "../../../core/result.h"
 #include "../../../core/utility.h"
+#include "../common/mem_region.h"
 #include "crypto_context.h"
 #include "cryobj/symmetric_key.h"
-#include "../common/mem_region.h"
 
 namespace ara
 {

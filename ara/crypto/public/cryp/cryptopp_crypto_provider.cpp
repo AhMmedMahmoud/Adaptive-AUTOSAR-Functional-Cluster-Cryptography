@@ -91,7 +91,7 @@ namespace ara
             {
                 if(algId == AES_ECB_128_ALG_ID)
                 {
-                    return ara::core::Result<SymmetricBlockCipherCtx::Uptr>(std::make_unique<CryptoPP_AES_SymmetricBlockCipherCtx>());
+                    return ara::core::Result<SymmetricBlockCipherCtx::Uptr>(std::make_unique<CryptoPP_AES_ECD_128_SymmetricBlockCipherCtx>());
                 }
                 else if(algId == RSA_2048_ALG_ID ||
                     algId == SHA_256_ALG_ID ||
@@ -153,7 +153,7 @@ namespace ara
             {
                 if(algId == ECDSA_SHA_256_ALG_ID)
                 {
-                    return ara::core::Result<MsgRecoveryPublicCtx::Uptr>(std::make_unique<CryptoPP_ECDSA_MsgRecoveryPublicCtx>());
+                    return ara::core::Result<MsgRecoveryPublicCtx::Uptr>(std::make_unique<CryptoPP_ECDSA_SHA_256_MsgRecoveryPublicCtx>());
                 }
                 else if(algId == AES_ECB_128_ALG_ID ||
                     algId == SHA_256_ALG_ID ||
@@ -173,7 +173,7 @@ namespace ara
             {
                 if(algId == ECDSA_SHA_256_ALG_ID)
                 {
-                    return ara::core::Result<SigEncodePrivateCtx::Uptr>(std::make_unique<CryptoPP_ECDSA_SigEncodePrivateCtx>());
+                    return ara::core::Result<SigEncodePrivateCtx::Uptr>(std::make_unique<CryptoPP_ECDSA_SHA_256_SigEncodePrivateCtx>());
                 }
                 else if(algId == AES_ECB_128_ALG_ID ||
                     algId == SHA_256_ALG_ID ||
@@ -230,7 +230,7 @@ namespace ara
                         CryptoPP::RSA::PrivateKey myPrivateKey(parameters);  // Create RSA private key using the generated parameters
 
                         
-                        std::unique_ptr<CryptoPP_RSA_PrivateKey> ptr = std::make_unique<CryptoPP_RSA_PrivateKey>();
+                        std::unique_ptr<CryptoPP_RSA_2046_PrivateKey> ptr = std::make_unique<CryptoPP_RSA_2046_PrivateKey>();
                     
                         ptr->setValue(myPrivateKey);
 
@@ -261,22 +261,69 @@ namespace ara
 																		  bool isExportable
 																		) noexcept
             {
-                CryptoPP::AutoSeededRandomPool rng; 
-                CryptoPP::SecByteBlock mySymmetricKey(CryptoPP::AES::DEFAULT_KEYLENGTH);
-                rng.GenerateBlock(mySymmetricKey, mySymmetricKey.size());
+                if(algId == AES_ECB_128_ALG_ID)
+                {
+                    if(allowedUsage == kAllowKdfMaterialAnyUsage)
+                    {
+                        CryptoPP::AutoSeededRandomPool rng; 
+                        CryptoPP::SecByteBlock mySymmetricKey(CryptoPP::AES::DEFAULT_KEYLENGTH);
+                        rng.GenerateBlock(mySymmetricKey, mySymmetricKey.size());
 
-                std::cout << "Random AES key: ";
-                for (size_t i = 0; i < mySymmetricKey.size(); i++) {
-                    printf("%02x", mySymmetricKey[i]);
+                        std::cout << "Random AES key: ";
+                        for (size_t i = 0; i < mySymmetricKey.size(); i++) {
+                            printf("%02x", mySymmetricKey[i]);
+                        }
+                        std::cout << std::endl;
+
+
+                        std::unique_ptr<CryptoPP_AES_SymmetricKey> ptr = std::make_unique<CryptoPP_AES_SymmetricKey>();
+                            
+                        ptr->setValue(mySymmetricKey);
+
+                        return ara::core::Result<SymmetricKey::Uptrc>(std::move(ptr));
+                    }
+                    else
+                    {
+                      return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleArguments, NoSupplementaryDataForErrorDescription));
+                    }
                 }
-                std::cout << std::endl;
+                else if(algId == HMAC_SHA_256_ALG_ID)
+                {
+                    if(allowedUsage == kAllowSignature)
+                    {
+                        CryptoPP::AutoSeededRandomPool rng; 
+                        CryptoPP::SecByteBlock mySymmetricKey(CryptoPP::AES::DEFAULT_KEYLENGTH);
+                        rng.GenerateBlock(mySymmetricKey, mySymmetricKey.size());
+
+                        std::cout << "Random AES key: ";
+                        for (size_t i = 0; i < mySymmetricKey.size(); i++) {
+                            printf("%02x", mySymmetricKey[i]);
+                        }
+                        std::cout << std::endl;
 
 
-                std::unique_ptr<CryptoPP_AES_SymmetricKey> ptr = std::make_unique<CryptoPP_AES_SymmetricKey>();
-                    
-                ptr->setValue(mySymmetricKey);
+                        std::unique_ptr<CryptoPP_HMAC_SHA_256_SymmetricKey> ptr = std::make_unique<CryptoPP_HMAC_SHA_256_SymmetricKey>();
+                            
+                        ptr->setValue(mySymmetricKey);
 
-                return ara::core::Result<SymmetricKey::Uptrc>(std::move(ptr));
+                        return ara::core::Result<SymmetricKey::Uptrc>(std::move(ptr));
+                    }
+                    else
+                    {
+                      return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleArguments, NoSupplementaryDataForErrorDescription));
+                    }
+                }
+                else if(algId == RSA_2048_ALG_ID ||
+                    algId == SHA_256_ALG_ID ||
+                    algId == ECDSA_SHA_256_ALG_ID
+                 )
+                {
+                    return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidArgument, NoSupplementaryDataForErrorDescription));
+                }
+                else
+                {
+                    return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                }
             }                                                            
             
         }

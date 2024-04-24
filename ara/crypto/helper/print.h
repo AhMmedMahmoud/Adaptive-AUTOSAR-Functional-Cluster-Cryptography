@@ -6,7 +6,6 @@
 #include <sstream>
 #include <vector>
 
-
 namespace ara
 {
     namespace crypto

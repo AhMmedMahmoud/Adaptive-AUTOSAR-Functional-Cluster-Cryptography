@@ -50,29 +50,35 @@ namespace ara
                 {   
                     return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
-
-                try 
+                else if(!in.size())
                 {
-                    CryptoPP::RSAES_OAEP_SHA_Decryptor decryptor(mKey->getValue());
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                }
+                else
+                {
+                    if(suppressPadding && in.size() != 2046)
+                    {
+                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                    }
+                    else
+                    {
+                        CryptoPP::RSAES_OAEP_SHA_Decryptor decryptor(mKey->getValue());
 
-                    std::string cipher;                
-                    std::string plain(in.begin(), in.end());
-                    //std::cout << "Input Data: " << plain << std::endl;
+                        std::string outputString;                
+                        std::string inputString(in.begin(), in.end());
 
-                    // Initialize a random number generator
-                    CryptoPP::AutoSeededRandomPool prng;
+                        // Initialize a random number generator
+                        CryptoPP::AutoSeededRandomPool prng;
 
-                    CryptoPP::StringSource( plain,
-                                true,
-                                new CryptoPP::PK_DecryptorFilter(prng, decryptor, new CryptoPP::StringSink(cipher))
-                                );
+                        CryptoPP::StringSource( 
+                                    inputString,
+                                    true,
+                                    new CryptoPP::PK_DecryptorFilter(prng, decryptor, new CryptoPP::StringSink(outputString))
+                        );
 
-                    ara::core::Vector<ara::core::Byte> decryptedData(cipher.begin(), cipher.end());
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>(decryptedData);
-                } 
-                catch (const CryptoPP::Exception& e) {
-                    std::cerr << "Crypto++ exception: " << e.what() << std::endl;
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
+                        ara::core::Vector<ara::core::Byte> outputVector(outputString.begin(), outputString.end());
+                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>(outputVector);
+                    }
                 }
             }
 
@@ -80,8 +86,8 @@ namespace ara
             {
                 try
                 {
-                    const CryptoPP_RSA_PrivateKey& rsaKey = dynamic_cast<const CryptoPP_RSA_PrivateKey&>(key);
-                    mKey = new CryptoPP_RSA_PrivateKey(rsaKey);
+                    const CryptoPP_RSA_2046_PrivateKey& rsaKey = dynamic_cast<const CryptoPP_RSA_2046_PrivateKey&>(key);
+                    mKey = new CryptoPP_RSA_2046_PrivateKey(rsaKey);
                 
                     mSetKeyState = helper::setKeyState::CALLED;
                     

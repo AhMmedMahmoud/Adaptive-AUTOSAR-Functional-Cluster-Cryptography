@@ -53,7 +53,7 @@ int main()
 
     if(!res_reateEncryptorPublicCtx.HasValue() && !res_reateDecryptorPrivateCtx.HasValue())
     {
-        std::cout << "failed two create rsa contexts\n";
+        std::cout << "failed to create rsa contexts\n";
         return 0;
     }
     

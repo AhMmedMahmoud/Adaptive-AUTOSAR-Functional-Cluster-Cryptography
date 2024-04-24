@@ -4,11 +4,11 @@
 #include "../../private/cryp/crypto_provider.h"
 #include "cryptopp_sha_256_hash_function_ctx.h"
 #include "cryptopp_hmac_sha_256_message_authn_code_ctx.h"
-#include "cryptopp_aes_symmetric_block_cipher_ctx.h"
+#include "cryptopp_aes_ecb_128_symmetric_block_cipher_ctx.h"
 #include "cryptopp_rsa_2046_encryptor_public_ctx.h"
 #include "cryptopp_rsa_2046_decryptor_private_ctx.h"
-#include "cryptopp_ecdsa_sig_encode_private_ctx.h"
-#include "cryptopp_ecdsa_msg_recovery_public_ctx.h"
+#include "cryptopp_ecdsa_sha_256_sig_encode_private_ctx.h"
+#include "cryptopp_ecdsa_sha_256_msg_recovery_public_ctx.h"
 
 #define SHA_256_ALG_ID       1
 #define HMAC_SHA_256_ALG_ID  2

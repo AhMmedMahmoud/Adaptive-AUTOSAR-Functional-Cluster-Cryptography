@@ -1,26 +1,14 @@
 #ifndef CRYPTO_PROVIDER_H
 #define CRYPTO_PROVIDER_H
 
-#include "../common/base_id_types.h"
-#include "../common/mem_region.h"
-
-#include "../../../core/result.h"
-#include "../../../core/vector.h"
-#include "../../../core/utility.h"
 #include "../../../core/string.h"
-#include "crypto_context.h"
-#include "cryobj/crypto_primitive_id.h"
-#include "cryobj/private_key.h"
-#include "cryobj/public_key.h"
-#include "cryobj/signature.h"
-
-#include "decryptor_private_ctx.h"
-#include "encryptor_public_ctx.h"
 #include "hash_function_ctx.h"
 #include "message_authn_code_ctx.h"
+#include "symmetric_block_cipher_ctx.h"
+#include "encryptor_public_ctx.h"
+#include "decryptor_private_ctx.h"
 #include "msg_recovery_public_ctx.h"
 #include "sig_encode_private_ctx.h"
-#include "symmetric_block_cipher_ctx.h"
 
 namespace ara
 {

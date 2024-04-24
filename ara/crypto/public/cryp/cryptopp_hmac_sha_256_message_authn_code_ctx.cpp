@@ -51,8 +51,8 @@ namespace ara
 
                 try
                 {
-                    const CryptoPP_AES_SymmetricKey& aesKey = dynamic_cast<const CryptoPP_AES_SymmetricKey&>(key);
-                    mKey = new CryptoPP_AES_SymmetricKey(aesKey);
+                    const CryptoPP_HMAC_SHA_256_SymmetricKey& aesKey = dynamic_cast<const CryptoPP_HMAC_SHA_256_SymmetricKey&>(key);
+                    mKey = new CryptoPP_HMAC_SHA_256_SymmetricKey(aesKey);
                     hmac.SetKey(mKey->getValue(), mKey->getValue().size());
 
                     mTransform = transform;

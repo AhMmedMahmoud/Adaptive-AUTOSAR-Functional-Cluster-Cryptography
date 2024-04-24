@@ -3,17 +3,7 @@
 
 #include "../../private/cryp/message_authn_code_ctx.h"
 #include "cryobj/cryptopp_crypto_primitive_id.h"
-#include "cryobj/cryptopp_aes_symmetric_key.h"
-
-#include <cryptopp/cryptlib.h>
-#include <cryptopp/filters.h>
-#include <cryptopp/hex.h>
-#include <cryptopp/sha.h>
-#include <cryptopp/secblock.h>
-#include "cryptopp/files.h"
-#include <iostream>
-#include <sstream>
-#include <iomanip>
+#include "cryobj/cryptopp_hmac_sha_256_symmetric_key.h"
 #include "../../helper/state.h"
 
 namespace ara
@@ -36,7 +26,7 @@ namespace ara
                 CryptoPP::SecByteBlock digest;   
                 CryptoPP_CryptoPrimitiveId mPId;
                 helper::calling seq;
-                CryptoPP_AES_SymmetricKey *mKey;
+                CryptoPP_HMAC_SHA_256_SymmetricKey *mKey;
                 CryptoTransform  mTransform;
                 helper::setKeyState mSetKeyState;
 

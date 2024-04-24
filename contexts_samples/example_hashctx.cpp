@@ -1,6 +1,4 @@
-#include<iostream>
 #include "../ara/crypto/public/cryp/cryptopp_sha_256_hash_function_ctx.h"
-#include "../ara/crypto/private/common/mem_region.h"
 #include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
@@ -28,7 +26,6 @@ int main()
     ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
     //std::uint8_t instr = 'w';
     
-
     auto res_update =  myContext.Update(instr);
     if(res_update.HasValue())
     {
@@ -42,7 +39,6 @@ int main()
         return 0;
     }
     
-
     auto res_finish = myContext.Finish();
     if(res_finish.HasValue())
     {
@@ -59,6 +55,5 @@ int main()
         ara::core::ErrorCode error = res_finish.Error();
         std::cout << error.Message() << std::endl;
     }
-    
     return 0;
 }

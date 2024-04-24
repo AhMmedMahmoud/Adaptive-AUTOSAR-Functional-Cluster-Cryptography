@@ -26,13 +26,13 @@ int main()
     /**************************************************************
     *    using loaded crypto provider to generate symmetric key   *
     **************************************************************/
-    auto res_genPrKey = myProvider->GenerateSymmetricKey(AES_ECB_128_ALG_ID,kAllowKdfMaterialAnyUsage);
-    if(!res_genPrKey.HasValue())
+    auto res_genSymtKey = myProvider->GenerateSymmetricKey(AES_ECB_128_ALG_ID,kAllowKdfMaterialAnyUsage);
+    if(!res_genSymtKey.HasValue())
     {
         std::cout << "failed to generate symmetric key\n";
         return 0;
     }
-    auto mySymmetricKey = std::move(res_genPrKey).Value();
+    auto mySymmetricKey = std::move(res_genSymtKey).Value();
 
 
     /****************************************
@@ -42,7 +42,7 @@ int main()
 
     if(!res_createSymmetricBlockCipherCtx.HasValue())
     {
-        std::cout << "failed two create ecdsa contexts\n";
+        std::cout << "failed to create SymmetricBlockCipherCtx\n";
         return 0;
     }
     
@@ -54,16 +54,18 @@ int main()
     ****************************************/  
     mySymmetricBlockCipherCtx->SetKey(*mySymmetricKey);
 
-/*    
-    std::string str = "mr ahmed mahmoud";
-    ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
-*/
 
 #if(example == example_string)
-    std::string str = "mr ahmed mahmoud";    
+    // std::string str = "";
+    //std::string str = "ahmed";
+    //std::string str = "mr ahmed mahmoud";
+    std::string str = "ahmed mahmoud mohamed";    
     ara::crypto::ReadOnlyMemRegion instr(reinterpret_cast<const std::uint8_t*>(str.data()), str.size());
 #elif(example == example_vector)
-    std::vector<uint8_t> instr = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    // std::vector<uint8_t> instr = {};
+    // std::vector<uint8_t> instr = {1,2,3,4,5,6};
+    // std::vector<uint8_t> instr = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    std::vector<uint8_t> instr = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22};
 #endif
 
     auto _result = mySymmetricBlockCipherCtx->ProcessBlock(instr);

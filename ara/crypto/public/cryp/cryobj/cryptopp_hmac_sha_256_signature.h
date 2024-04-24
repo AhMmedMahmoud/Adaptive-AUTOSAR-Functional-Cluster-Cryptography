@@ -21,6 +21,12 @@ namespace ara
                 /************ constructor **************/
                 CryptoPP_HMAC_SHA256_Signature() {}
                 
+
+                std::size_t GetPayloadSize () const noexcept override
+                {
+                    return 32;
+                }
+
                 /************* override pure virtual functions related to Signature *************/
                 CryptoPrimitiveId::AlgId GetHashAlgId () const noexcept override
                 {
@@ -41,6 +47,7 @@ namespace ara
                 void setValue(CryptoPP::SecByteBlock val){
                     mValue = val;
                 }
+
             };
         }
     }

@@ -3,7 +3,7 @@
 
 #include "../../private/cryp/decryptor_private_ctx.h"
 #include "cryobj/cryptopp_crypto_primitive_id.h"
-#include "cryobj/cryptopp_rsa_private_key.h"
+#include "cryobj/cryptopp_rsa_2046_private_key.h"
 #include "../../helper/state.h"
 
 namespace ara
@@ -21,7 +21,7 @@ namespace ara
 
             private:
                 /*****************  attributes **********************/
-                CryptoPP_RSA_PrivateKey *mKey;
+                CryptoPP_RSA_2046_PrivateKey *mKey;
                 CryptoPP_CryptoPrimitiveId mPId;
                 helper::setKeyState mSetKeyState;
 

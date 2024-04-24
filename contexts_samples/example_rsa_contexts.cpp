@@ -1,18 +1,17 @@
-#include "../ara/crypto/public/cryp/cryobj/cryptopp_rsa_public_key.h"
 #include "../ara/crypto/public/cryp/cryptopp_rsa_2046_encryptor_public_ctx.h"
-#include "../ara/crypto/public/cryp/cryobj/cryptopp_rsa_private_key.h"
 #include "../ara/crypto/public/cryp/cryptopp_rsa_2046_decryptor_private_ctx.h"
 #include "../ara/crypto/helper/print.h"
 
 using namespace ara::crypto::cryp;
 using namespace ara::crypto::helper;
+
 int main()
 {
     /************************************************************
     *                   EncryptorPublicCtx                      *
     ************************************************************/
 
-    PublicKey::Uptrc myPublicKey = CryptoPP_RSA_PublicKey::createInstance();
+    PublicKey::Uptrc myPublicKey = CryptoPP_RSA_2046_PublicKey::createInstance();
 
     CryptoPP_RSA_EncryptorPublicCtx myEncryptorPublicCtx;
     
@@ -43,7 +42,7 @@ int main()
     *                   DecryptorPrivateCtx                     *
     ************************************************************/
    
-    PrivateKey::Uptrc myPrivateKey = CryptoPP_RSA_PrivateKey::createInstance();
+    PrivateKey::Uptrc myPrivateKey = CryptoPP_RSA_2046_PrivateKey::createInstance();
         
     CryptoPP_RSA_DecryptorPrivateCtx myDecryptorPrivateCtx;
     
@@ -67,7 +66,6 @@ int main()
         std::cout << "--- error ---\n";
         ara::core::ErrorCode error = _result_decryptorPrivateCtx.Error();
         std::cout << error.Message() << std::endl;
-    }
-        
+    }  
     return 0;
 }
