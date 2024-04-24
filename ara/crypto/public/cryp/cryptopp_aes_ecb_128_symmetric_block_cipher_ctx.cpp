@@ -61,8 +61,8 @@ namespace ara
 
                 try
                 {    
-                    const CryptoPP_AES_SymmetricKey& aesKey = dynamic_cast<const CryptoPP_AES_SymmetricKey&>(key);
-                    mKey = new CryptoPP_AES_SymmetricKey(aesKey);
+                    const CryptoPP_AES_128_SymmetricKey& aesKey = dynamic_cast<const CryptoPP_AES_128_SymmetricKey&>(key);
+                    mKey = new CryptoPP_AES_128_SymmetricKey(aesKey);
                     
                     mTransform = transform;
                     mSetKeyState = helper::setKeyState::CALLED;

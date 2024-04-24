@@ -6,7 +6,7 @@ using namespace ara::crypto::helper;
 
 int main()
 {
-    SymmetricKey::Uptrc myKey = CryptoPP_AES_SymmetricKey::createInstance();
+    SymmetricKey::Uptrc myKey = CryptoPP_AES_128_SymmetricKey::createInstance();
     
     CryptoPP_AES_ECD_128_SymmetricBlockCipherCtx myContext;
     

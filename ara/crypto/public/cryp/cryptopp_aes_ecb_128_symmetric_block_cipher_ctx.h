@@ -3,7 +3,7 @@
 
 #include "../../private/cryp/symmetric_block_cipher_ctx.h"
 #include "cryobj/cryptopp_crypto_primitive_id.h"
-#include "cryobj/cryptopp_aes_symmetric_key.h"
+#include "cryobj/cryptopp_aes_128_symmetric_key.h"
 #include "../../helper/state.h"
 
 namespace ara
@@ -22,7 +22,7 @@ namespace ara
 
             private:
                 /*****************  attributes **********************/
-                CryptoPP_AES_SymmetricKey *mKey;
+                CryptoPP_AES_128_SymmetricKey *mKey;
                 CryptoTransform  mTransform;
                 CryptoPP_CryptoPrimitiveId mPId;
                 helper::setKeyState mSetKeyState;          

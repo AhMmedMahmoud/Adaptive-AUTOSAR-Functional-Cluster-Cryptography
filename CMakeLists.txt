@@ -63,7 +63,7 @@ add_library(
    
    ######### public ##########
    ara/crypto/public/cryp/cryobj/cryptopp_crypto_primitive_id.h
-   ara/crypto/public/cryp/cryobj/cryptopp_aes_symmetric_key.h
+   ara/crypto/public/cryp/cryobj/cryptopp_aes_128_symmetric_key.h
    ara/crypto/public/cryp/cryobj/cryptopp_hmac_sha_256_symmetric_key.h
    ara/crypto/public/cryp/cryobj/cryptopp_rsa_2046_public_key.h
    ara/crypto/public/cryp/cryobj/cryptopp_rsa_2046_private_key.h

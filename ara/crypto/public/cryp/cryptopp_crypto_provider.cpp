@@ -276,7 +276,7 @@ namespace ara
                         std::cout << std::endl;
 
 
-                        std::unique_ptr<CryptoPP_AES_SymmetricKey> ptr = std::make_unique<CryptoPP_AES_SymmetricKey>();
+                        std::unique_ptr<CryptoPP_AES_128_SymmetricKey> ptr = std::make_unique<CryptoPP_AES_128_SymmetricKey>();
                             
                         ptr->setValue(mySymmetricKey);
 
