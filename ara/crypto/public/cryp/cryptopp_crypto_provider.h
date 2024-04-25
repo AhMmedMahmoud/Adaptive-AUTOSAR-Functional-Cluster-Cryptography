@@ -14,7 +14,7 @@
 #define HMAC_SHA_256_ALG_ID  2
 #define AES_ECB_128_ALG_ID   3
 #define RSA_2048_ALG_ID      4
-#define ECDSA_SHA_256_ALG_ID 2
+#define ECDSA_SHA_256_ALG_ID 5
 
 namespace ara
 {

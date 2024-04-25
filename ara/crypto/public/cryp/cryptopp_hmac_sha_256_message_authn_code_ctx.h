@@ -17,7 +17,7 @@ namespace ara
             public :
                 /******************* constants **********************/
                 static const std::string mAlgName;
-                static const CryptoPrimitiveId::AlgId mAlgId{1};
+                static const CryptoPrimitiveId::AlgId mAlgId{2};
 
             
             private:

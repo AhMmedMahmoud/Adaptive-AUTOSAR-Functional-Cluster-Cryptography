@@ -18,7 +18,6 @@ namespace ara
 
             
             /****** override pure virtual functions related to CryptoContext *****/
-
             /*
                 Return CryptoPrimitivId instance containing instance identification
             */
@@ -39,7 +38,6 @@ namespace ara
 
 
             /***** override pure virtual functions inherited related SigEncodePrivateCtx *****/
-
             std::size_t CryptoPP_ECDSA_SHA_256_SigEncodePrivateCtx::GetMaxInputSize (bool suppressPadding) const noexcept
             {
                 return 10; // to change in future
