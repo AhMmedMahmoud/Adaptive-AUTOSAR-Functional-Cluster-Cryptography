@@ -61,23 +61,31 @@ namespace ara
                     }
                     else
                     {
-                        CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(mKey->getValue());
+                        try 
+                        {
+                            CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(mKey->getValue());
 
-                        std::string outputString;                
-                        std::string inputString(in.begin(), in.end());
-                        //std::cout << "Input Data: " << plain << std::endl;
+                            std::string outputString;                
+                            std::string inputString(in.begin(), in.end());
+                            //std::cout << "Input Data: " << plain << std::endl;
 
-                        // Initialize a random number generator
-                        CryptoPP::AutoSeededRandomPool prng;
+                            // Initialize a random number generator
+                            CryptoPP::AutoSeededRandomPool prng;
 
-                        CryptoPP::StringSource( 
-                                inputString,
-                                true,
-                                new CryptoPP::PK_EncryptorFilter(prng, encryptor, new CryptoPP::StringSink(outputString))
-                        );
+                            CryptoPP::StringSource( 
+                                    inputString,
+                                    true,
+                                    new CryptoPP::PK_EncryptorFilter(prng, encryptor, new CryptoPP::StringSink(outputString))
+                            );
 
-                        ara::core::Vector<ara::core::Byte> outputVector(outputString.begin(), outputString.end());
-                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>(outputVector);
+                            ara::core::Vector<ara::core::Byte> outputVector(outputString.begin(), outputString.end());
+                            return ara::core::Result<ara::core::Vector<ara::core::Byte>>(outputVector);
+                        }
+                        catch (const CryptoPP::Exception& e) 
+                        {
+                            std::cerr << "Crypto++ exception: " << e.what() << std::endl;
+                            return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
+                        }
                     }
                 }
             }

@@ -57,28 +57,35 @@ namespace ara
                 {   
                     return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
-                try 
+                else if(!in.size())
                 {
-                    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(mKey->getValue());
-
-                    ara::core::Vector<ara::core::Byte> message(in.begin(), in.begin() + in.size() - 64);
-                    ara::core::Vector<ara::core::Byte> signature(in.begin() + in.size() - 64, in.end());
-
-                    bool result = verifier.VerifyMessage( (const CryptoPP::byte*)&message[0], message.size(), (const CryptoPP::byte*)&signature[0], signature.size() );
-                    if(result)
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                }
+                else
+                {
+                    try 
                     {
-                        std::cout << "verfied\n";
-                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>(message);
+                        CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Verifier verifier(mKey->getValue());
+
+                        ara::core::Vector<ara::core::Byte> message(in.begin(), in.begin() + in.size() - 64);
+                        ara::core::Vector<ara::core::Byte> signature(in.begin() + in.size() - 64, in.end());
+
+                        bool result = verifier.VerifyMessage( (const CryptoPP::byte*)&message[0], message.size(), (const CryptoPP::byte*)&signature[0], signature.size() );
+                        if(result)
+                        {
+                            std::cout << "verfied\n";
+                            return ara::core::Result<ara::core::Vector<ara::core::Byte>>(message);
+                        }
+                        else
+                        {
+                            std::cout << "not verfied\n";
+                            return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kAuthTagNotValid, NoSupplementaryDataForErrorDescription));                    
+                        }
+                    } 
+                    catch (const CryptoPP::Exception& e) {
+                        std::cerr << "Crypto++ exception: " << e.what() << std::endl;
+                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
                     }
-                    else
-                    {
-                        std::cout << "not verfied\n";
-                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kAuthTagNotValid, NoSupplementaryDataForErrorDescription));                    
-                    }
-                } 
-                catch (const CryptoPP::Exception& e) {
-                    std::cerr << "Crypto++ exception: " << e.what() << std::endl;
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
                 }
             }
 

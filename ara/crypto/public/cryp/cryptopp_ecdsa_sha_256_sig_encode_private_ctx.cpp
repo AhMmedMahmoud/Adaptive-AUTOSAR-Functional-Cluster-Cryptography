@@ -54,30 +54,37 @@ namespace ara
                 {   
                     return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUninitializedContext, NoSupplementaryDataForErrorDescription));
                 }
-                try 
+                else if(!in.size())
                 {
-                    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(mKey->getValue());
+                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                }
+                else
+                {
+                    try 
+                    {
+                        CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(mKey->getValue());
 
-                    std::string plain(in.begin(), in.end());
-                    //std::cout << "Input Data: " << plain << std::endl;
+                        std::string plain(in.begin(), in.end());
+                        //std::cout << "Input Data: " << plain << std::endl;
 
-                    // Initialize a random number generator
-                    CryptoPP::AutoSeededRandomPool prng;
+                        // Initialize a random number generator
+                        CryptoPP::AutoSeededRandomPool prng;
 
-                    // Allocate a string for both message and signature
-                    std::string messageSignature = plain;
-                    messageSignature.resize(plain.size() + 64);
+                        // Allocate a string for both message and signature
+                        std::string messageSignature = plain;
+                        messageSignature.resize(plain.size() + 64);
 
-                    // Sign the message and append the signature to the end of the message data
-                    signer.SignMessage(prng, (const CryptoPP::byte*)plain.data(), plain.size(), (CryptoPP::byte*)(messageSignature.data() + plain.size()));
-                    messageSignature.resize(plain.size() + 64);
+                        // Sign the message and append the signature to the end of the message data
+                        signer.SignMessage(prng, (const CryptoPP::byte*)plain.data(), plain.size(), (CryptoPP::byte*)(messageSignature.data() + plain.size()));
+                        messageSignature.resize(plain.size() + 64);
 
-                    ara::core::Vector<ara::core::Byte> dataVector(messageSignature.begin(), messageSignature.end());
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>(dataVector);
-                } 
-                catch (const CryptoPP::Exception& e) {
-                    std::cerr << "Crypto++ exception: " << e.what() << std::endl;
-                    return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
+                        ara::core::Vector<ara::core::Byte> dataVector(messageSignature.begin(), messageSignature.end());
+                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>(dataVector);
+                    } 
+                    catch (const CryptoPP::Exception& e) {
+                        std::cerr << "Crypto++ exception: " << e.what() << std::endl;
+                        return ara::core::Result<ara::core::Vector<ara::core::Byte>>(ara::core::Vector<ara::core::Byte>());
+                    }
                 }
             }
 
