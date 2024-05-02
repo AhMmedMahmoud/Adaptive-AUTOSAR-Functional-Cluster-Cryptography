@@ -20,7 +20,6 @@ add_library(
    ara/core/instance_specifier.cpp
    ara/core/optional.h
    ara/core/result.h
-   ara/core/SamplePtr.h
    ara/core/Span.h
    #ara/core/string.h
    ara/core/StringView.h
