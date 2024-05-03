@@ -5,6 +5,7 @@
 #include "../../common/crypto_error_domain.h"
 #include "../../../../core/result.h"
 #include "crypto_primitive_id.h"
+#include "../../common/io_interface.h"
 
 namespace ara
 {
@@ -59,10 +60,10 @@ namespace ara
                               
                 virtual bool IsExportable () const noexcept=0;
                 
-                virtual bool IsSession () const noexcept=0;
-                
-                virtual ara::core::Result<void> Save (IOInterface &container) const noexcept=0;
+                virtual bool IsSession () const noexcept=0;    
                 */
+
+                virtual ara::core::Result<void> Save (IOInterface &container) const noexcept=0;
 
 
                 /******************* default assigment operators *********************/

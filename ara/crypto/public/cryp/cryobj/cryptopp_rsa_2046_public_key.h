@@ -82,6 +82,13 @@ namespace ara
                     }    
                 }
 
+
+                ara::core::Result<void> Save (IOInterface &container) const noexcept override
+                {
+                    // to change
+                        return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                }
+                
                 /*            
                 bool CheckKey(bool strongCheck=true) const noexcept override
 
@@ -93,9 +100,7 @@ namespace ara
 
                 bool IsExportable () const noexcept override
       
-                bool IsSession () const noexcept override
-                
-                ara::core::Result<void> Save (IOInterface &container) const noexcept override
+                bool IsSession () const noexcept override                
                 */
             };
         }

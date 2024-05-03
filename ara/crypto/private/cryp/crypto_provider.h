@@ -9,6 +9,7 @@
 #include "decryptor_private_ctx.h"
 #include "msg_recovery_public_ctx.h"
 #include "sig_encode_private_ctx.h"
+#include "../common/io_interface.h"
 
 namespace ara
 {
@@ -55,6 +56,12 @@ namespace ara
 																		  bool isExportable=false
 																		) noexcept=0;
                 
+                virtual ara::core::Result<PrivateKey::Uptrc> LoadPrivateKey (const IOInterface &container) noexcept=0;
+
+	            virtual ara::core::Result<PublicKey::Uptrc> LoadPublicKey (const IOInterface &container) noexcept=0;
+	
+            	virtual ara::core::Result<SymmetricKey::Uptrc> LoadSymmetricKey (const IOInterface &container) noexcept=0;
+
 
                 CryptoProvider& operator= (const CryptoProvider &other)=default;
 	

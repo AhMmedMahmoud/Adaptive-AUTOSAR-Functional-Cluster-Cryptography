@@ -9,18 +9,26 @@
 #include <iostream>
 #include <string>
 
+
 // Function template to load a key from a file
 template <typename Key>
 const Key loadKey(const std::string& filename)
 {
-    Key key;
-    CryptoPP::ByteQueue queue;
-    CryptoPP::FileSource file(filename.c_str(), true);
-    file.TransferTo(queue);
-    queue.MessageEnd();
+    try 
+    {
+        Key key;
+        CryptoPP::ByteQueue queue;
+        CryptoPP::FileSource file(filename.c_str(), true);
+        file.TransferTo(queue);
+        queue.MessageEnd();
 
-    key.Load(queue);
-    return key;
+        key.Load(queue);
+        return key;
+    }
+    catch(...) 
+    {
+        throw;
+    }
 }
 
 #endif

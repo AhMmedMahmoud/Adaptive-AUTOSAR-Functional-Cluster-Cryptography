@@ -1,5 +1,7 @@
 #include "../../private/common/crypto_error_domain.h"
 #include "cryptopp_crypto_provider.h"
+#include "../common/file_io_interface.h"
+#include <fstream>
 
 
 namespace ara
@@ -206,7 +208,7 @@ namespace ara
                         CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey myPrivateKey;
                         myPrivateKey.Initialize(prng, CryptoPP::ASN1::secp256k1());
 
-                        std::unique_ptr<CryptoPP_ECDSA_PrivateKey> ptr = std::make_unique<CryptoPP_ECDSA_PrivateKey>();
+                        std::unique_ptr<CryptoPP_ECDSA_SHA_256_PrivateKey> ptr = std::make_unique<CryptoPP_ECDSA_SHA_256_PrivateKey>();
                     
                         ptr->setValue(myPrivateKey);
 
@@ -324,8 +326,77 @@ namespace ara
                 {
                     return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
                 }
-            }                                                            
-            
+            } 
+
+            ara::core::Result<PrivateKey::Uptrc> CryptoPP_CryptoProvider::LoadPrivateKey (const IOInterface &container) noexcept
+            {
+                // check if IOInterface is valid or not
+                if(!container.IsValid()) // return error
+                    return ara::core::Result<PrivateKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kModifiedResource, NoSupplementaryDataForErrorDescription));
+
+                try 
+                {
+                    File_IOInterface& myFileIoInterface = dynamic_cast<File_IOInterface&>(const_cast<IOInterface&>(container));
+                
+                    // check if file exists and is regular or not
+                    std::string filePath = myFileIoInterface.getPath();
+                    if(!std::filesystem::exists(filePath) || !std::filesystem::is_regular_file(filePath))
+                        return ara::core::Result<PrivateKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kModifiedResource, NoSupplementaryDataForErrorDescription));
+
+                    // check if file is empty or not
+                    std::ifstream fileStream(filePath, std::ios::binary | std::ios::ate);
+                    if(!fileStream.tellg())
+                       return ara::core::Result<PrivateKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kEmptyContainer, NoSupplementaryDataForErrorDescription));
+
+                    std::unique_ptr<CryptoPP_ECDSA_SHA_256_PrivateKey> ptr = std::make_unique<CryptoPP_ECDSA_SHA_256_PrivateKey>();
+                    
+                    ptr->setValue(loadKey<CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey>(myFileIoInterface.getPath()));
+                        
+                    return ara::core::Result<PrivateKey::Uptrc>(std::move(ptr));
+                } 
+                catch (const std::bad_cast& e)
+                {
+                    return ara::core::Result<PrivateKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                }
+            }            
+
+            ara::core::Result<PublicKey::Uptrc> CryptoPP_CryptoProvider::LoadPublicKey (const IOInterface &container) noexcept
+            {
+                // check if IOInterface is valid or not
+                if(!container.IsValid()) // return error
+                    return ara::core::Result<PublicKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kModifiedResource, NoSupplementaryDataForErrorDescription));
+
+                try 
+                {
+                    File_IOInterface& myFileIoInterface = dynamic_cast<File_IOInterface&>(const_cast<IOInterface&>(container));
+                
+                    // check if file exists and is regular or not
+                    std::string filePath = myFileIoInterface.getPath();
+                    if(!std::filesystem::exists(filePath) || !std::filesystem::is_regular_file(filePath))
+                        return ara::core::Result<PublicKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kModifiedResource, NoSupplementaryDataForErrorDescription));
+
+                    // check if file is empty or not
+                    std::ifstream fileStream(filePath, std::ios::binary | std::ios::ate);
+                    if(!fileStream.tellg())
+                       return ara::core::Result<PublicKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kEmptyContainer, NoSupplementaryDataForErrorDescription));
+
+                    std::unique_ptr<CryptoPP_ECDSA_SHA_256_PublicKey> ptr = std::make_unique<CryptoPP_ECDSA_SHA_256_PublicKey>();
+                    
+                    ptr->setValue(loadKey<CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey>(myFileIoInterface.getPath()));
+                        
+                    return ara::core::Result<PublicKey::Uptrc>(std::move(ptr));
+                } 
+                catch (const std::bad_cast& e)
+                {
+                    return ara::core::Result<PublicKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                }
+            }
+
+            ara::core::Result<SymmetricKey::Uptrc> CryptoPP_CryptoProvider::LoadSymmetricKey (const IOInterface &container) noexcept                                                           
+            {
+
+                return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+            }
         }
     }
 }

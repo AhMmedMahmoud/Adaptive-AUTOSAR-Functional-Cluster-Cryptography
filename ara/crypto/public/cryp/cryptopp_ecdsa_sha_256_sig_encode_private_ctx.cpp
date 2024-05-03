@@ -92,8 +92,8 @@ namespace ara
             {
                 try
                 {
-                    const CryptoPP_ECDSA_PrivateKey& ecdsaKey = dynamic_cast<const CryptoPP_ECDSA_PrivateKey&>(key);
-                    mKey = new CryptoPP_ECDSA_PrivateKey(ecdsaKey);
+                    const CryptoPP_ECDSA_SHA_256_PrivateKey& ecdsaKey = dynamic_cast<const CryptoPP_ECDSA_SHA_256_PrivateKey&>(key);
+                    mKey = new CryptoPP_ECDSA_SHA_256_PrivateKey(ecdsaKey);
                 
                     mSetKeyState = helper::setKeyState::CALLED;
                     

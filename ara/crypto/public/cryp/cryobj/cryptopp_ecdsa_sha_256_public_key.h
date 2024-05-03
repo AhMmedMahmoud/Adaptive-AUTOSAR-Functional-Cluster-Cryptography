@@ -1,10 +1,13 @@
-#ifndef CRYPTOPP_ECDSA_PUBLIC_KEY_H
-#define CRYPTOPP_ECDSA_PUBLIC_KEY_H
+#ifndef CRYPTOPP_ECDSA_SHA_256_PUBLIC_KEY_H
+#define CRYPTOPP_ECDSA_SHA_256_PUBLIC_KEY_H
 
 #include "../../../private/cryp/cryobj/public_key.h"
 #include "loadKey.h"
 #include <cryptopp/eccrypto.h>
 #include <cryptopp/oids.h>
+#include "saveKey.h"
+#include "../../common/file_io_interface.h"
+
 
 namespace ara
 {
@@ -83,6 +86,48 @@ namespace ara
                     }    
                 }
 
+                ara::core::Result<void> Save (IOInterface &container) const noexcept override
+                {
+                    if(!container.IsValid()) // return error
+                        return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kModifiedResource, NoSupplementaryDataForErrorDescription));
+
+                    try 
+                    {
+                        File_IOInterface& myFileIoInterface = dynamic_cast<File_IOInterface&>(const_cast<IOInterface&>(container));
+
+                        /*                
+                        // declares an object of ByteQueue (a queue of bytes used to store binary data)
+                        CryptoPP::ByteQueue queue; 
+
+                        // serializes the key and stores it in the ByteQueue
+                        mValue.Save(queue);
+ 
+
+                        // Create a buffer to hold the data
+                        CryptoPP::byte* buffer = new CryptoPP::byte[queue.CurrentSize()];
+                        // Get the data from the queue
+                        queue.Get(buffer, queue.CurrentSize());
+                        // Convert the byte data to a string
+                        std::string str(reinterpret_cast<const char*>(buffer), queue.CurrentSize());
+                        // Print the contents of the queue as a string
+                        std::cout << "ByteQueue contents: " << str << std::endl;
+
+                        myFileIoInterface.setQueue(queue);
+                         */
+
+                        SaveKey(myFileIoInterface.getPath(),mValue);
+                        
+                        return ara::core::Result<void>::FromValue();
+                    } 
+                    catch (const std::bad_cast& e)
+                    {
+                        return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                    }
+                }
+
+
+
+
                 /*            
                 bool CheckKey(bool strongCheck=true) const noexcept override
 
@@ -95,8 +140,6 @@ namespace ara
                 bool IsExportable () const noexcept override
 
                 bool IsSession () const noexcept override
-
-                ara::core::Result<void> Save (IOInterface &container) const noexcept override
                 */
             };
         }

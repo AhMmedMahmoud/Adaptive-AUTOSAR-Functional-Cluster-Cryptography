@@ -73,6 +73,12 @@ namespace ara
                     return 32;
                 }
 
+                ara::core::Result<void> Save (IOInterface &container) const noexcept override
+                {
+                    // to change
+                        return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                }
+                
                 /*
                 COIdentifier GetObjectId () const noexcept override
 
@@ -83,8 +89,6 @@ namespace ara
                 bool IsExportable () const noexcept override
                 
                 bool IsSession () const noexcept override
-
-                ara::core::Result<void> Save (IOInterface &container) const noexcept override
                 */
             };
         }

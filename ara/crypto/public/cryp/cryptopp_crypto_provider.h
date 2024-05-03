@@ -54,7 +54,14 @@ namespace ara
 																		  bool isSession=true,
 																		  bool isExportable=false
 																		) noexcept override;
-                                                                
+
+
+                ara::core::Result<PrivateKey::Uptrc> LoadPrivateKey (const IOInterface &container) noexcept override;
+
+	            ara::core::Result<PublicKey::Uptrc> LoadPublicKey (const IOInterface &container) noexcept override;
+	
+            	ara::core::Result<SymmetricKey::Uptrc> LoadSymmetricKey (const IOInterface &container) noexcept override;
+                                                
             };
         }
     }

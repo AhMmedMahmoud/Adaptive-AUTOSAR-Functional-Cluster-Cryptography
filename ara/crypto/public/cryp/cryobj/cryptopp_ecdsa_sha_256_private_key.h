@@ -1,5 +1,5 @@
-#ifndef CRYPTOPP_ECDSA_PRIVATE_KEY_H
-#define CRYPTOPP_ECDSA_PRIVATE_KEY_H
+#ifndef CRYPTOPP_ECDSA_SHA_256_PRIVATE_KEY_H
+#define CRYPTOPP_ECDSA_SHA_256_PRIVATE_KEY_H
 
 #include "../../../private/cryp/cryobj/private_key.h"
 #include "cryptopp_ecdsa_sha_256_public_key.h"
@@ -13,7 +13,7 @@ namespace ara
     {
         namespace cryp
         {
-            class CryptoPP_ECDSA_PrivateKey : public PrivateKey
+            class CryptoPP_ECDSA_SHA_256_PrivateKey : public PrivateKey
             {
             private:
                 /************ attributes ***************/
@@ -21,10 +21,10 @@ namespace ara
 
             public:
                 /************ constructor **************/
-                CryptoPP_ECDSA_PrivateKey() {}
+                CryptoPP_ECDSA_SHA_256_PrivateKey() {}
 
                 /************ Copy constructor *********/
-                CryptoPP_ECDSA_PrivateKey(const CryptoPP_ECDSA_PrivateKey& other) {
+                CryptoPP_ECDSA_SHA_256_PrivateKey(const CryptoPP_ECDSA_SHA_256_PrivateKey& other) {
                     mValue = other.mValue;
                 }
 
@@ -44,7 +44,7 @@ namespace ara
                 **************************************************************/
                 static std::unique_ptr<PrivateKey> createInstance() 
                 {
-                    std::unique_ptr<CryptoPP_ECDSA_PrivateKey> ptr = std::make_unique<CryptoPP_ECDSA_PrivateKey>();
+                    std::unique_ptr<CryptoPP_ECDSA_SHA_256_PrivateKey> ptr = std::make_unique<CryptoPP_ECDSA_SHA_256_PrivateKey>();
                   
                     ptr->mValue = loadKey<CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PrivateKey>("ecdsa_private.key");
                     
@@ -77,6 +77,11 @@ namespace ara
                     return 32;
                 }
 
+                ara::core::Result<void> Save (IOInterface &container) const noexcept override
+                {
+                    // to change
+                        return ara::core::Result<void>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kInvalidInputSize, NoSupplementaryDataForErrorDescription));
+                }
 
                 /*
                 virtual COIdentifier GetObjectId () const noexcept override
@@ -90,9 +95,7 @@ namespace ara
                 virtual bool IsExportable () const noexcept override
             
                 virtual bool IsSession () const noexcept override
-                
-                virtual ara::core::Result<void> Save (IOInterface &container) const noexcept override
-                
+                                
                 */
             };
         }

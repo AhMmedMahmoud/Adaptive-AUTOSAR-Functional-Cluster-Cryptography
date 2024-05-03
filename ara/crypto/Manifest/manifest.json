@@ -1,0 +1,54 @@
+[
+	{
+		"InstanceSpecifier"  : "rsa_2046_public_key_1",
+		"CryptoProvider"     : "CryptoppCryptoProvider",
+		"KeyMaterialPath"    : "rsa_2046_public_key_1.key",
+		"ALgId"              : 5,
+		"AllowUsageFlags"    : 4,
+		"CryptoObjectType"   : "kPublicKey",
+		"Exportable"         : true,
+		"SlotType"           : "kApplication",
+		"slotCapacity"       : 10000,
+		"AllocateShadowCopy" : false,
+		"MaxUpdateAllowed"   : -1
+	},
+	{
+		"InstanceSpecifier"  : "rsa_2046_private_key_1",
+		"CryptoProvider"     : "CryptoppCryptoProvider",
+		"KeyMaterialPath"    : "rsa_2046_private_key_1.key",
+		"ALgId"              : 5,
+		"AllowUsageFlags"    : 4,
+		"CryptoObjectType"   : "kPrivateKey",
+		"Exportable"         : true,
+		"SlotType"           : "kApplication",
+		"slotCapacity"       : 10000,
+		"AllocateShadowCopy" : false,
+		"MaxUpdateAllowed"   : -1
+	},
+	{
+		"InstanceSpecifier"  : "ecdsa_sha_256_public_key_1",
+		"CryptoProvider"     : "CryptoppCryptoProvider",
+		"KeyMaterialPath"    : "ecdsa_sha_256_public_key_1.key",
+		"ALgId"              : 5,
+		"AllowUsageFlags"    : 4,
+		"CryptoObjectType"   : "kPublicKey",
+		"Exportable"         : true,
+		"SlotType"           : "kApplication",
+		"slotCapacity"       : 10000,
+		"AllocateShadowCopy" : false,
+		"MaxUpdateAllowed"   : -1
+	},
+	{
+		"InstanceSpecifier"  : "ecdsa_sha_256_private_key_1",
+		"CryptoProvider"     : "CryptoppCryptoProvider",
+		"KeyMaterialPath"    : "ecdsa_sha_256_private_key_1.key",
+		"ALgId"              : 5,
+		"AllowUsageFlags"    : 4,
+		"CryptoObjectType"   : "kPublicKey",
+		"Exportable"         : true,
+		"SlotType"           : "kApplication",
+		"slotCapacity"       : 10000,
+		"AllocateShadowCopy" : false,
+		"MaxUpdateAllowed"   : -1
+	}
+]

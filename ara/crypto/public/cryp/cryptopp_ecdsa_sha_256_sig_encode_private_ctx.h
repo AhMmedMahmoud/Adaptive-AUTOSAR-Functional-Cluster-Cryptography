@@ -21,7 +21,7 @@ namespace ara
 
             private:      
                 /*****************  attributes **********************/
-                CryptoPP_ECDSA_PrivateKey *mKey;
+                CryptoPP_ECDSA_SHA_256_PrivateKey *mKey;
                 CryptoPP_CryptoPrimitiveId mPId;
                 helper::setKeyState mSetKeyState;
 
