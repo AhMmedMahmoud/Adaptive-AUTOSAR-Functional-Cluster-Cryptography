@@ -19,8 +19,8 @@ The size of the public key is 512 bits  (64 bytes) (since it consists of two 256
 
 int main(int argc, char** argv) 
 {
-  std::string publicKeyName = "ecdsa_public.key";    // Filename for the public key
-  std::string privateKeyName = "ecdsa_private.key";  // Filename for the private key
+  std::string publicKeyName = "ecdsa_sha_256_public_key_1.key";    // Filename for the public key
+  std::string privateKeyName = "ecdsa_sha_256_private_key_1.key"; //"ecdsa_private.key";  // Filename for the private key
   
   // Create an AutoSeededRandomPool object for random number generation
   CryptoPP::AutoSeededRandomPool prng;   

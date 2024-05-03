@@ -11,7 +11,7 @@ int main()
     *                   SigEncodePrivateCtx                     *
     ************************************************************/
 
-    PrivateKey::Uptrc myPrivateKey = CryptoPP_ECDSA_PrivateKey::createInstance();
+    PrivateKey::Uptrc myPrivateKey = CryptoPP_ECDSA_SHA_256_PrivateKey::createInstance();
 
     CryptoPP_ECDSA_SHA_256_SigEncodePrivateCtx mySigEncodePrivateCtx;
     
