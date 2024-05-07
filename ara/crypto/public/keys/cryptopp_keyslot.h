@@ -4,6 +4,7 @@
 #include "../../private/keys/keyslot.h"
 #include "../../private/common/crypto_error_domain.h"
 #include "../common/file_io_interface.h"
+#include "../../Manifest/CryptoKeySlotInterface.h"
 
 namespace ara
 {
@@ -64,14 +65,14 @@ namespace ara
                 */
             public:
                 /*********** constructor **********/
-                Cryptopp_KeySlot( manifest::CryptoKeySlotInterface mCryptoKeySlotInterface) : KeySlot()
+                Cryptopp_KeySlot( manifest::CryptoKeySlotInterface mCryptoKeySlotInterface) // : KeySlot()
                 {
                     mPath = mCryptoKeySlotInterface.CryptoObjectPath;
                     mKeySlotPrototypeProps = mCryptoKeySlotInterface.pro;
                 }
 
 
-                ara::core::Result<IOInterface::Uptr> Open (bool subscribeForUpdates=false, bool writeable=false) const noexcept
+                ara::core::Result<IOInterface::Uptr> Open (bool subscribeForUpdates=false, bool writeable=false) const noexcept override
                 {     
                     std::unique_ptr<IOInterface> ptr = std::make_unique<File_IOInterface>(mPath,mKeySlotPrototypeProps);
                     
@@ -80,12 +81,12 @@ namespace ara
                     //return ara::core::Result<File_IOInterface::Uptr>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
                 }
 
-                virtual ara::core::Result<KeySlotContentProps> GetContentProps () const noexcept override
+                ara::core::Result<KeySlotContentProps> GetContentProps () const noexcept override
                 {
                     return ara::core::Result<KeySlotContentProps>(mKeySlotContentProps);
                 }
 
-                virtual ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps () const noexcept override
+                ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps () const noexcept override
                 {
                     return ara::core::Result<KeySlotPrototypeProps>(mKeySlotPrototypeProps);
                 }

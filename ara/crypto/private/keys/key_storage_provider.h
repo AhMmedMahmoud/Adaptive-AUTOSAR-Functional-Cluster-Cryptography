@@ -15,15 +15,13 @@ namespace ara
             public:
                 using Uptr = std::unique_ptr<KeyStorageProvider>;
 
-
                 virtual ara::core::Result<KeySlot::Uptr> LoadKeySlot (ara::core::InstanceSpecifier &iSpecify) noexcept=0;
 
-                virtual ara::core::Result<TransactionId> BeginTransaction (const TransactionScope &targetSlots) noexcept=0;
 
-                virtual ara::core::Result<void> CommitTransaction (TransactionId id) noexcept=0;
-                
+                //virtual ara::core::Result<TransactionId> BeginTransaction (const TransactionScope &targetSlots) noexcept=0;
 
-
+                //virtual ara::core::Result<void> CommitTransaction (TransactionId id) noexcept=0;
+            
                 //virtual UpdatesObserver::Uptr GetRegisteredObserver () const noexcept=0;
 
                 //virtual UpdatesObserver::Uptr RegisterObserver (UpdatesObserver::Uptr observer=nullptr) noexcept=0;

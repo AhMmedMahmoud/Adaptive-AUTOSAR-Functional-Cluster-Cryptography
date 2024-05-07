@@ -17,8 +17,8 @@ namespace ara
             {
             private:
                 /*********** attributes ************/
-                std::vector<std::unique_ptr<IOInterface>> target;
-                TransactionId serialNumber;
+                //std::vector<std::unique_ptr<IOInterface>> target;
+                //TransactionId serialNumber;
 
             public:
                 /*********** constructor ***********/
@@ -51,10 +51,10 @@ namespace ara
                     }
                     */
 
-                   serialNumber = 0;
+                   //serialNumber = 0;
                 }
 
-                virtual ara::core::Result<KeySlot::Uptr> LoadKeySlot (ara::core::InstanceSpecifier &iSpecify) noexcept override
+                ara::core::Result<KeySlot::Uptr> LoadKeySlot (ara::core::InstanceSpecifier &iSpecify) noexcept override
                 {
                     for(int i = 0; i < manifest::KeySlotsMetaData.size(); i++)
                     {
@@ -68,7 +68,7 @@ namespace ara
                     return ara::core::Result<KeySlot::Uptr>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnreservedResource, NoSupplementaryDataForErrorDescription));
                 }
 
-
+                /*
                 ara::core::Result<TransactionId> BeginTransaction (const TransactionScope &targetSlots) noexcept override
                 {
                     std::cout << "begin function\n";
@@ -107,7 +107,9 @@ namespace ara
                     }
                     return ara::core::Result<void>::FromValue();
                 }
-                
+                */
+
+
                 //virtual UpdatesObserver::Uptr GetRegisteredObserver () const noexcept=0;
 
                 //virtual UpdatesObserver::Uptr RegisterObserver (UpdatesObserver::Uptr observer=nullptr) noexcept=0;

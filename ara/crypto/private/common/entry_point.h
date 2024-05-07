@@ -5,8 +5,7 @@
 #include "../../../core/result.h"
 #include "../../../core/instance_specifier.h"
 #include "../../public/cryp/cryptopp_crypto_provider.h"
-
-//#include "../../public/keys/cryptopp_key_storage_provider.h"
+#include "../../public/keys/cryptopp_key_storage_provider.h"
 
 namespace ara
 {
@@ -33,12 +32,13 @@ namespace ara
                 return nullptr;
            }
         }
-        /*
+        
         keys::KeyStorageProvider::Uptr LoadKeyStorageProvider () noexcept
         {
             return std::make_unique<keys::Cryptopp_KeyStorageProvider>();
         }
-        */
+        
+
         //x509::X509Provider::Uptr LoadX509Provider () noexcept;
 
         ara::core::Result<ara::core::Vector<ara::core::Byte>> GenerateRandomData (std::uint32_t count) noexcept;

@@ -356,7 +356,7 @@ namespace ara
                 } 
                 catch (const std::bad_cast& e)
                 {
-                    return ara::core::Result<PrivateKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                    return ara::core::Result<PrivateKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleArguments, NoSupplementaryDataForErrorDescription));
                 }
             }            
 
@@ -388,14 +388,14 @@ namespace ara
                 } 
                 catch (const std::bad_cast& e)
                 {
-                    return ara::core::Result<PublicKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                    return ara::core::Result<PublicKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleArguments, NoSupplementaryDataForErrorDescription));
                 }
             }
 
             ara::core::Result<SymmetricKey::Uptrc> CryptoPP_CryptoProvider::LoadSymmetricKey (const IOInterface &container) noexcept                                                           
             {
-
-                return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kUnknownIdentifier, NoSupplementaryDataForErrorDescription));
+                //
+                return ara::core::Result<SymmetricKey::Uptrc>::FromError(ara::crypto::MakeErrorCode(CryptoErrorDomain::Errc::kIncompatibleArguments, NoSupplementaryDataForErrorDescription));
             }
         }
     }
