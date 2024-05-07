@@ -8,7 +8,7 @@ using namespace ara::crypto;
 
 #define example_string 1
 #define example_vector 2
-#define example example_string
+#define example example_vector
 
 int main()
 {
@@ -53,7 +53,7 @@ int main()
     auto res_createSigEncodePrivateCtx = myProvider->CreateSigEncodePrivateCtx(ECDSA_SHA_256_ALG_ID);
     auto res_createMsgRecoveryPublicCtx = myProvider->CreateMsgRecoveryPublicCtx(ECDSA_SHA_256_ALG_ID);
 
-    if(!res_createSigEncodePrivateCtx.HasValue() && !res_createMsgRecoveryPublicCtx.HasValue())
+    if(!res_createSigEncodePrivateCtx.HasValue() || !res_createMsgRecoveryPublicCtx.HasValue())
     {
         std::cout << "failed to create ecdsa contexts\n";
         return 0;
@@ -105,7 +105,7 @@ int main()
     // get messagePlusSignature
     auto messagePlusSignature = _result.Value();
 
-    //messagePlusSignature[0] = '0';
+    messagePlusSignature[0] = '0';
 
     auto _result2 = myMsgRecoveryPublicCtx->DecodeAndVerify(messagePlusSignature);   
     if(_result2.HasValue())

@@ -8,7 +8,7 @@ using namespace ara::crypto;
 
 #define example_string 1
 #define example_vector 2
-#define example example_vector
+#define example example_string
 
 int main()
 {
@@ -51,7 +51,7 @@ int main()
     auto res_reateEncryptorPublicCtx = myProvider->CreateEncryptorPublicCtx(RSA_2048_ALG_ID);
     auto res_reateDecryptorPrivateCtx = myProvider->CreateDecryptorPrivateCtx(RSA_2048_ALG_ID);
 
-    if(!res_reateEncryptorPublicCtx.HasValue() && !res_reateDecryptorPrivateCtx.HasValue())
+    if(!res_reateEncryptorPublicCtx.HasValue() || !res_reateDecryptorPrivateCtx.HasValue())
     {
         std::cout << "failed to create rsa contexts\n";
         return 0;

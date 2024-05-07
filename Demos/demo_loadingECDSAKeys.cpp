@@ -1,9 +1,6 @@
+#include "../ara/core/initialization.h"
 #include "../ara/crypto/private/common/entry_point.h"
 #include "../ara/crypto/helper/print.h"
-
-#include "../ara/core/initialization.h"
-#include "../ara/crypto/public/keys/cryptopp_key_storage_provider.h"
-
 
 using namespace ara::crypto::cryp;
 using namespace ara::crypto::helper;
@@ -12,9 +9,7 @@ using namespace ara::crypto;
 
 #define example_string 1
 #define example_vector 2
-#define example example_string
-
-
+#define example example_vector
 
 int main()
 {
@@ -33,14 +28,18 @@ int main()
     /****************************************
     *       load a key storage provider     *
     ****************************************/
-    ara::crypto::keys::Cryptopp_KeyStorageProvider myKeyStorageProvider;
-
+    auto myKeyStorageProvider = LoadKeyStorageProvider();
+    if(myKeyStorageProvider == nullptr)
+    {
+        std::cout << "failed to load crypto provider\n";
+        return 0;
+    }
 
     /**************************************************************
     *    using loaded key storage provider to acess private key   *
     **************************************************************/
     InstanceSpecifier privateKeySpecifier("ecdsa_sha_256_private_key_1");
-    auto res_loadKeySlot = myKeyStorageProvider.LoadKeySlot(privateKeySpecifier);
+    auto res_loadKeySlot = myKeyStorageProvider->LoadKeySlot(privateKeySpecifier);
     if(!res_loadKeySlot.HasValue())
     {
         std::cout << "--- error ---\n";
@@ -63,7 +62,7 @@ int main()
     *    using loaded key storage provider to acess public key    *
     **************************************************************/
     InstanceSpecifier publicKeySpecifier("ecdsa_sha_256_public_key_1");
-    auto res_loadKeySlot2 = myKeyStorageProvider.LoadKeySlot(publicKeySpecifier);
+    auto res_loadKeySlot2 = myKeyStorageProvider->LoadKeySlot(publicKeySpecifier);
     if(!res_loadKeySlot2.HasValue())
     {
         std::cout << "--- error ---\n";
@@ -87,8 +86,8 @@ int main()
     *          load a crypto provider       *
     ****************************************/
     InstanceSpecifier crypoProviderSpecifier("cryptopp");
-    auto myProvider = LoadCryptoProvider(crypoProviderSpecifier);
-    if(myProvider == nullptr)
+    auto myCryptoProvider = LoadCryptoProvider(crypoProviderSpecifier);
+    if(myCryptoProvider == nullptr)
     {
         std::cout << "failed to load crypto provider\n";
         return 0;
@@ -97,7 +96,7 @@ int main()
     /**************************************************************
     *    using loaded crypto provider to load private key         *
     **************************************************************/
-    auto res_loadPrKey = myProvider->LoadPrivateKey(*myIoInterface);
+    auto res_loadPrKey = myCryptoProvider->LoadPrivateKey(*myIoInterface);
     if(!res_loadPrKey.HasValue())
     {
         std::cout << "--- error in loading private key ---\n";
@@ -110,7 +109,7 @@ int main()
     /**************************************************************
     *    using loaded crypto provider to load public key         *
     **************************************************************/
-   auto res_loadPUKey = myProvider->LoadPublicKey(*myIoInterface2);
+   auto res_loadPUKey = myCryptoProvider->LoadPublicKey(*myIoInterface2);
     if(!res_loadPUKey.HasValue())
     {
         std::cout << "--- error in loading public key---\n";
@@ -124,8 +123,8 @@ int main()
     /****************************************
     *          create ecdsa contexts        *
     ****************************************/
-    auto res_createSigEncodePrivateCtx = myProvider->CreateSigEncodePrivateCtx(ECDSA_SHA_256_ALG_ID);
-    auto res_createMsgRecoveryPublicCtx = myProvider->CreateMsgRecoveryPublicCtx(ECDSA_SHA_256_ALG_ID);
+    auto res_createSigEncodePrivateCtx = myCryptoProvider->CreateSigEncodePrivateCtx(ECDSA_SHA_256_ALG_ID);
+    auto res_createMsgRecoveryPublicCtx = myCryptoProvider->CreateMsgRecoveryPublicCtx(ECDSA_SHA_256_ALG_ID);
 
     if(!res_createSigEncodePrivateCtx.HasValue() && !res_createMsgRecoveryPublicCtx.HasValue())
     {
