@@ -3,7 +3,7 @@
 - Cpp Standard: 20
 - Cmake mimimum version: 3.5
 - Compiler: GCC C/C++ Compiler (x86-64 Linux GNU)
-- libaries: crypto++,rapidjson
+- libaries: crypto++, rapidjson
 ```python
 sudo apt update
 sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
