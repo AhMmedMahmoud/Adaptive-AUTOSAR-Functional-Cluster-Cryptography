@@ -16,6 +16,7 @@ add_library(
    ara/core/error_domain.h
    ara/core/exception.h
    ara/core/initialization.h
+   ara/core/initialization.cpp
    ara/core/instance_id.h
    ara/core/instance_specifier.cpp
    ara/core/instance_specifier.h
@@ -30,12 +31,15 @@ add_library(
    ####### helper ######### 
    ara/crypto/helper/state.h
    ara/crypto/helper/print.h
-
+   ara/crypto/helper/print.cpp
+   
    ####### manifest #######
    ara/crypto/Manifest/CryptoKeySlotInterface.h
    ara/crypto/Manifest/manifestOperations.h
+   ara/crypto/Manifest/manifestOperations.cpp
    ara/crypto/Manifest/sharedSlotsInterface.h
-   
+   ara/crypto/Manifest/sharedSlotsInterface.cpp
+
    ####### private ########
    ## common
    ara/crypto/private/common/base_id_types.h
@@ -43,6 +47,7 @@ add_library(
    ara/crypto/private/common/crypto_object_uid.h
    ara/crypto/private/common/uuid.h
    ara/crypto/private/common/entry_point.h
+   ara/crypto/private/common/entry_point.cpp
    ara/crypto/private/common/io_interface.h
    ara/crypto/private/common/mem_region.h
    ## key 
@@ -141,9 +146,9 @@ target_include_directories(mac PUBLIC ${Crypto++_INCLUDE_DIRS})
 target_link_libraries(mac ${Crypto++_LIBRARIES})
 
 ### ecdsa example using CryptoPP
-#add_executable(ecdsa CryptoPP_examples/ESDSA.cpp)
-#target_include_directories(ecdsa PUBLIC ${Crypto++_INCLUDE_DIRS})
-#target_link_libraries(ecdsa ${Crypto++_LIBRARIES})
+add_executable(ecdsa CryptoPP_examples/ESDSA.cpp)
+target_include_directories(ecdsa PUBLIC ${Crypto++_INCLUDE_DIRS})
+target_link_libraries(ecdsa ${Crypto++_LIBRARIES})
 
 ## ecdsa keys generation example using CryptoPP
 add_executable(ECDSA_keysGeneration CryptoPP_examples/ECDSA_PUK_PRK_generation.cpp)

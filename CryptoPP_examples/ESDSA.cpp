@@ -7,8 +7,6 @@
 #include <cryptopp/hex.h>
 #include "cryptopp/files.h"
 
-#define way 1
-
 /*
     there are many elliptic curves used in cryptography
         - secp256k1    its equation is y^2 = x^3 + 7 mod(2^256 - 2^32 - 977) 
@@ -28,8 +26,7 @@ int main()
 
     // define object represent public key for ECDSA 
     CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::PublicKey publicKey;
-
-    
+ 
     /* 
     generate private key randomly    
         - first argument:  random number generator 
@@ -42,13 +39,8 @@ int main()
     const CryptoPP::Integer& x = myPrivateKey.GetPrivateExponent();
     std::cout << "private Key: " << std::hex << x << std::endl;
     
-
     // fill the public key using private key object
     myPrivateKey.MakePublicKey( publicKey );
-    /*
-    result = publicKey.Validate( prng, 3 );
-    if( !result ) { std::cout << "publicKey.Validate return false\n"; return 0; }
-    */
 
     // get public key
     const CryptoPP::ECP::Point& q = publicKey.GetPublicElement();
@@ -58,13 +50,7 @@ int main()
     std::cout << "Public Key (qy): " << std::hex << qy << std::endl;
 
     /* define object represent signer for ECDSA */
-#if way == 1
     CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer(myPrivateKey);
-#elif way == 2
-    CryptoPP::ECDSA<CryptoPP::ECP, CryptoPP::SHA256>::Signer signer();
-    signer.AccessKey().AccessGroupParameters() = myPrivateKey.GetGroupParameters();
-#endif
-
     result = signer.AccessKey().Validate( prng, 3 );
     if( !result ) { std::cout << "signer.AccessKey return false\n"; return 0; }
     
@@ -78,10 +64,8 @@ int main()
     
     // Determine maximum size, allocate a string with the maximum size
     size_t siglen = signer.MaxSignatureLength();
-
     // signature = encryptionByPrivateKey(hash(message))
     std::string signature(siglen, 0x00);
-
     // Sign, and trim signature to actual size
     siglen = signer.SignMessage( prng,
                                  (const CryptoPP::byte*)message.data(),
@@ -99,21 +83,20 @@ int main()
    
    
 
-
+/*
     // Introduce an error in the signature
     if (!signature.empty()) {
         signature[0] ^= 0xFF; // Flip the first bit of the signature
     }
+*/
 
     result = verifier.VerifyMessage( (const CryptoPP::byte*)&message[0], message.size(), (const CryptoPP::byte*)&signature[0], signature.size() );
     if( !result ) 
     {
-        std::cout << "Failed to verify signature on message" << std::endl;
-    } else {
+        std::cout << "\nFailed to verify signature on message" << std::endl;
+    } 
+    else 
+    {
         std::cout << "\nAll good!\n" << std::endl;
     }
-
-
-    
-    std::cout << "hi ahmed\n";
 }
