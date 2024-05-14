@@ -8,21 +8,6 @@ namespace ara
 {
     namespace core
     {
-        /*
-        class Exception : public std::exception 
-        {
-            public:
-                explicit Exception (ErrorCode err) noexcept;
-
-                const char* what () const noexcept override;
-
-                const ErrorCode& Error () const noexcept;
-
-                Exception& operator= (Exception const &other);
-        };
-        */
-       
-
        class Exception : public std::exception 
        { 
         private:

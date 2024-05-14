@@ -9,7 +9,7 @@ namespace ara
     {
         namespace manifest
         {
-            std::vector<CryptoKeySlotInterface> KeySlotsMetaData;
+            extern std::vector<CryptoKeySlotInterface> KeySlotsMetaData;
         }
     }
 }
